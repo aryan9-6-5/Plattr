@@ -29,7 +29,10 @@ const SignupPage = () => {
     const { data, error: authErr } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
-      options: { data: { full_name: form.full_name } },
+      options: { 
+        data: { full_name: form.full_name },
+        emailRedirectTo: "https://platrr-two.vercel.app"
+      },
     });
 
     if (authErr) { setError(authErr.message); setLoading(false); return; }

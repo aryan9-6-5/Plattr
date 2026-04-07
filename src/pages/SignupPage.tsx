@@ -31,7 +31,7 @@ const SignupPage = () => {
       password: form.password,
       options: { 
         data: { full_name: form.full_name },
-        emailRedirectTo: "https://platrr-two.vercel.app"
+        emailRedirectTo: "https://platrr-lt6omygl9-aryan9-6-5s-projects.vercel.app"
       },
     });
 

@@ -2,8 +2,8 @@ import { MapPin } from "lucide-react";
 import RevealOnScroll from "./RevealOnScroll";
 
 const cities = [
-  { name: "Hyderabad", active: true, image: "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=800" },
-  { name: "Bangalore", active: true, image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&q=80&w=800" },
+  { name: "Hyderabad", active: true, image: "https://www.formulaindia.com/blog/wp-content/uploads/2021/07/hyd1.jpg" },
+  { name: "Bangalore", active: true, image: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq_LteLvu96Dp4aVXYlynZWlX05GKFOrh-6K90964uAbRWTNCL16HC13sfG_9gjZUL2Bh471ELsAM5hs6VBte9EYLt8i3f1ujD-nQwZlxCAMR7gTIj0Ep8j5thGVAIlcBPu81kc=w675-h390-n-k-no" },
   { name: "Delhi NCR", active: false, image: "https://www.kalitravel.net/blog/wp-content/uploads/delhi-itinerary-india-gate-sunset-new-delhi.webp" },
 ];
 

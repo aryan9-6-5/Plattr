@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Building, User, PartyPopper, ArrowRight } from "lucide-react";
 
@@ -9,6 +10,7 @@ const audiences = [
     icon: User,
     title: "For Individuals",
     tagline: "Daily meals & tiffin service",
+    to: "/catalog",
     points: [
       "Choose from verified home chefs in your area",
       "Subscribe to weekly or monthly tiffin plans",
@@ -21,6 +23,7 @@ const audiences = [
     icon: Building,
     title: "For Corporates",
     tagline: "Bulk meals & subscriptions",
+    to: "/for-business",
     points: [
       "Recurring meal plans for 50–5,000+ employees",
       "Dashboard for order tracking and scheduling",
@@ -33,6 +36,7 @@ const audiences = [
     icon: PartyPopper,
     title: "For Events",
     tagline: "Large-scale catering",
+    to: "/for-business",
     points: [
       "Weddings, conferences, and community events",
       "Multi-cuisine menus with professional setup",
@@ -105,9 +109,11 @@ const AudienceSection = () => {
               </li>
             ))}
           </ul>
-          <Button className="gap-2">
-            {current.cta} <ArrowRight size={16} />
-          </Button>
+          <Link to={current.to}>
+            <Button className="gap-2">
+              {current.cta} <ArrowRight size={16} />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Building2, Users, Calendar, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
+import { Building2, Users, Calendar, ArrowRight, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 
 const useCases = [
@@ -49,9 +49,9 @@ const ForBusinessPage = () => {
   const [errMsg, setErrMsg] = useState("");
   const [form, setForm] = useState({
     company_name: "",
-    contact_person: "",
-    email: "",
-    phone: "",
+    contact_name: "",
+    contact_email: "",
+    contact_phone: "",
     inquiry_type: "CORPORATE",
     headcount: "",
     message: "",
@@ -66,11 +66,11 @@ const ForBusinessPage = () => {
     try {
       const { error } = await supabase.from("b2b_clients").insert({
         company_name: form.company_name,
-        contact_person: form.contact_person,
-        email: form.email,
-        phone: form.phone,
+        contact_name: form.contact_name,
+        contact_email: form.contact_email,
+        contact_phone: form.contact_phone,
         inquiry_type: form.inquiry_type,
-        headcount: form.headcount ? parseInt(form.headcount) : null,
+        expected_daily_meals: form.headcount ? parseInt(form.headcount) : null,
         notes: form.message,
         status: "LEAD",
       });
@@ -183,17 +183,17 @@ const ForBusinessPage = () => {
               </div>
               <div>
                 <label className={labelClass}>Contact Person *</label>
-                <input required value={form.contact_person} onChange={(e) => update("contact_person", e.target.value)} className={inputClass} placeholder="John Doe" />
+                <input required value={form.contact_name} onChange={(e) => update("contact_name", e.target.value)} className={inputClass} placeholder="John Doe" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-5">
               <div>
                 <label className={labelClass}>Email *</label>
-                <input required type="email" value={form.email} onChange={(e) => update("email", e.target.value)} className={inputClass} placeholder="john@acme.com" />
+                <input required type="email" value={form.contact_email} onChange={(e) => update("contact_email", e.target.value)} className={inputClass} placeholder="john@acme.com" />
               </div>
               <div>
                 <label className={labelClass}>Phone</label>
-                <input type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} className={inputClass} placeholder="+91 9876543210" />
+                <input type="tel" value={form.contact_phone} onChange={(e) => update("contact_phone", e.target.value)} className={inputClass} placeholder="+91 9876543210" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-5">
@@ -225,9 +225,9 @@ const ForBusinessPage = () => {
             <button
               type="submit"
               disabled={formState === "loading"}
-              className="w-full py-3.5 rounded-full bg-[#2D6A4F] text-white text-sm font-bold hover:bg-[#1B4332] transition-colors disabled:opacity-50"
+              className="w-full py-3.5 rounded-full bg-[#2D6A4F] text-white text-sm font-bold hover:bg-[#1B2D24] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {formState === "loading" ? "Submitting…" : "Submit Inquiry →"}
+              {formState === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Submit Inquiry →"}
             </button>
           </form>
         )}

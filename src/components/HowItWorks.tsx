@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
-import { ChefHat, Building2, ShieldCheck, Truck, User, UtensilsCrossed, Users, CalendarDays } from "lucide-react";
+import { ChefHat, Building2, ShieldCheck, Truck, User, UtensilsCrossed, Users, CalendarDays, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import RevealOnScroll from "./RevealOnScroll";
 
 const primarySteps = [
@@ -48,7 +50,9 @@ const serviceTypes = [
     desc: "Fresh, healthy meals delivered daily. Perfect for working professionals and students.",
     features: ["No minimum order", "Flexible delivery slots", "Rotating daily menu"],
     icon: UtensilsCrossed,
-    color: "bg-[#2D6A4F]"
+    color: "bg-[#2D6A4F]",
+    cta: "Order Now",
+    to: "/catalog"
   },
   {
     title: "Bulk & Catering",
@@ -56,7 +60,9 @@ const serviceTypes = [
     desc: "Scalable food supply for team lunches, family events, or daily office catering.",
     features: ["Invoice billing", "Dedicated account manager", "Custom menus"],
     icon: Users,
-    color: "bg-[#1B2D24]"
+    color: "bg-[#1B2D24]",
+    cta: "Contact for Bulk",
+    to: "/for-business"
   }
 ];
 
@@ -306,6 +312,13 @@ const HowItWorks = () => {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-8 w-full group">
+                    <Link to={service.to}>
+                      <Button className={`w-full h-11 rounded-xl gap-2 ${service.color} hover:opacity-90 text-white transition-all`}>
+                        {service.cta} <ArrowRight size={16} />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               );
             })}

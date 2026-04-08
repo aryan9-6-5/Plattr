@@ -116,7 +116,7 @@ const B2BSection = () => {
                         placeholder="e.g. Acme Corp"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Contact Name</label>
                         <input 
@@ -140,7 +140,7 @@ const B2BSection = () => {
                         />
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Phone</label>
                         <input 

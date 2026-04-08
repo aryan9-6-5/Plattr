@@ -116,9 +116,9 @@ const CatalogSection = () => {
       {/* Sticky Filter Bar */}
       <div className="sticky top-[64px] z-20 bg-[#EEF8F1]/95 backdrop-blur-sm border-b border-[#D4E8DA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-3">
-          <div className="flex items-center gap-8 py-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-8 py-2">
             {/* Meal type dropdown */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-start gap-3">
               <span className="text-xs font-bold tracking-widest uppercase text-[#7A9A88]">Type</span>
               <div className="relative">
                 <select
@@ -137,7 +137,7 @@ const CatalogSection = () => {
             </div>
 
             {/* Source dropdown */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-start gap-3">
               <span className="text-xs font-bold tracking-widest uppercase text-[#7A9A88]">Source</span>
               <div className="relative">
                 <select

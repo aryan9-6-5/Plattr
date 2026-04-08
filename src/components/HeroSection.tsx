@@ -133,21 +133,21 @@ const HeroSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
-              className="mt-12 flex items-center justify-between gap-4 pt-8 border-t border-[#D4E8DA] max-w-lg"
+              className="mt-12 flex flex-wrap items-center justify-between sm:justify-start gap-6 sm:gap-12 pt-8 border-t border-[#D4E8DA] max-w-lg"
             >
               <div>
-                <span className="block text-3xl font-serif font-bold text-[#1B2D24]"><AnimatedStat end={120} />+</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#52B788]">Verified Chefs</span>
+                <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#1B2D24]"><AnimatedStat end={120} />+</span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#52B788]">Verified Chefs</span>
               </div>
-              <div className="w-px h-10 bg-[#D4E8DA]"></div>
+              <div className="w-px h-8 sm:h-10 bg-[#D4E8DA] hidden sm:block"></div>
               <div>
-                <span className="block text-3xl font-serif font-bold text-[#1B2D24]"><AnimatedStat end={50} />k+</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#52B788]">Meals Delivered</span>
+                <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#1B2D24]"><AnimatedStat end={50} />k+</span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#52B788]">Meals Delivered</span>
               </div>
-              <div className="w-px h-10 bg-[#D4E8DA]"></div>
+              <div className="w-px h-8 sm:h-10 bg-[#D4E8DA] hidden sm:block"></div>
               <div>
-                <span className="block text-3xl font-serif font-bold text-[#1B2D24]">4.<AnimatedStat end={9} /></span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#52B788]">User Rating</span>
+                <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#1B2D24]">4.<AnimatedStat end={9} /></span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#52B788]">User Rating</span>
               </div>
             </motion.div>
           </motion.div>

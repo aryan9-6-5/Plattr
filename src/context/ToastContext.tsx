@@ -1,18 +1,20 @@
-import { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
+import { createContext, useContext, useReducer, useEffect, useCallback, ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle, AlertCircle, Info, AlertTriangle, X } from 'lucide-react'
 
 // ── TYPES ───────────────────────────────────────────────────────────────────
 
-import { ToastContext } from "@/hooks/usePlattrToast";
-import type { ToastType, ToastContextValue } from "@/hooks/usePlattrToast";
-    
+export type ToastType = 'success' | 'error' | 'info' | 'warning';
+
+export type ToastContextValue = {
+  addToast: (message: string, type: ToastType) => void;
+};
+
 type Toast = {
   id:      string
   message: string
   type:    ToastType
 }
-
 
 type ToastAction =
   | { type: 'ADD';    payload: Toast }
@@ -35,7 +37,7 @@ const toastReducer = (state: Toast[], action: ToastAction): Toast[] => {
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
-
+export const ToastContext = createContext<ToastContextValue | null>(null);
 
 // ── TOAST ITEM ───────────────────────────────────────────────────────────────
 
@@ -104,7 +106,7 @@ const ToastItem = ({
 
 // ── PROVIDER ─────────────────────────────────────────────────────────────────
 
-export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
+export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, dispatch] = useReducer(toastReducer, [])
 
   const addToast = useCallback((message: string, type: ToastType) => {
@@ -133,5 +135,3 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     </ToastContext.Provider>
   )
 }
-
-

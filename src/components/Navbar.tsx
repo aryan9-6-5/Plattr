@@ -40,6 +40,16 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
   return (
     <>
       <div 
@@ -94,7 +104,7 @@ const Navbar = () => {
 
           {/* Right actions */}
           <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-            <div className={`hidden md:block ${scrolled ? 'text-white' : 'text-[#1B2D24]'}`}>
+            <div className={`${scrolled ? 'text-white' : 'text-[#1B2D24]'}`}>
               <CartButton scrolled={scrolled} />
             </div>
 
@@ -219,7 +229,7 @@ const Navbar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setMobileOpen(false)}
+              onClick={() => { console.log('[Navbar] Closing mobile menu via backdrop'); setMobileOpen(false); }}
               className="fixed inset-0 bg-[#0F2318]/40 backdrop-blur-sm z-[60] lg:hidden"
             />
             <motion.div

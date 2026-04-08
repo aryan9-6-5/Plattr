@@ -136,6 +136,13 @@ const CheckoutPage = () => {
   const [errors, setErrors]         = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
 
+  // Sync notes from cart if updated elsewhere (e.g. from drawer)
+  useEffect(() => {
+    if (notes && !form.special_notes) {
+      setForm(prev => ({ ...prev, special_notes: notes }));
+    }
+  }, [notes]);
+
   // Pre-fill from profile
   useEffect(() => {
     if (profile) {

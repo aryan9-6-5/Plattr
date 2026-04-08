@@ -1,12 +1,6 @@
-import { createContext, useContext } from "react";
-
-export type ToastType = 'success' | 'error' | 'info' | 'warning';
-
-export type ToastContextValue = {
-  addToast: (message: string, type: ToastType) => void;
-};
-
-export const ToastContext = createContext<ToastContextValue | null>(null);
+import { useContext } from "react";
+import { ToastContext } from "@/context/ToastContext";
+import type { ToastContextValue, ToastType } from "@/context/ToastContext";
 
 export const useToast = () => {
   const context = useContext(ToastContext);
@@ -15,3 +9,5 @@ export const useToast = () => {
   }
   return context;
 };
+
+export type { ToastContextValue, ToastType };

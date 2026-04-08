@@ -1,5 +1,6 @@
-import { createContext, useContext, useReducer, useEffect, useState } from 'react'
+import { createContext, useReducer, useEffect, useState, useMemo } from 'react'
 import type { CartItem, CartState } from '@/types/cart'
+import type { CartContextValue } from "./CartContextType";
 
 // ── TYPES ──────────────────────────────────────────────────────────────────
 
@@ -12,11 +13,7 @@ type CartAction =
   | { type: 'SET_NOTES';       payload: { notes: string } }
   | { type: 'CLEAR_CART' }
 
-import { CartContext } from "./CartContextType";
-import type { CartContextValue } from "./CartContextType";
-
-
-// ── INITIAL STATE ───────────────────────────────────────────────────────────
+// ── CONSTANTS & HELPERS ───────────────────────────────────────────────────
 
 const INITIAL_STATE: CartState = {
   items:         [],
@@ -28,12 +25,40 @@ const INITIAL_STATE: CartState = {
 }
 
 const STORAGE_KEY = 'plattr_cart'
+const TAX_RATE = 0.05 // 5% GST
+
+const getEffectivePrice = (item: CartItem): number => {
+  if (item.bulk_price !== null && item.quantity >= item.min_bulk_qty) {
+    return item.bulk_price
+  }
+  return item.price
+}
+
+const computeSubtotal = (items: CartItem[]): number =>
+  items.reduce((sum, item) => sum + getEffectivePrice(item) * item.quantity, 0)
+
+const computeDeliveryFee = (subtotal: number): number => {
+  if (subtotal === 0)  return 0
+  if (subtotal >= 500) return 0   // free above ₹500
+  if (subtotal >= 300) return 20
+  return 40
+}
+
+const computeDiscount = (
+  subtotal: number,
+  promoDiscount: number,
+  promoType: 'flat' | 'percentage' | null
+): number => {
+  if (!promoType || promoDiscount === 0) return 0
+  if (promoType === 'flat')       return Math.min(promoDiscount, subtotal)
+  if (promoType === 'percentage') return Math.round((subtotal * promoDiscount) / 100)
+  return 0
+}
 
 // ── REDUCER ─────────────────────────────────────────────────────────────────
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
-
     case 'ADD_ITEM': {
       const existing = state.items.find(i => i.id === action.payload.id)
       if (existing) {
@@ -86,46 +111,13 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
   }
 }
 
-// ── COMPUTED HELPERS ────────────────────────────────────────────────────────
-
-const getEffectivePrice = (item: CartItem): number => {
-  if (item.bulk_price !== null && item.quantity >= item.min_bulk_qty) {
-    return item.bulk_price
-  }
-  return item.price
-}
-
-const computeSubtotal = (items: CartItem[]): number =>
-  items.reduce((sum, item) => sum + getEffectivePrice(item) * item.quantity, 0)
-
-const computeDeliveryFee = (subtotal: number): number => {
-  if (subtotal === 0)  return 0
-  if (subtotal >= 500) return 0   // free above ₹500
-  if (subtotal >= 300) return 20
-  return 40
-}
-
-const computeDiscount = (
-  subtotal: number,
-  promoDiscount: number,
-  promoType: 'flat' | 'percentage' | null
-): number => {
-  if (!promoType || promoDiscount === 0) return 0
-  if (promoType === 'flat')       return Math.min(promoDiscount, subtotal)
-  if (promoType === 'percentage') return Math.round((subtotal * promoDiscount) / 100)
-  return 0
-}
-
-const TAX_RATE = 0.05 // 5% GST
-
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
-
+export const CartContext = createContext<CartContextValue | null>(null);
 
 // ── PROVIDER ─────────────────────────────────────────────────────────────────
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-
   const loadInitialState = (): CartState => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
@@ -136,6 +128,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE, loadInitialState)
   const [isOpen, setIsOpen] = useState(false)
+
+  console.log('[CartContext] Current State:', { itemsCount: state.items.length, isOpen });
 
   // Persist to localStorage on every state change
   useEffect(() => {
@@ -161,6 +155,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   // ── ACTIONS ────────────────────────────────────────────────────────────────
 
   const addItem = (item: CartItem) => {
+    console.log('[CartContext] Adding item:', item.name);
     dispatch({ type: 'ADD_ITEM', payload: item })
     setIsOpen(true) // auto-open cart drawer on add
   }
@@ -171,48 +166,49 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const applyPromo = (code: string, discount: number, type: 'flat' | 'percentage') =>
     dispatch({ type: 'APPLY_PROMO', payload: { code, discount, promoType: type } })
   const removePromo    = () => dispatch({ type: 'REMOVE_PROMO' })
-  const setNotes       = (notes: string) => dispatch({ type: 'SET_NOTES', payload: { notes } })
+  const setNotes       = (notes: string) => dispatch({ type: 'SET_NOTES', payload: { notes: notes } })
   const clearCart      = () => {
     dispatch({ type: 'CLEAR_CART' })
     localStorage.removeItem(STORAGE_KEY)
   }
-  const openCart   = () => setIsOpen(true)
-  const closeCart  = () => setIsOpen(false)
+  const openCart   = () => { console.log('[CartContext] Opening Cart'); setIsOpen(true); }
+  const closeCart  = () => { console.log('[CartContext] Closing Cart'); setIsOpen(false); }
   const toggleCart = () => setIsOpen(prev => !prev)
 
+  // Memoize the context value to prevent unnecessary re-renders of all consumers
+  const value = useMemo(() => ({
+    // State
+    items:         state.items,
+    promoCode:     state.promoCode,
+    promoDiscount: state.promoDiscount,
+    promoType:     state.promoType,
+    notes:         state.notes,
+    isOpen,
+    // Computed
+    itemCount,
+    subtotal,
+    discountAmount,
+    deliveryFee,
+    tax,
+    total,
+    isEmpty,
+    hasBulkItems,
+    // Actions
+    addItem,
+    removeItem,
+    updateQuantity,
+    applyPromo,
+    removePromo,
+    setNotes,
+    clearCart,
+    openCart,
+    closeCart,
+    toggleCart,
+  }), [state, isOpen, itemCount, subtotal, discountAmount, deliveryFee, tax, total, isEmpty, hasBulkItems])
+
   return (
-    <CartContext.Provider value={{
-      // State
-      items:         state.items,
-      promoCode:     state.promoCode,
-      promoDiscount: state.promoDiscount,
-      promoType:     state.promoType,
-      notes:         state.notes,
-      isOpen,
-      // Computed
-      itemCount,
-      subtotal,
-      discountAmount,
-      deliveryFee,
-      tax,
-      total,
-      isEmpty,
-      hasBulkItems,
-      // Actions
-      addItem,
-      removeItem,
-      updateQuantity,
-      applyPromo,
-      removePromo,
-      setNotes,
-      clearCart,
-      openCart,
-      closeCart,
-      toggleCart,
-    }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   )
 }
-
-

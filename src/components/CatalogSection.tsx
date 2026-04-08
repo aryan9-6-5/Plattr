@@ -6,6 +6,8 @@ import RevealOnScroll from "./RevealOnScroll";
 import DishCard from "./food/DishCard";
 
 import { Dish } from "@/types/dish";
+import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/usePlattrToast";
 
 // Components moved to shared food/DishCard.tsx
 const dbSources: Record<string, string> = {
@@ -24,6 +26,32 @@ const CatalogSection = () => {
   const [source,   setSource]   = useState("All");
   const [dishes,   setDishes]   = useState<Dish[]>([]);
   const [loading,  setLoading]  = useState(true);
+
+  const { addItem } = useCart();
+  const { addToast } = useToast();
+
+  const handleSharedQuickAdd = (e: React.MouseEvent, dish: Dish) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({
+      id:           dish.id,
+      name:         dish.name,
+      cuisine:      dish.cuisine,
+      meal_type:    dish.meal_type,
+      source_type:  dish.source_type,
+      source_id:    dish.source_id,
+      source_name:  dish.source_type.replace(/_/g, ' '),
+      price:        Number(dish.price),
+      bulk_price:   dish.bulk_price ? Number(dish.bulk_price) : null,
+      min_bulk_qty: dish.min_bulk_qty ?? 20,
+      quantity:     1,
+      image_url:    dish.image_url ?? null,
+      diet_type:    dish.diet_type,
+      spice_level:  dish.spice_level ?? "MEDIUM",
+      is_spicy:     dish.is_spicy ?? false,
+    });
+    addToast(`${dish.name} added!`, "success");
+  };
 
   useEffect(() => {
     async function fetchDishes() {
@@ -166,7 +194,13 @@ const CatalogSection = () => {
                       {/* Dish card grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {cuisineDishes.map((dish, ci) => (
-                          <DishCard key={dish.id} dish={dish} index={ci} />
+                          <DishCard 
+                            key={dish.id} 
+                            dish={dish} 
+                            index={ci} 
+                            showQuickAdd={true}
+                            onQuickAdd={handleSharedQuickAdd}
+                          />
                         ))}
                       </div>
                     </div>

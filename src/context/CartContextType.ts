@@ -1,4 +1,3 @@
-import { createContext } from "react";
 import type { CartItem } from "@/types/cart";
 
 export type CartContextValue = {
@@ -32,5 +31,3 @@ export type CartContextValue = {
   closeCart:      () => void
   toggleCart:     () => void
 }
-
-export const CartContext = createContext<CartContextValue | null>(null);

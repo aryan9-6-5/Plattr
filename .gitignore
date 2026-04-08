@@ -141,3 +141,4 @@ dist-ssr
 *.sw?
 
 nothing/
+src/utils/env.ts

@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -6,41 +7,43 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { Loader2 } from "lucide-react";
 
 // Layout
 import Layout from "@/components/layout/Layout";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-
-// Pages
-import Index from "./pages/Index";
-import CatalogPage from "./pages/CatalogPage";
-import DishDetailPage from "./pages/DishDetailPage";
-import ChefsPage from "./pages/ChefsPage";
-import ChefProfilePage from "./pages/ChefProfilePage";
-import KitchensPage from "./pages/KitchensPage";
-import KitchenDetailPage from "./pages/KitchenDetailPage";
-import RestaurantsPage from "./pages/RestaurantsPage";
-import RestaurantDetailPage from "./pages/RestaurantDetailPage";
-import HowItWorksPage from "./pages/HowItWorksPage";
-import ForBusinessPage from "./pages/ForBusinessPage";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import NotFound from "./pages/NotFound";
-import CheckoutPage from "./pages/CheckoutPage";
-import OrderSuccessPage from "./pages/OrderSuccessPage";
-import FAQPage from "./pages/FAQPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import TermsPage from "./pages/TermsPage";
-import BlogComingSoonPage from "./pages/BlogComingSoonPage";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 
-// Dashboard pages
-import DashboardPage from "./pages/dashboard/DashboardPage";
-import OrdersPage from "./pages/dashboard/OrdersPage";
-import OrderDetailPage from "./pages/dashboard/OrderDetailPage";
-import SubscriptionsPage from "./pages/dashboard/SubscriptionsPage";
-import ProfilePage from "./pages/dashboard/ProfilePage";
+// Lazy Pages
+const Index = lazy(() => import("./pages/Index"));
+const CatalogPage = lazy(() => import("./pages/CatalogPage"));
+const DishDetailPage = lazy(() => import("./pages/DishDetailPage"));
+const ChefsPage = lazy(() => import("./pages/ChefsPage"));
+const ChefProfilePage = lazy(() => import("./pages/ChefProfilePage"));
+const KitchensPage = lazy(() => import("./pages/KitchensPage"));
+const KitchenDetailPage = lazy(() => import("./pages/KitchenDetailPage"));
+const RestaurantsPage = lazy(() => import("./pages/RestaurantsPage"));
+const RestaurantDetailPage = lazy(() => import("./pages/RestaurantDetailPage"));
+const HowItWorksPage = lazy(() => import("./pages/HowItWorksPage"));
+const ForBusinessPage = lazy(() => import("./pages/ForBusinessPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const OrderSuccessPage = lazy(() => import("./pages/OrderSuccessPage"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const BlogComingSoonPage = lazy(() => import("./pages/BlogComingSoonPage"));
+const HealthCheck = lazy(() => import("./pages/HealthCheck"));
+
+// Lazy Dashboard pages
+const DashboardPage = lazy(() => import("./pages/dashboard/DashboardPage"));
+const OrdersPage = lazy(() => import("./pages/dashboard/OrdersPage"));
+const OrderDetailPage = lazy(() => import("./pages/dashboard/OrderDetailPage"));
+const SubscriptionsPage = lazy(() => import("./pages/dashboard/SubscriptionsPage"));
+const ProfilePage = lazy(() => import("./pages/dashboard/ProfilePage"));
 
 const queryClient = new QueryClient();
 
@@ -54,61 +57,70 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
-              <Routes>
-                {/* Landing page (standalone, no shared layout) */}
-                <Route path="/" element={<Index />} />
+              <Suspense fallback={
+                <div className="flex h-screen w-full items-center justify-center bg-[#F6FFF8]">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#2D6A4F]" />
+                </div>
+              }>
+                <Routes>
+                  {/* Landing page (standalone, no shared layout) */}
+                  <Route path="/" element={<Index />} />
 
-                {/* All public pages share Layout (Navbar + Footer) */}
-                <Route element={<Layout />}>
-                  {/* Catalog */}
-                  <Route path="/catalog" element={<CatalogPage />} />
-                  <Route path="/menu" element={<Navigate to="/catalog" replace />} />
-                  <Route path="/catalog/:cuisineSlug" element={<CatalogPage />} />
-                  <Route path="/dish/:id" element={<DishDetailPage />} />
+                  {/* All public pages share Layout (Navbar + Footer) */}
+                  <Route element={<Layout />}>
+                    {/* Catalog */}
+                    <Route path="/catalog" element={<CatalogPage />} />
+                    <Route path="/menu" element={<Navigate to="/catalog" replace />} />
+                    <Route path="/catalog/:cuisineSlug" element={<CatalogPage />} />
+                    <Route path="/dish/:id" element={<DishDetailPage />} />
 
-                  {/* Chefs */}
-                  <Route path="/chefs" element={<ChefsPage />} />
-                  <Route path="/chefs/:id" element={<ChefProfilePage />} />
+                    {/* Chefs */}
+                    <Route path="/chefs" element={<ChefsPage />} />
+                    <Route path="/chefs/:id" element={<ChefProfilePage />} />
 
-                  {/* Kitchens */}
-                  <Route path="/kitchens" element={<KitchensPage />} />
-                  <Route path="/kitchens/:id" element={<KitchenDetailPage />} />
+                    {/* Kitchens */}
+                    <Route path="/kitchens" element={<KitchensPage />} />
+                    <Route path="/kitchens/:id" element={<KitchenDetailPage />} />
 
-                  {/* Restaurants */}
-                  <Route path="/restaurants" element={<RestaurantsPage />} />
-                  <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
+                    {/* Restaurants */}
+                    <Route path="/restaurants" element={<RestaurantsPage />} />
+                    <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
 
-                  {/* Content */}
-                  <Route path="/how-it-works" element={<HowItWorksPage />} />
-                  <Route path="/for-business" element={<ForBusinessPage />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                  <Route path="/terms" element={<TermsPage />} />
-                  <Route path="/blog" element={<BlogComingSoonPage />} />
+                    {/* Content */}
+                    <Route path="/how-it-works" element={<HowItWorksPage />} />
+                    <Route path="/for-business" element={<ForBusinessPage />} />
+                    <Route path="/faq" element={<FAQPage />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                    <Route path="/terms" element={<TermsPage />} />
+                    <Route path="/blog" element={<BlogComingSoonPage />} />
 
-                  {/* Auth */}
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/signup" element={<SignupPage />} />
+                    {/* Auth */}
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
 
-                  {/* Checkout + Order flow */}
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                  <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
+                    {/* Checkout + Order flow */}
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
 
-                  {/* Protected Dashboard routes */}
-                  <Route element={<ProtectedRoute />}>
-                    <Route element={<DashboardLayout />}>
-                      <Route path="/dashboard" element={<DashboardPage />} />
-                      <Route path="/dashboard/orders" element={<OrdersPage />} />
-                      <Route path="/dashboard/orders/:id" element={<OrderDetailPage />} />
-                      <Route path="/dashboard/subscriptions" element={<SubscriptionsPage />} />
-                      <Route path="/dashboard/profile" element={<ProfilePage />} />
+                    {/* Protected Dashboard routes */}
+                    <Route element={<ProtectedRoute />}>
+                      <Route element={<DashboardLayout />}>
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route path="/dashboard/orders" element={<OrdersPage />} />
+                        <Route path="/dashboard/orders/:id" element={<OrderDetailPage />} />
+                        <Route path="/dashboard/subscriptions" element={<SubscriptionsPage />} />
+                        <Route path="/dashboard/profile" element={<ProfilePage />} />
+                      </Route>
                     </Route>
-                  </Route>
 
-                  {/* 404 */}
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
+                    {/* Health Monitor */}
+                    <Route path="/health" element={<HealthCheck />} />
+
+                    {/* 404 */}
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Routes>
+              </Suspense>
             </BrowserRouter>
           </TooltipProvider>
         </ToastProvider>

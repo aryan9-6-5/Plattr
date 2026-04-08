@@ -5,15 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import RevealOnScroll from "./RevealOnScroll";
 import DishCard from "./food/DishCard";
 
-type Dish = {
-  id: string;
-  name: string;
-  cuisine: string;
-  meal_type: string;
-  source_type: string;
-  price: number;
-  is_spicy: boolean;
-};
+import { Dish } from "@/types/dish";
 
 // Components moved to shared food/DishCard.tsx
 const dbSources: Record<string, string> = {
@@ -174,7 +166,7 @@ const CatalogSection = () => {
                       {/* Dish card grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {cuisineDishes.map((dish, ci) => (
-                          <DishCard key={dish.id} dish={dish as any} index={ci} />
+                          <DishCard key={dish.id} dish={dish} index={ci} />
                         ))}
                       </div>
                     </div>

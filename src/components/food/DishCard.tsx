@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChefHat, Building2, UtensilsCrossed, Star, Zap, ShoppingBag, Plus, Flame } from "lucide-react";
+import { ChefHat, Building2, UtensilsCrossed, Star, Zap, ShoppingBag, Plus, Flame, LucideIcon } from "lucide-react";
 import { Dish } from "@/hooks/useDishes";
 
-const sourceIcons: Record<string, any> = {
+const sourceIcons: Record<string, LucideIcon> = {
   HOME_CHEF: ChefHat,
   CLOUD_KITCHEN: Building2,
   RESTAURANT: UtensilsCrossed,

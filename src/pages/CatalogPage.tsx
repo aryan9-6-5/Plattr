@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useSearchParams, useParams } from "react-router-dom";
-import { Search, X, ChefHat, Building2, UtensilsCrossed, Flame, Plus, ChevronDown } from "lucide-react";
+import { Search, X, ChefHat, Building2, UtensilsCrossed, Star, Zap, ShoppingBag, Plus, Flame, LucideIcon, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Dish } from "@/types/dish";
 import { useDishes } from "@/hooks/useDishes";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
@@ -15,12 +16,16 @@ const MEAL_TYPES = ["All","TIFFIN","BULK","EVENT","ALA_CARTE"];
 const DIET_TYPES = ["All","VEG","NON_VEG","EGG","VEGAN","JAIN"];
 const SOURCES = ["All","HOME_CHEF","CLOUD_KITCHEN","RESTAURANT"];
 
+const sourceIcons: Record<string, LucideIcon> = {
+  HOME_CHEF: ChefHat,
+  CLOUD_KITCHEN: Building2,
+  RESTAURANT: UtensilsCrossed,
+};
+
 const cuisineLabel = (c: string) => c === "All" ? "All" : c.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 const mealLabel = (m: string) => ({All:"All",TIFFIN:"Tiffin",BULK:"Bulk",EVENT:"Event",ALA_CARTE:"À La Carte"}[m] ?? m);
 const dietLabel = (d: string) => ({All:"All",VEG:"Veg",NON_VEG:"Non-Veg",EGG:"Egg",VEGAN:"Vegan",JAIN:"Jain"}[d] ?? d);
 const sourceLabel = (s: string) => ({All:"All",HOME_CHEF:"Home Chef",CLOUD_KITCHEN:"Cloud Kitchen",RESTAURANT:"Restaurant"}[s] ?? s);
-
-// sourceIcons moved to shared component
 
 const PAGE_SIZE = 12;
 
@@ -68,7 +73,7 @@ const CatalogPage = () => {
   const { addItem } = useCart();
   const { addToast } = useToast();
 
-  const handleSharedQuickAdd = (e: React.MouseEvent, dish: any) => {
+  const handleSharedQuickAdd = (e: React.MouseEvent, dish: Dish) => {
     e.preventDefault();
     e.stopPropagation();
     addItem({
@@ -122,7 +127,7 @@ const CatalogPage = () => {
 
   const FilterDropdown = ({ label, options, value, setValue, labelFn, icon: Icon }: {
     label: string; options: string[]; value: string;
-    setValue: (v: string) => void; labelFn: (v: string) => string; icon?: any;
+    setValue: (v: string) => void; labelFn: (v: string) => string; icon?: LucideIcon;
   }) => (
     <div className="relative group flex-1 min-w-[140px]">
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7A9A88] pointer-events-none group-hover:text-[#2D6A4F] transition-colors">
@@ -273,7 +278,7 @@ const CatalogPage = () => {
                 {items.map((dish, i) => (
                   <DishCard 
                     key={dish.id} 
-                    dish={dish as any} 
+                    dish={dish} 
                     index={i} 
                     showQuickAdd={true}
                     onQuickAdd={handleSharedQuickAdd}
@@ -293,7 +298,7 @@ const CatalogPage = () => {
                 {dishes.map((dish, i) => (
                   <DishCard 
                     key={dish.id} 
-                    dish={dish as any} 
+                    dish={dish} 
                     index={i} 
                     showQuickAdd={true}
                     onQuickAdd={handleSharedQuickAdd}

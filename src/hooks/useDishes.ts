@@ -1,25 +1,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
-export type Dish = {
-  id: string;
-  name: string;
-  cuisine: string;
-  meal_type: string;
-  source_type: string;
-  source_id: string;
-  price: number;
-  bulk_price?: number;
-  min_bulk_qty?: number;
-  is_spicy: boolean;
-  diet_type?: string;
-  spice_level?: string;
-  description?: string;
-  image_url?: string;
-  tags?: string[];
-  is_available: boolean;
-  created_at: string;
-};
+import { Dish } from "@/types/dish";
+
+export type { Dish };
 
 export type DishFilters = {
   cuisine?: string;

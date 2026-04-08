@@ -4,8 +4,8 @@ import { CheckCircle, AlertCircle, Info, AlertTriangle, X } from 'lucide-react'
 
 // ── TYPES ───────────────────────────────────────────────────────────────────
 
-import { ToastContext } from "@/hooks/use-plattr-toast";
-import type { ToastType, ToastContextValue } from "@/hooks/use-plattr-toast";
+import { ToastContext } from "@/hooks/usePlattrToast";
+import type { ToastType, ToastContextValue } from "@/hooks/usePlattrToast";
     
 type Toast = {
   id:      string

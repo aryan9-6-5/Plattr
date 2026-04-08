@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 
 const Form = FormProvider;
 
-import { FormFieldContext, FormItemContext, useFormField } from "@/hooks/use-form-field";
+import { FormFieldContext, FormItemContext, useFormField } from "@/hooks/useFormField";
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,

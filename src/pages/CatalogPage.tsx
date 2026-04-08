@@ -4,9 +4,9 @@ import { Search, X, ChefHat, Building2, UtensilsCrossed, Star, Zap, ShoppingBag,
 import { motion, AnimatePresence } from "framer-motion";
 import { Dish } from "@/types/dish";
 import { useDishes } from "@/hooks/useDishes";
-import { useCart } from "@/hooks/use-cart";
-import { useToast } from "@/hooks/use-plattr-toast";
-import PageHeader from "@/components/ui/PageHeader";
+import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/usePlattrToast";
+import PageHeader from "@/components/ui/PageHeader";  
 import EmptyState from "@/components/ui/EmptyState";
 import PageError from "@/components/ui/PageError";
 import DishCard from "@/components/food/DishCard";

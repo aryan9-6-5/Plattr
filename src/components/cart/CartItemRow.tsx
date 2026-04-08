@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { useCart } from '@/hooks/use-cart'
+import { useCart } from '@/hooks/useCart'
 import type { CartItem } from '@/types/cart'
 
 const CartItemRow = ({ item }: { item: CartItem }) => {

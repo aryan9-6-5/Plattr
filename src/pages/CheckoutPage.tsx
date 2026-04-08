@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Utensils, CreditCard, Info, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-import { useCart } from "@/hooks/use-cart";
+import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import { useToast } from "@/hooks/use-plattr-toast";
+import { useToast } from "@/hooks/usePlattrToast";
 import PromoCodeInput from "@/components/cart/PromoCodeInput";
 import SummaryRow from "@/components/cart/SummaryRow";
 

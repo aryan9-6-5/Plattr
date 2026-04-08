@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Tag, AlertCircle, CheckCircle, X } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
-import { useCart } from '@/hooks/use-cart'
+import { useCart } from '@/hooks/useCart'
 
 const PromoCodeInput = () => {
   const { promoCode, applyPromo, removePromo, subtotal } = useCart()

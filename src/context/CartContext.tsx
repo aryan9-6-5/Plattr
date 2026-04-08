@@ -12,8 +12,8 @@ type CartAction =
   | { type: 'SET_NOTES';       payload: { notes: string } }
   | { type: 'CLEAR_CART' }
 
-import { CartContext } from "@/hooks/use-cart";
-import type { CartContextValue } from "@/hooks/use-cart";
+import { CartContext } from "@/hooks/useCart";
+import type { CartContextValue } from "@/hooks/useCart";
 
 
 // ── INITIAL STATE ───────────────────────────────────────────────────────────

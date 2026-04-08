@@ -16,7 +16,7 @@ export type FormItemContextValue = {
 
 export const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
 
-export const useFormField = () => {
+export function useFormField() {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
   const { getFieldState, formState } = useFormContext();
@@ -37,4 +37,4 @@ export const useFormField = () => {
     formMessageId: `${id}-form-item-message`,
     ...fieldState,
   };
-};
+}

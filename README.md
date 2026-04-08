@@ -1,290 +1,126 @@
-Plattr
+# Plattr — The Structured Food Network
 
-Plattr is a B2B2C food supply platform that connects home chefs, cloud kitchens, 
-and restaurant partners into a unified food delivery network. It serves individuals 
-ordering daily tiffin meals, corporates placing bulk recurring orders, and event 
-organizers requiring large-scale catering — all through a single system.
+[![CI Status](https://github.com/aryan9-6-5/Plattr/actions/workflows/ci.yml/badge.svg)](https://github.com/aryan9-6-5/Plattr/actions)
+[![Node Version](https://img.shields.io/badge/node-24.x-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](#license)
 
-The platform is not a food marketplace. It is a coordinated supply pipeline where 
-food moves from a verified source through a quality-checked process to the customer.
-
+Plattr is an enterprise-grade **B2B2C food supply platform** designed to bridge the gap between niche food producers (home chefs, cloud kitchens) and diverse consumer segments. It orchestrates a unified supply pipeline for individual tiffin subscriptions, corporate bulk ordering, and event catering.
 
 ---
 
-
-What This Application Does
-
-Customers can browse a catalog of dishes grouped by regional cuisine, filter by meal 
-type, diet preference, and source type, and add items to a persistent cart. They can 
-apply promo codes, proceed to checkout, and place real orders that are stored in the 
-database. After placing an order, customers can track its status through a personal 
-dashboard that also manages subscriptions and profile settings.
-
-On the supply side, the platform surfaces home chef profiles, cloud kitchen 
-operations, and restaurant partner pages — each with their own dish listings, 
-ratings, and availability information.
-
-Corporate and event buyers have a dedicated inquiry path that submits directly to 
-the business client database, triggering a follow-up from the Plattr team.
-
+##  Table of Contents
+- [Core Value Proposition](#-core-value-proposition)
+- [Technology Stack](#-technology-stack)
+- [System Architecture](#-system-architecture)
+- [Key Features](#-key-features)
+- [Getting Started](#-getting-started)
+- [CI/CD & Reliability](#-cicd--reliability)
+- [License](#-license)
 
 ---
 
+##  Core Value Proposition
 
-Tech Stack
+Plattr is not just a marketplace; it is a **coordinated supply chain**. 
 
-Frontend
-  React with TypeScript
-  Tailwind CSS for styling
-  Framer Motion for animations
-  React Router v6 for navigation
-  Lucide React for icons
-
-Backend and Database
-  Supabase for database, authentication, and real-time features
-  PostgreSQL via Supabase with row-level security enabled
-
-State Management
-  React Context for cart and authentication state
-  localStorage for cart persistence across sessions
-
-Fonts
-  Playfair Display for headings
-  Inter for body text and UI elements
-
+- **For Individuals**: Seamless daily tiffin subscriptions with automated scheduling and persistence.
+- **For Corporates**: Reliable bulk ordering at discounted rates with invoice-based billing support.
+- **For Producers**: A managed platform for home chefs and cloud kitchens to surface specialized regional cuisines to a verified audience.
 
 ---
 
+##  Technology Stack
 
-Project Structure
+### Frontend Core
+- **Framework**: `React 18` with `Vite` (Enterprise Build Pipeline)
+- **Language**: `TypeScript` (Strict Mode enabled)
+- **Styling**: `Tailwind CSS` for utility-first responsive design
+- **Animations**: `Framer Motion` for high-performance physics-based motion
+- **Icons**: `Lucide React`
 
-src/
-  components/
-    cart/           Cart drawer, cart item row, cart button for navbar
-    landing/        All landing page sections as individual components
-    layout/         Navbar, footer, layout wrapper, protected route
-    ui/             Shared components used across all pages
-  context/
-    CartContext     Cart state, actions, and computed values
-    ToastContext    Global notification system
-    AuthContext     Authentication state and session management
-  hooks/            Custom data fetching hooks for each Supabase table
-  pages/            One file per route
-    dashboard/      Customer dashboard sub-pages
-  types/            TypeScript type definitions
-  utils/            Helper functions for formatting and source resolution
-  lib/              Supabase client initialization
+### Backend & Infrastructure
+- **Serverless**: `Supabase` (Database, Auth, Storage)
+- **Database**: `PostgreSQL` with complex RLS (Row Level Security) policies
+- **Real-time**: Supabase GoTrue for secure session management
 
+### Reliability & Validation
+- **Schema Validation**: `Zod` (used for ENV validation and Form schemas)
+- **State Management**: React Context API with LocalStorage syncing for cart persistence
+- **Testing**: 143-point manual/automated QA suite
 
 ---
 
+##  System Architecture
 
-Pages and Routes
+### 1. Dependency-First Component Structure
+Components are structured to prevent **Temporal Dead Zone (TDZ)** issues. Leaf components (variants, sub-elements) are defined and exported before their parent containers, ensuring stability in strict Linux build environments.
 
-Public routes accessible without authentication
+### 2. Polymorphic Dish Sourcing
+Dishes are decoupled from producers through a polymorphic resolution pattern. A single `dishes` table links to `chefs`, `kitchens`, or `restaurants` via a `source_type` and `source_id` pair, enabling a unified global catalog.
 
-  /                     Landing page with all sections
-  /catalog              Full dish catalog with filters
-  /catalog/:cuisineSlug Catalog pre-filtered by cuisine
-  /dish/:id             Individual dish detail with ordering
-  /chefs                All home chefs browse page
-  /chefs/:id            Chef profile with dishes and reviews
-  /kitchens             Cloud kitchens overview
-  /kitchens/:id         Kitchen detail with capacity and dishes
-  /restaurants          Restaurant partners listing
-  /restaurants/:id      Restaurant detail with menu and reviews
-  /how-it-works         Detailed system explanation
-  /for-business         B2B landing page with inquiry form
-  /contact              General contact page
-  /faq                  Frequently asked questions
-  /menu                 Redirects to catalog
-  /blog                 Coming soon placeholder
-  /privacy-policy       Privacy policy
-  /terms                Terms of service
-  /login                Authentication
-  /signup               Account creation
-
-Protected routes requiring authentication
-
-  /dashboard                  Overview with order stats
-  /dashboard/orders           Order history
-  /dashboard/orders/:id       Order detail with status timeline
-  /dashboard/subscriptions    Active tiffin subscriptions
-  /dashboard/profile          Profile and account settings
-
+### 3. Bulletproof Cart Persistence
+The cart system utilizes a lazy-hydrated reducer pattern.
+- **Persistence**: Auto-syncs to `localStorage` on every modification.
+- **Robustness**: Re-calculates all computed values (GST, Delivery Fees, Bulk Discounts) on every render to ensure price integrity.
 
 ---
 
+##  Key Features
 
-Database Tables
-
-The Supabase database contains the following tables. All tables include 
-created_at and deleted_at columns. Deleted records are soft-deleted and 
-excluded from all queries using a deleted_at is null filter.
-
-  profiles          Extends Supabase auth users with name, phone, city, role
-  chefs             Home chef records with region, specialty, rating, availability
-  kitchens          Cloud kitchen records with location and daily capacity
-  restaurants       Restaurant partner records with brand and cuisine info
-  dishes            Dish catalog linking to chefs, kitchens, or restaurants
-  dish_ingredients  Ingredient list per dish including allergen flags
-  chef_cuisines     Junction table mapping chefs to cuisine types
-  kitchen_chefs     Junction table mapping chefs to kitchens
-  chef_availability Weekly schedule slots per chef
-  kitchen_capacity_slots Date-level capacity tracking per kitchen
-  delivery_zones    Serviceable pincodes per source
-  reviews           Ratings and comments for dishes, chefs, and restaurants
-  orders            Customer order records with status and payment info
-  order_items       Line items within each order
-  subscriptions     Recurring tiffin plan records per customer
-  b2b_clients       Corporate and institutional buyer records
-  promotions        Promo codes with discount rules and usage limits
-
+- [x] **Dynamic Catalog**: Real-time filtering by Cuisine, Meal Type, Diet, and Producer.
+- [x] **Smart Pricing**: Automatic transition from Regular to Bulk pricing based on quantity thresholds.
+- [x] **Golden Flow Checkout**: Highly optimized 3-step checkout with profile pre-filling and address validation.
+- [x] **Customer Dashboard**: Full order history, status timelines (Pending → Delivered), and subscription management.
+- [x] **Global Floating Elements**: Dynamic WhatsApp support with session-based tooltips and "Back to Top" scroll progress indicators.
 
 ---
 
+##  Getting Started
 
-Cart System
+### Prerequisites
+- **Node.js**: `v24.x` (Recommended) or `v18.x+`
+- **Supabase**: A project with the Plattr schema applied.
 
-Cart state is managed in React Context and persisted to localStorage so items 
-survive page refresh. The cart holds an array of items, each capturing the dish 
-details, quantity, and effective price at the time of adding.
+### Local Setup
 
-Computed values update reactively. Subtotal is calculated using bulk pricing 
-automatically when item quantity meets the minimum bulk threshold. Delivery fee 
-is waived above five hundred rupees. GST is applied at five percent on the 
-taxable amount after discount and delivery.
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-The promo code system validates against the promotions table in Supabase, 
-checking the code is active, within its valid date range, above the minimum 
-order value, and within its usage limit before applying the discount.
+2. **Configure Environment**:
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_SUPABASE_URL=your_project_url
+   VITE_SUPABASE_ANON_KEY=your_anon_key
+   ```
+   *Note: These are strictly validated by `src/utils/env.ts` at runtime.*
 
-Orders are created as a single transaction writing to both the orders table and 
-the order_items table. If the items insert fails after a successful order insert, 
-the orphaned order record is deleted before surfacing the error to the user.
-
-
----
-
-
-Authentication
-
-Authentication uses Supabase Auth with email and password. After signup, a 
-corresponding row is inserted into the profiles table to store additional user 
-information beyond what the auth system holds.
-
-Protected routes use a wrapper component that reads the current session. 
-Unauthenticated users are redirected to the login page with a redirect parameter 
-capturing their intended destination. After login, they are sent to that destination 
-rather than the default dashboard.
-
+3. **Launch Development Server**:
+   ```bash
+   npm run dev
+   ```
 
 ---
 
+##  CI/CD & Reliability
 
-Running Locally
+### GitHub Actions
+The project uses a custom hardened CI/CD pipeline defined in `.github/workflows/ci.yml`.
+- **Environment Isolation**: Runs within a `node:24-alpine` Docker container.
+- **Strict Checks**: Enforces `npm run lint` and `npx tsc` on every PR/Push.
+- **Case-Sensitivity**: Standardized Git index to prevent Windows vs. Linux filename conflicts.
 
-Prerequisites
-  Node.js version 18 or higher
-  A Supabase project with the schema applied
-
-Setup steps
-
-  Clone the repository and install dependencies
-
-    npm install
-
-  Create a .env file in the root directory with your Supabase credentials
-
-    VITE_SUPABASE_URL=your_supabase_project_url
-    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-  Apply the database schema by running the SQL file in the Supabase SQL editor
-  The schema file includes all table definitions, indexes, RLS policies, 
-  triggers, and seed data
-
-  Start the development server
-
-    npm run dev
-
-  The application will be available at localhost:5173
-
+### QA Suite
+Every release is verified against a [143-case test suite](file:///d:/Plattr/plattr-system-flow/nothing/test.md), covering:
+- **Security**: RLS policy verification and data isolation.
+- **Logic**: Delivery fee thresholds (₹300/₹500) and GST accuracy.
+- **Performance**: Hydration timing and scroll-reveal performance.
 
 ---
 
+## ⚖️ License
 
-Environment Variables
-
-  VITE_SUPABASE_URL       Your Supabase project URL
-  VITE_SUPABASE_ANON_KEY  Your Supabase anonymous public key
-
-These are the only environment variables required. Never commit these values 
-to version control. The .env file is included in .gitignore by default in 
-Vite projects.
-
-
----
-
-
-Key Design Decisions
-
-Polymorphic dish source
-  Each dish in the catalog links to either a chef, a kitchen, or a restaurant 
-  through a source_type and source_id pair rather than three separate foreign keys. 
-  A utility function resolves the correct table at query time. This allows the 
-  catalog to be a unified view across all supply sources without multiple joins.
-
-Cart as context with localStorage
-  The cart does not write to the database until checkout. This keeps the cart fast 
-  and reduces database load. The tradeoff is that carts are device-specific and 
-  do not sync across sessions. This is acceptable at the current product stage.
-
-Soft deletes everywhere
-  No production data is hard-deleted. Every table has a deleted_at column. 
-  All queries filter for deleted_at is null. This preserves order history integrity 
-  even when dishes, chefs, or restaurants are removed from the platform.
-
-No global state library
-  The application uses React Context for the two pieces of state that need to be 
-  globally accessible, the cart and the authentication session. All other state is 
-  local to the component or page that owns it. No Redux, Zustand, or similar library 
-  is used.
-
-Framer Motion only for animation
-  All motion in the application uses Framer Motion. No other animation library is 
-  present. This keeps the animation API consistent and the bundle focused.
-
-
----
-
-
-What Is Not Yet Built
-
-The following items are noted for future development and are not part of the 
-current implementation.
-
-  Real payment processing — orders are created with payment status pending. 
-  No payment gateway integration exists. The team follows up manually.
-
-  Real-time order tracking — order status is updated manually in the database. 
-  No push notifications or live tracking exists.
-
-  Chef onboarding flow — chefs are currently added directly to the database. 
-  There is no self-registration or onboarding form for new chefs.
-
-  Review submission — reviews can be read from the database but there is no 
-  in-app form for customers to submit reviews after an order.
-
-  Subscription delivery scheduling — subscriptions are recorded but daily 
-  order generation from active subscriptions is not automated.
-
-  Admin dashboard — there is no internal tool for managing orders, chefs, 
-  or customers. All management happens directly in the Supabase dashboard.
-
-
----
-
-
-License
-
-This project is proprietary. All rights reserved by the Plattr team.
+Copyright © 2026 Plattr Team. 
+**Proprietary and Confidential.** All rights reserved. 
+Unauthorized copying, modification, or distribution is strictly prohibited.

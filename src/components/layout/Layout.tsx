@@ -12,6 +12,7 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#F6FFF8]">
       <Navbar />
+      <div className="h-16 sm:h-20 shrink-0" /> {/* Navbar Clearance */}
       <CartDrawer />
       <main className="flex-1">
         <Outlet />

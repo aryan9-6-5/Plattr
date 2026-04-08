@@ -27,6 +27,7 @@ const Index = () => {
       />
 
       <Navbar />
+      <div className="h-16 sm:h-20 shrink-0" /> {/* Navbar Clearance */}
       
       {/* 1. Hero */}
       <HeroSection />

@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, ChefHat, Building2, ShieldCheck, Truck, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -110,21 +111,25 @@ const HeroSection = () => {
               className="flex flex-wrap items-center gap-4"
             >
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                <Button
-                  size="lg"
-                  className="h-12 px-8 text-sm font-semibold gap-2 bg-[#2D6A4F] hover:bg-[#1e4d38] text-white rounded-full shadow-md hover:shadow-lg transition-all duration-200"
-                >
-                  Order Food <ArrowRight size={16} />
-                </Button>
+                <Link to="/catalog">
+                  <Button
+                    size="lg"
+                    className="h-12 px-8 text-sm font-semibold gap-2 bg-[#2D6A4F] hover:bg-[#1e4d38] text-white rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+                  >
+                    Order Food <ArrowRight size={16} />
+                  </Button>
+                </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="h-12 px-8 text-sm font-semibold rounded-full border-[#D4E8DA] text-[#2D6A4F] hover:bg-[#D8F3DC] hover:border-[#52B788] transition-all duration-200"
-                >
-                  Partner With Us
-                </Button>
+                <Link to="/for-business">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="h-12 px-8 text-sm font-semibold rounded-full border-[#D4E8DA] text-[#2D6A4F] hover:bg-[#D8F3DC] hover:border-[#52B788] transition-all duration-200"
+                  >
+                    Partner With Us
+                  </Button>
+                </Link>
               </motion.div>
             </motion.div>
 

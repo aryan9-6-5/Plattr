@@ -9,7 +9,9 @@ const B2BSection = () => {
     contact_name: "",
     contact_email: "",
     contact_phone: "",
-    expected_daily_meals: ""
+    inquiry_type: "Catering",
+    expected_daily_meals: "",
+    notes: ""
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -28,7 +30,10 @@ const B2BSection = () => {
           contact_name: formData.contact_name,
           contact_email: formData.contact_email,
           contact_phone: formData.contact_phone,
+          inquiry_type: formData.inquiry_type,
           expected_daily_meals: parseInt(formData.expected_daily_meals) || null,
+          notes: formData.notes,
+          status: "LEAD"
         }
       ]);
 
@@ -39,7 +44,15 @@ const B2BSection = () => {
       setError("Something went wrong. Please try again.");
     } else {
       setSuccess(true);
-      setFormData({ company_name: "", contact_name: "", contact_email: "", contact_phone: "", expected_daily_meals: "" });
+      setFormData({ 
+        company_name: "", 
+        contact_name: "", 
+        contact_email: "", 
+        contact_phone: "", 
+        inquiry_type: "Catering", 
+        expected_daily_meals: "", 
+        notes: "" 
+      });
     }
   };
 
@@ -79,10 +92,10 @@ const B2BSection = () => {
               </div>
             </RevealOnScroll>
 
-            {/* Right Form Form */}
+            {/* Right Form */}
             <RevealOnScroll direction="left" delay={0.2}>
               <div className="bg-white rounded-3xl p-8 shadow-2xl relative">
-                <div className="absolute -top-6 top-0 left-8 w-12 h-12 bg-[#2D6A4F] text-white rounded-xl flex items-center justify-center shadow-lg transform -translate-y-1/2">
+                <div className="absolute -top-6 left-8 w-12 h-12 bg-[#2D6A4F] text-white rounded-xl flex items-center justify-center shadow-lg transform -translate-y-1/2">
                   <UtensilsCrossed size={20} />
                 </div>
                 
@@ -104,30 +117,32 @@ const B2BSection = () => {
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Company Name</label>
-                      <input 
-                        required
-                        type="text" 
-                        value={formData.company_name}
-                        onChange={e => setFormData({...formData, company_name: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
-                        placeholder="e.g. Acme Corp"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Contact Name</label>
+                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Company Name</label>
+                        <input 
+                          required
+                          type="text" 
+                          value={formData.company_name}
+                          onChange={e => setFormData({...formData, company_name: e.target.value})}
+                          className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm"
+                          placeholder="Acme Corp"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Full Name</label>
                         <input 
                           required
                           type="text" 
                           value={formData.contact_name}
                           onChange={e => setFormData({...formData, contact_name: e.target.value})}
-                          className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
+                          className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm"
                           placeholder="Jane Doe"
                         />
                       </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Email</label>
                         <input 
@@ -135,12 +150,10 @@ const B2BSection = () => {
                           type="email" 
                           value={formData.contact_email}
                           onChange={e => setFormData({...formData, contact_email: e.target.value})}
-                          className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
-                          placeholder="jane@company.com"
+                          className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm"
+                          placeholder="jane@corp.com"
                         />
                       </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Phone</label>
                         <input 
@@ -148,23 +161,48 @@ const B2BSection = () => {
                           type="tel" 
                           value={formData.contact_phone}
                           onChange={e => setFormData({...formData, contact_phone: e.target.value})}
-                          className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
+                          className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm"
                           placeholder="+91..."
                         />
                       </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Expected Daily Meals</label>
+                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Inquiry Type</label>
+                        <select 
+                          value={formData.inquiry_type}
+                          onChange={e => setFormData({...formData, inquiry_type: e.target.value})}
+                          className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm"
+                        >
+                          <option value="Catering">Event Catering</option>
+                          <option value="Daily Meals">Daily Meals</option>
+                          <option value="Kitchen Partner">Kitchen Partner</option>
+                          <option value="Subscriptions">Bulk Subscriptions</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Daily Meals (est.)</label>
                         <input 
                           type="number" 
                           value={formData.expected_daily_meals}
                           onChange={e => setFormData({...formData, expected_daily_meals: e.target.value})}
-                          className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
+                          className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm"
                           placeholder="e.g. 50"
                         />
                       </div>
                     </div>
+                    <div>
+                      <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Message / Requirements</label>
+                      <textarea 
+                        rows={2}
+                        value={formData.notes}
+                        onChange={e => setFormData({...formData, notes: e.target.value})}
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] text-sm resize-none"
+                        placeholder="Any specific requests..."
+                      />
+                    </div>
                     
-                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                    {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
                     
                     <button
                       type="submit"

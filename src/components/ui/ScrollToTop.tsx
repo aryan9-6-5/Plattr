@@ -9,18 +9,25 @@ const ScrollToTop = () => {
     // Force release any stuck body locks immediately upon route change
     forceUnlockScroll();
     
-    // Attempt scroll immediately
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    document.documentElement.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
+    // Attempt scroll immediately using primitives
+    window.scrollTo(0, 0);
     
-    // Double attempt slightly after layout paints (helps aggressively bypass Suspense lazy unmount caching)
-    const timeout = setTimeout(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-      document.documentElement.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
-      document.body.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
+    // Multiple attempts during Suspense resolution
+    let attempts = 0;
+    const interval = setInterval(() => {
+      try {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      } catch (e) {
+        // ignore Safari behavior errors
+      }
+      
+      attempts++;
+      if (attempts > 5) clearInterval(interval);
     }, 50);
 
-    return () => clearTimeout(timeout);
+    return () => clearInterval(interval);
   }, [pathname]);
 
   return null;

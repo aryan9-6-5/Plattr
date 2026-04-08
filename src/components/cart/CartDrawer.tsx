@@ -49,30 +49,27 @@ const CartDrawer = () => {
     }
   }, [location.pathname])
 
+  // We still use portal, but without AnimatePresence.
+  // We don't unmount the DOM elements immediately, we rely on CSS transitions.
+  // Actually, we can just render it when isOpen is true, or keep it mounted and 
+  // toggle pointer-events. Let's keep it mounted in the portal but visually hidden.
   return createPortal(
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          key="backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={closeCart}
-          className="fixed inset-0 bg-black/60 backdrop-blur-md z-[9998]"
-        />
-      )}
+    <>
+      {/* BACKDROP */}
+      <div
+        onClick={closeCart}
+        className={`fixed inset-0 bg-black/60 backdrop-blur-md z-[9998] transition-opacity duration-300 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      />
 
-      {isOpen && (
-        <motion.div
-          key="drawer"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 z-[9999]
-                       w-full max-w-md bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col"
-          >
+      {/* DRAWER PANEL */}
+      <div
+        className={`fixed right-0 top-0 bottom-0 z-[9999]
+                   w-full max-w-md bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col
+                   transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                   ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
             {/* HEADER */}
             <div className="flex items-center justify-between p-5 border-b border-[#E8F5EC] flex-shrink-0">
               <div className="flex items-center gap-3">
@@ -212,9 +209,8 @@ const CartDrawer = () => {
                 </div>
               </>
             )}
-          </motion.div>
-      )}
-    </AnimatePresence>,
+      </div>
+    </>,
     document.body
   )
 }

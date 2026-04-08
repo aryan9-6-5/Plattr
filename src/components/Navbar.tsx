@@ -229,74 +229,60 @@ const Navbar = () => {
       </div>
 
       {/* Notifications Drawer */}
-      <AnimatePresence>
-        {notificationsOpen && (
-          <motion.div
-            key="notif-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setNotificationsOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[9998]"
-          />
-        )}
+      <>
+        {/* Backdrop */}
+        <div
+          onClick={() => setNotificationsOpen(false)}
+          className={`fixed inset-0 bg-black/60 backdrop-blur-md z-[9998] transition-opacity duration-300 ${
+            notificationsOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        />
         
-        {notificationsOpen && (
-          <motion.div
-            key="notif-drawer"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 z-[9999] w-full max-w-md bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-[#E8F5EC] flex-shrink-0">
-               <div className="flex items-center gap-3">
-                 <h2 className="font-serif text-xl font-bold text-[#1B2D24]">Notifications</h2>
-               </div>
-               <button onClick={() => setNotificationsOpen(false)} className="p-2 rounded-full hover:bg-[#EEF8F1] text-[#4A6357] hover:text-[#1B2D24] transition-colors">
-                 <X size={20} />
-               </button>
-            </div>
-            
-            {/* Empty State */}
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-                <div className="w-20 h-20 rounded-full bg-[#EEF8F1] flex items-center justify-center mb-4">
-                  <Bell size={32} className="text-[#52B788]" />
-                </div>
-                <h3 className="font-semibold text-[#1B2D24] text-lg">No notifications yet</h3>
-                <p className="text-sm text-[#7A9A88] mt-2 leading-relaxed">
-                  When you have order updates or new messages, they will appear here.
-                </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Drawer */}
+        <div
+          className={`fixed right-0 top-0 bottom-0 z-[9999] w-full max-w-md bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            notificationsOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between p-5 border-b border-[#E8F5EC] flex-shrink-0">
+             <div className="flex items-center gap-3">
+               <h2 className="font-serif text-xl font-bold text-[#1B2D24]">Notifications</h2>
+             </div>
+             <button onClick={() => setNotificationsOpen(false)} className="p-2 rounded-full hover:bg-[#EEF8F1] text-[#4A6357] hover:text-[#1B2D24] transition-colors">
+               <X size={20} />
+             </button>
+          </div>
+          
+          {/* Empty State */}
+          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+              <div className="w-20 h-20 rounded-full bg-[#EEF8F1] flex items-center justify-center mb-4">
+                <Bell size={32} className="text-[#52B788]" />
+              </div>
+              <h3 className="font-semibold text-[#1B2D24] text-lg">No notifications yet</h3>
+              <p className="text-sm text-[#7A9A88] mt-2 leading-relaxed">
+                When you have order updates or new messages, they will appear here.
+              </p>
+          </div>
+        </div>
+      </>
 
-      {/* Mobile drawer stays consistent but gets premium font and spacing */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            key="mobile-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => { console.log('[Navbar] Closing mobile menu via backdrop'); setMobileOpen(false); }}
-            className="fixed inset-0 bg-[#0F2318]/40 backdrop-blur-sm z-[60] lg:hidden"
-          />
-        )}
+      {/* Mobile Menu Drawer */}
+      <>
+        {/* Backdrop */}
+        <div
+          onClick={() => { console.log('[Navbar] Closing mobile menu via backdrop'); setMobileOpen(false); }}
+          className={`fixed inset-0 bg-[#0F2318]/40 backdrop-blur-sm z-[60] lg:hidden transition-opacity duration-300 ${
+            mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        />
         
-        {mobileOpen && (
-          <motion.div
-            key="mobile-drawer"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 w-[85%] max-w-sm h-full bg-white z-[70] flex flex-col shadow-2xl lg:hidden p-8"
-          >
+        {/* Drawer */}
+        <div
+          className={`fixed top-0 right-0 w-[85%] max-w-sm h-full bg-white z-[70] flex flex-col shadow-2xl lg:hidden p-8 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            mobileOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
               <div className="flex items-center justify-between mb-12">
                 <img src="/logo.png" alt="Plattr" className="h-8 w-auto" />
                 <button onClick={() => setMobileOpen(false)} className="p-3 rounded-full bg-[#EEF8F1] text-[#2D6A4F]">
@@ -327,9 +313,8 @@ const Navbar = () => {
                   <button onClick={() => signOut()} className="w-full py-5 text-center border-2 border-[#FFEBEE] text-[#D32F2F] rounded-3xl text-lg font-bold">Sign Out</button>
                 )}
               </div>
-            </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      </>
     </>
   );
 };

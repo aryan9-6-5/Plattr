@@ -388,9 +388,10 @@ const CheckoutPage = () => {
                 Payments are processed offline. Our team will contact you to confirm.
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {PAYMENT_OPTIONS.filter(o => o.value !== "CREDIT" || form.meal_type === "BULK" || form.meal_type === "EVENT").map(opt => (
-                  <button key={opt.value}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {PAYMENT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
                     onClick={() => set("payment_method")(opt.value)}
                     className={`flex items-start gap-4 p-4 rounded-2xl border-2 cursor-pointer
                                 transition-all duration-300 text-left relative overflow-hidden
@@ -407,7 +408,7 @@ const CheckoutPage = () => {
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-bold text-[#1B2D24] uppercase tracking-tight">{opt.label}</span>
-                        <img src={opt.image} alt={opt.label} className="h-6 object-contain grayscale-[0.5] opacity-80" />
+                        <img src={opt.image} alt={opt.label} className="h-14 object-contain" />
                       </div>
                       <p className="text-xs text-[#52B788] leading-tight font-medium opacity-80">
                         {opt.description}

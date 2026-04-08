@@ -33,6 +33,7 @@ import FAQPage from "./pages/FAQPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsPage from "./pages/TermsPage";
 import BlogComingSoonPage from "./pages/BlogComingSoonPage";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 // Dashboard pages
 import DashboardPage from "./pages/dashboard/DashboardPage";
@@ -52,6 +53,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 {/* Landing page (standalone, no shared layout) */}
                 <Route path="/" element={<Index />} />

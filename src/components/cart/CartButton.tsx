@@ -2,14 +2,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingBag } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
-const CartButton = () => {
+const CartButton = ({ scrolled = false }: { scrolled?: boolean }) => {
   const { itemCount, toggleCart } = useCart()
 
   return (
     <button
       onClick={toggleCart}
-      className="relative p-2.5 rounded-full hover:bg-[#EEF8F1] text-[#4A6357]
-                 hover:text-[#2D6A4F] transition-colors duration-200"
+      className={`relative p-2.5 rounded-full [transition:all_800ms_cubic-bezier(0.4,0,0.2,1)]
+                 ${scrolled 
+                   ? "text-white hover:bg-white/10" 
+                   : "text-[#4A6357] hover:bg-[#EEF8F1] hover:text-[#2D6A4F]"
+                 }`}
       aria-label={`Cart (${itemCount} items)`}
     >
       <ShoppingBag size={22} />

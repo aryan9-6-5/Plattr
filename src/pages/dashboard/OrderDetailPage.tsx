@@ -253,10 +253,10 @@ const OrderDetailPage = () => {
             </h2>
             {[
               { label: "Subtotal",  value: order.subtotal },
-              order.discount_amount > 0 && { label: "Discount", value: -order.discount_amount },
+              ...(order.discount_amount > 0 ? [{ label: "Discount", value: -order.discount_amount }] : []),
               { label: "Delivery",  value: order.delivery_fee },
               { label: "Tax (GST)", value: order.tax_amount },
-            ].filter(Boolean).map((row: any) => (
+            ].map((row) => (
               <div key={row.label} className="flex justify-between text-sm">
                 <span className="text-[#4A6357]">{row.label}</span>
                 <span className={row.value < 0 ? "text-[#2D6A4F] font-semibold" : "font-medium text-[#1B2D24]"}>

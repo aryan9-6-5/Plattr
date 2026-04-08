@@ -7,7 +7,7 @@ interface LogPayload {
   level: LogLevel;
   message: string;
   stack_trace?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 class Logger {
@@ -39,18 +39,18 @@ class Logger {
     }
   }
 
-  public info(message: string, metadata?: Record<string, any>) {
+  public info(message: string, metadata?: Record<string, unknown>) {
     if (env.MODE === "development") {
       console.log(`[INFO] ${message}`, metadata || "");
     }
   }
 
-  public warn(message: string, metadata?: Record<string, any>) {
+  public warn(message: string, metadata?: Record<string, unknown>) {
     console.warn(`[WARN] ${message}`, metadata || "");
     this.remoteLog({ level: "warning", message, metadata });
   }
 
-  public error(message: string, error?: Error | string, metadata?: Record<string, any>) {
+  public error(message: string, error?: Error | string, metadata?: Record<string, unknown>) {
     const errorMsg = error instanceof Error ? error.message : error || message;
     const stack = error instanceof Error ? error.stack : undefined;
 

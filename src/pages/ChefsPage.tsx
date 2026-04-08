@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Star, CheckCircle, MapPin } from "lucide-react";
+import { Star, CheckCircle, MapPin, ChevronDown, Filter, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useChefs } from "@/hooks/useChefs";
 import PageHeader from "@/components/ui/PageHeader";
@@ -45,40 +45,52 @@ const ChefsPage = () => {
       />
 
       {/* Filters */}
-      <div className="bg-white border-b border-[#E8F5EC]">
+      <div className="bg-white border-b border-[#E8F5EC] sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#7A9A88]">City</span>
-            <div className="flex flex-wrap gap-2">
-              {REGIONS.map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setRegionFilter(r)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
-                    regionFilter === r
-                      ? "bg-[#2D6A4F] text-white border-[#2D6A4F]"
-                      : "bg-white text-[#4A6357] border-[#D4E8DA] hover:bg-[#EEF8F1]"
-                  }`}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="relative group">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7A9A88]">
+                  <MapPin className="w-3.5 h-3.5" />
+                </span>
+                <select
+                  value={regionFilter}
+                  onChange={(e) => setRegionFilter(e.target.value)}
+                  className="pl-9 pr-10 py-2 rounded-xl border border-[#D4E8DA] bg-white text-sm font-semibold text-[#1B2D24] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] appearance-none cursor-pointer hover:border-[#2D6A4F] transition-colors"
                 >
-                  {r}
-                </button>
-              ))}
+                  {REGIONS.map((r) => (
+                    <option key={r} value={r}>{r === "All" ? "All Cities" : r}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A9A88] pointer-events-none group-hover:text-[#2D6A4F] transition-colors" />
+              </div>
+
+              <div className="h-8 w-px bg-[#E8F5EC] hidden sm:block" />
+
+              <div className="flex gap-2">
+                {[
+                  { label: "Verified", state: onlyVerified, set: setOnlyVerified, icon: CheckCircle },
+                  { label: "Available", state: onlyAvailable, set: setOnlyAvailable, icon: ArrowRight }, // Using ArrowRight as placeholder or Zap logic
+                ].map(({ label, state, set, icon: Icon }) => (
+                  <button
+                    key={label}
+                    onClick={() => set(!state)}
+                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-200 ${
+                      state 
+                        ? "bg-[#2D6A4F] text-white border-[#2D6A4F] shadow-md shadow-[#2D6A4F]/20" 
+                        : "bg-white text-[#4A6357] border-[#D4E8DA] hover:border-[#2D6A4F] hover:text-[#2D6A4F]"
+                    }`}
+                  >
+                    {label === "Verified" ? <CheckCircle className={`w-3.5 h-3.5 ${state ? 'text-white' : 'text-[#2D6A4F]'}`} /> : "⚡"}
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-3 ml-auto">
-              {[
-                { label: "✓ Verified", state: onlyVerified, set: setOnlyVerified },
-                { label: "⚡ Available", state: onlyAvailable, set: setOnlyAvailable },
-              ].map(({ label, state, set }) => (
-                <button
-                  key={label}
-                  onClick={() => set(!state)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
-                    state ? "bg-[#2D6A4F] text-white border-[#2D6A4F]" : "bg-white text-[#4A6357] border-[#D4E8DA]"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
+
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#7A9A88]">
+              <Filter className="w-3.5 h-3.5" />
+              <span>{chefs.length} Chefs found</span>
             </div>
           </div>
         </div>

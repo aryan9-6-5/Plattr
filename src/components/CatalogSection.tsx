@@ -1,9 +1,9 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Flame, ChefHat, Building2, UtensilsCrossed, Loader2, ShoppingBag } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import RevealOnScroll from "./RevealOnScroll";
+import DishCard from "./food/DishCard";
 
 type Dish = {
   id: string;
@@ -15,24 +15,7 @@ type Dish = {
   is_spicy: boolean;
 };
 
-const sourceIcons: Record<string, typeof ChefHat> = {
-  HOME_CHEF:     ChefHat,
-  CLOUD_KITCHEN: Building2,
-  RESTAURANT:    UtensilsCrossed,
-};
-
-const sourceBadgeClass: Record<string, string> = {
-  HOME_CHEF:     "bg-[#2D6A4F] text-white",
-  CLOUD_KITCHEN: "bg-[#1B4332] text-white",
-  RESTAURANT:    "bg-white/90 text-[#1B2D24] border border-[#D4E8DA] backdrop-blur-sm",
-};
-
-const sourceLabels: Record<string, string> = {
-  HOME_CHEF:     "Home Chef",
-  CLOUD_KITCHEN: "Cloud Kitchen",
-  RESTAURANT:    "Restaurant",
-};
-
+// Components moved to shared food/DishCard.tsx
 const dbSources: Record<string, string> = {
   "Home Chef":     "HOME_CHEF",
   "Cloud Kitchen": "CLOUD_KITCHEN",
@@ -114,7 +97,7 @@ const CatalogSection = () => {
       </div>
 
       {/* Sticky Filter Bar */}
-      <div className="sticky top-[64px] z-20 bg-[#EEF8F1]/95 backdrop-blur-sm border-b border-[#D4E8DA]">
+      <div className="sticky top-0 z-20 bg-[#EEF8F1]/95 backdrop-blur-sm border-b border-[#D4E8DA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-3">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-8 py-2">
             {/* Meal type dropdown */}
@@ -190,74 +173,9 @@ const CatalogSection = () => {
 
                       {/* Dish card grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {cuisineDishes.map((dish, ci) => {
-                          const SourceIcon  = sourceIcons[dish.source_type] || ChefHat;
-                          const badgeClass  = sourceBadgeClass[dish.source_type] || "bg-gray-100 text-gray-700";
-                          const sourceLabel = sourceLabels[dish.source_type] || dish.source_type;
-
-                          return (
-                            <motion.div
-                              key={dish.id}
-                              layout
-                              initial={{ opacity: 0, y: 16 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3, delay: ci * 0.04 }}
-                              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                              className="group flex flex-col bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-sm ring-1 ring-[#D4E8DA] hover:shadow-lg hover:ring-[#52B788]/30 transition-shadow duration-300"
-                            >
-                              {/* Image / placeholder */}
-                              <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#EEF8F1]">
-                                <div className="w-full h-full flex items-center justify-center text-4xl">
-                                  🍽️
-                                </div>
-                                {/* Source badge overlay */}
-                                <div className="absolute top-3 left-3">
-                                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${badgeClass}`}>
-                                    <SourceIcon className="w-3.5 h-3.5" />
-                                    {sourceLabel}
-                                  </span>
-                                </div>
-                                {/* Spice indicator */}
-                                {dish.is_spicy && (
-                                  <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-red-500 flex items-center justify-center text-sm shadow-sm">
-                                    🌶️
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Card body */}
-                              <div className="p-5 flex flex-col flex-1">
-                                <p className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-1">
-                                  {dish.cuisine}
-                                </p>
-                                <h4 className="text-base font-semibold text-[#1B2D24] leading-snug line-clamp-2 mb-2">
-                                  {dish.name}
-                                </h4>
-
-                                {/* Meal type tag */}
-                                <div className="flex flex-wrap gap-1.5 mb-4">
-                                  <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-[#EEF8F1] text-[#2D6A4F] border border-[#D8F3DC]">
-                                    {dish.meal_type}
-                                  </span>
-                                </div>
-
-                                {/* Card footer */}
-                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#E8F5EC]">
-                                  <span className="text-lg font-bold text-[#1B2D24]">
-                                    ₹{dish.price.toLocaleString()}
-                                  </span>
-                                  <Link
-                                    to={`/dish/${dish.id}`}
-                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-[#2D6A4F] hover:bg-[#1e4d38] text-white transition-all duration-200 shadow-sm hover:shadow-md"
-                                  >
-                                    <ShoppingBag className="w-3.5 h-3.5" />
-                                    View
-                                  </Link>
-                                </div>
-                              </div>
-                            </motion.div>
-                          );
-                        })}
+                        {cuisineDishes.map((dish, ci) => (
+                          <DishCard key={dish.id} dish={dish as any} index={ci} />
+                        ))}
                       </div>
                     </div>
                   ))}

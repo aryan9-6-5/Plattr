@@ -32,14 +32,19 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 const MOCK_ITEM = {
   id: "dish-1",
   name: "Mock Biryani",
+  cuisine: "Indian",
   price: 200,
   quantity: 1,
   image_url: "",
   source_type: "RESTAURANT" as const,
   source_id: "res-1",
+  source_name: "Mock Restaurant",
   meal_type: "ALA_CARTE" as const,
   bulk_price: 150,
   min_bulk_qty: 10,
+  diet_type: "NON_VEG",
+  spice_level: "Medium",
+  is_spicy: true,
 };
 
 describe("useCart Hook", () => {

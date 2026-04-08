@@ -1,4 +1,6 @@
-import { Quote } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import RevealOnScroll from "./RevealOnScroll";
 
 const testimonials = [
@@ -23,41 +25,89 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const next = () => setIndex((prev) => (prev + 1) % testimonials.length);
+  const prev = () => setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+
   return (
-    <section className="py-24 bg-[#0F2318] text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 md:py-32 bg-[#0F2318] text-white overflow-hidden">
+      <div className="max-w-4xl mx-auto px-6">
         <RevealOnScroll direction="up" className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
+          <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#52B788] mb-4 block">
+            Testimonials
+          </span>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">
             Trusted by thousands
           </h2>
-          <p className="text-white/60 max-w-xl mx-auto text-base">
-            From daily office goers to corporate event planners, see how Plattr fits every need.
+          <p className="text-white/40 max-w-xl mx-auto text-lg">
+            From daily office goers to corporate event planners.
           </p>
         </RevealOnScroll>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t, i) => (
-            <RevealOnScroll
-              key={i}
-              direction="up"
-              delay={i * 0.1}
-              className="bg-white/5 rounded-3xl p-8 border border-white/10 relative"
+        <div className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5, ease: "circOut" }}
+              className="bg-white/5 rounded-[40px] p-10 md:p-16 border border-white/10 relative backdrop-blur-sm"
             >
-              <Quote className="w-10 h-10 text-[#52B788]/30 absolute top-6 right-6" />
-              <div className="mb-6">
-                <span className="text-[10px] uppercase tracking-widest font-bold text-[#52B788] px-3 py-1 rounded-full bg-[#52B788]/20">
-                  {t.type}
+              <Quote className="w-16 h-16 text-[#52B788]/20 absolute -top-8 -left-2 rotate-180" />
+              
+              <div className="mb-10 text-center">
+                <span className="text-[10px] uppercase tracking-widest font-bold text-[#52B788] px-4 py-1.5 rounded-full bg-[#52B788]/20 ring-1 ring-[#52B788]/40">
+                  {testimonials[index].type}
                 </span>
               </div>
-              <p className="text-white/80 leading-relaxed mb-8 italic">
-                "{t.quote}"
+              
+              <p className="text-xl md:text-3xl text-white/90 leading-tight mb-12 italic font-serif text-center">
+                "{testimonials[index].quote}"
               </p>
-              <div className="mt-auto">
-                <p className="font-bold text-white">{t.author}</p>
-                <p className="text-xs text-white/50 mt-0.5">{t.role}</p>
+              
+              <div className="text-center">
+                <p className="font-bold text-lg text-white">{testimonials[index].author}</p>
+                <p className="text-sm text-white/40 mt-1 uppercase tracking-widest font-medium">
+                  {testimonials[index].role}
+                </p>
               </div>
-            </RevealOnScroll>
-          ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Controls */}
+          <div className="flex items-center justify-between mt-12 px-4">
+            <button 
+              onClick={prev}
+              className="p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <div className="flex items-center gap-2">
+              {testimonials.map((_, i) => (
+                <button 
+                  key={i}
+                  onClick={() => setIndex(i)}
+                  className={`h-1.5 rounded-full transition-all duration-500 
+                             ${index === i ? "w-8 bg-[#52B788]" : "w-1.5 bg-white/20"}`}
+                />
+              ))}
+            </div>
+            <button 
+              onClick={next}
+              className="p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
         </div>
       </div>
     </section>

@@ -49,72 +49,87 @@ const audiences = [
 const AudienceSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [active, setActive] = useState("individual");
-
-  const current = audiences.find((a) => a.key === active)!;
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="py-24 md:py-32" ref={ref}>
+    <section className="py-24 md:py-32 bg-white overflow-hidden" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <span className="text-sm font-medium text-secondary uppercase tracking-wider">
+          <span className="text-sm font-bold tracking-widest uppercase text-[#52B788] mb-3 block">
             Who It's For
           </span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground mt-3 mb-4">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#1B2D24] leading-tight">
             One platform, every scale
           </h2>
         </motion.div>
 
-        {/* Tabs */}
-        <div className="flex justify-center gap-2 mb-10">
-          {audiences.map((a) => (
-            <button
-              key={a.key}
-              onClick={() => setActive(a.key)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-colors ${
-                active === a.key
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-accent"
-              }`}
-            >
-              <a.icon className="w-4 h-4" />
-              <span className="hidden sm:inline">{a.title.replace("For ", "")}</span>
-            </button>
-          ))}
-        </div>
+        {/* Carousel */}
+        <div className="relative max-w-7xl mx-auto">
+          <div className="flex justify-center items-center gap-6 overflow-visible px-4">
+            {audiences.map((aud, idx) => {
+              const isActive = activeIndex === idx;
+              const Icon = aud.icon;
 
-        {/* Content */}
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="max-w-2xl mx-auto bg-card rounded-2xl p-8 md:p-10 shadow-card border border-border"
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <current.icon className="w-6 h-6 text-primary" />
-            <h3 className="font-serif text-2xl font-bold text-foreground">{current.title}</h3>
+              return (
+                <motion.div
+                  key={aud.key}
+                  animate={{
+                    scale: isActive ? 1 : 0.85,
+                    opacity: isActive ? 1 : 0.4,
+                    x: (idx - activeIndex) * 20,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`flex-shrink-0 w-full max-w-md cursor-pointer
+                             bg-[#F6FFF8] rounded-[40px] p-8 md:p-12 border-2 
+                             transition-colors duration-500
+                             ${isActive ? "border-[#2D6A4F] shadow-2xl" : "border-transparent"}`}
+                >
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-8
+                                   ${isActive ? "bg-[#2D6A4F] text-white" : "bg-[#D8F3DC] text-[#2D6A4F]"}`}>
+                    <Icon size={32} />
+                  </div>
+                  
+                  <h3 className="font-serif text-3xl font-bold text-[#1B2D24] mb-3">{aud.title}</h3>
+                  <p className="text-[#4A6357] text-lg mb-8 font-medium italic">{aud.tagline}</p>
+                  
+                  <ul className="space-y-4 mb-10">
+                    {aud.points.map((p) => (
+                      <li key={p} className="flex items-start gap-3 text-sm text-[#4A6357]">
+                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#52B788] flex-shrink-0" />
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link to={aud.to}>
+                    <button className={`flex items-center gap-2 font-bold text-sm tracking-wide uppercase
+                                        transition-colors ${isActive ? "text-[#2D6A4F]" : "text-[#7A9A88]"}`}>
+                      {aud.cta} <ArrowRight size={18} />
+                    </button>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
-          <p className="text-muted-foreground mb-6">{current.tagline}</p>
-          <ul className="space-y-3 mb-8">
-            {current.points.map((p) => (
-              <li key={p} className="flex items-start gap-3 text-sm text-muted-foreground">
-                <div className="mt-1 w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
-                {p}
-              </li>
+
+          {/* Indicator Dots */}
+          <div className="flex justify-center gap-3 mt-12">
+            {audiences.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 
+                           ${activeIndex === idx ? "w-8 bg-[#2D6A4F]" : "w-2 bg-[#D4E8DA]"}`}
+              />
             ))}
-          </ul>
-          <Link to={current.to}>
-            <Button className="gap-2">
-              {current.cta} <ArrowRight size={16} />
-            </Button>
-          </Link>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

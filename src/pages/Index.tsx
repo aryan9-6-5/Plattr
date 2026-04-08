@@ -6,6 +6,7 @@ import ProblemSolution from "@/components/ProblemSolution";
 import HowItWorks from "@/components/HowItWorks";
 import CatalogSection from "@/components/CatalogSection";
 import AudienceSection from "@/components/AudienceSection";
+import LifestyleGallery from "@/components/LifestyleGallery";
 import ChefsSection from "@/components/ChefsSection";
 import PartnersSection from "@/components/PartnersSection";
 import CtaSection from "@/components/CtaSection";
@@ -48,6 +49,7 @@ const Index = () => {
       
       {/* 6. Audience (Who is it for) */}
       <AudienceSection />
+      <LifestyleGallery />
       
       {/* 7. Chefs/Partners grid */}
       <ChefsSection />

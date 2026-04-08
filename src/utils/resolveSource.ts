@@ -58,8 +58,8 @@ export const resolveSourceName = async (
       return { name: "Not Found", subtitle: "", link: "#" };
     }
 
-    const name = (data as Record<string, unknown>)[config.nameField] as string || "Unknown";
-    const subtitle = (data as Record<string, unknown>)[config.subtitleField] as string || "";
+    const name = (data as unknown as Record<string, unknown>)[config.nameField] as string || "Unknown";
+    const subtitle = (data as unknown as Record<string, unknown>)[config.subtitleField] as string || "";
 
     return {
       name,

@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import RevealOnScroll from "./RevealOnScroll";
 import DishCard from "./food/DishCard";
@@ -215,6 +216,19 @@ const CatalogSection = () => {
           </AnimatePresence>
         )}
       </div>
+
+      {/* Explore More Button */}
+      {!loading && dishes.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex justify-center">
+          <Link
+            to="/catalog"
+            className="group flex items-center gap-3 px-10 py-5 bg-[#1B2D24] text-white rounded-full text-lg font-bold shadow-2xl hover:bg-[#2D6A4F] transition-all duration-300 transform hover:-translate-y-1"
+          >
+            Explore More Dishes
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+          </Link>
+        </div>
+      )}
     </section>
   );
 };

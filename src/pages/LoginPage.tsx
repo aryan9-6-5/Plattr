@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Eye, EyeOff, AlertCircle, CheckCircle } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { useAuth } from "@/hooks/useAuth";
 
 const AuthInput = ({
   label, id, type, value, onChange, placeholder, required,
@@ -28,7 +29,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth(); // Import useAuth hook
   const [error, setError]     = useState("");
+
+  useEffect(() => {
+    if (user) navigate(redirectTo, { replace: true });
+  }, [user, navigate, redirectTo]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

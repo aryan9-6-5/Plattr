@@ -4,7 +4,7 @@ import RevealOnScroll from "./RevealOnScroll";
 const cities = [
   { name: "Hyderabad", active: true, image: "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=800" },
   { name: "Bangalore", active: true, image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&q=80&w=800" },
-  { name: "Delhi NCR", active: false, image: "https://images.unsplash.com/photo-1587474260580-589f81beff41?auto=format&fit=crop&q=80&w=800" },
+  { name: "Delhi NCR", active: false, image: "https://www.kalitravel.net/blog/wp-content/uploads/delhi-itinerary-india-gate-sunset-new-delhi.webp" },
 ];
 
 const CitiesSection = () => {

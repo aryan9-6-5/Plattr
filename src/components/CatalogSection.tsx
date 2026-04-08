@@ -56,7 +56,11 @@ const CatalogSection = () => {
   useEffect(() => {
     async function fetchDishes() {
       setLoading(true);
-      let query = supabase.from("dishes").select("*");
+      let query = supabase
+        .from("dishes")
+        .select("*")
+        .order('created_at', { ascending: false })
+        .limit(8);
 
       if (mealType !== "All") query = query.eq("meal_type", mealType);
       if (source   !== "All") query = query.eq("source_type", dbSources[source]);

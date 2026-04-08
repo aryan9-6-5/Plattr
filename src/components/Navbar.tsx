@@ -52,9 +52,10 @@ const Navbar = () => {
           animate={{ y: 0, opacity: 1 }}
           className={`
             pointer-events-auto
-            h-16 sm:h-20
+            h-14 sm:h-16 md:h-20
             flex items-center justify-between
-            px-6 sm:px-10
+            px-3 sm:px-6 md:px-10
+            gap-2
             [transition:all_800ms_cubic-bezier(0.4,0,0.2,1)]
             ${scrolled 
               ? "w-full max-w-5xl rounded-full bg-[#1B2D24]/80 backdrop-blur-2xl border-white/5 shadow-2xl scale-[0.98] border" 
@@ -62,12 +63,12 @@ const Navbar = () => {
             }
           `}
         >
-          {/* Logo */}
-          <Link to="/" className="flex items-center flex-shrink-0">
+          {/* Logo — always visible, never clipped */}
+          <Link to="/" className="flex items-center flex-shrink-0 min-w-0">
             <img 
               src="/logo.png" 
               alt="Plattr" 
-              className={`h-7 sm:h-9 w-auto [transition:all_800ms_cubic-bezier(0.4,0,0.2,1)] ${scrolled ? 'brightness-0 invert' : ''}`} 
+              className={`h-6 sm:h-7 md:h-9 w-auto [transition:all_800ms_cubic-bezier(0.4,0,0.2,1)] ${scrolled ? 'brightness-0 invert' : 'lg:invert-0 invert'}`} 
             />
           </Link>
 
@@ -92,13 +93,13 @@ const Navbar = () => {
           </div>
 
           {/* Right actions */}
-          <div className="flex items-center gap-4">
-            <div className={`hidden sm:block ${scrolled ? 'text-white' : 'text-[#1B2D24]'}`}>
+          <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+            <div className={`hidden md:block ${scrolled ? 'text-white' : 'text-[#1B2D24]'}`}>
               <CartButton scrolled={scrolled} />
             </div>
 
             {!user ? (
-              <div className="flex items-center gap-2 sm:gap-6">
+              <div className="flex items-center gap-1.5 sm:gap-3">
                 <Link
                   to="/login"
                   className={`hidden md:block text-[13px] font-bold tracking-wider uppercase transition-colors ${
@@ -107,12 +108,13 @@ const Navbar = () => {
                 >
                   Login
                 </Link>
+                {/* Show compact version on sm, full on md+ */}
                 <Link
                   to="/signup"
                   className={`
-                    flex items-center gap-2
-                    px-5 sm:px-7 py-2.5 sm:py-3 
-                    rounded-full text-[12px] font-black tracking-widest uppercase
+                    hidden sm:flex items-center gap-1.5
+                    px-4 sm:px-5 md:px-7 py-2 sm:py-2.5 md:py-3
+                    rounded-full text-[11px] sm:text-[12px] font-black tracking-widest uppercase
                     transition-all duration-300
                     ${scrolled 
                       ? "bg-[#52B788] text-white hover:bg-[#40916C] shadow-lg shadow-[#52B788]/20" 
@@ -120,7 +122,7 @@ const Navbar = () => {
                     }
                   `}
                 >
-                  Get Started <ArrowRight size={14} strokeWidth={3} />
+                  Get Started <ArrowRight size={13} strokeWidth={3} />
                 </Link>
               </div>
             ) : (

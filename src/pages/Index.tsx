@@ -14,6 +14,7 @@ import WhyPlattrSection from "@/components/WhyPlattrSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import CitiesSection from "@/components/CitiesSection";
 import B2BSection from "@/components/B2BSection";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -28,6 +29,7 @@ const Index = () => {
 
       <Navbar />
       <div className="h-16 sm:h-20 shrink-0" /> {/* Navbar Clearance */}
+      <CartDrawer />
       
       {/* 1. Hero */}
       <HeroSection />

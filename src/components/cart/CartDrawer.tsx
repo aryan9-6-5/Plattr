@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X, ShoppingBag, ArrowRight } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useCart } from '@/hooks/useCart'
+import { lockScroll, unlockScroll } from '@/utils/scrollLock'
 import { useAuth } from '@/hooks/useAuth'
 import CartItemRow from './CartItemRow'
 import PromoCodeInput from './PromoCodeInput'
@@ -16,6 +17,7 @@ const CartDrawer = () => {
     deliveryFee, tax, total, notes, setNotes, clearCart,
   } = useCart()
   const navigate = useNavigate()
+  const location = useLocation()
   const { user }  = useAuth()
 
   const handleCheckout = () => {
@@ -32,28 +34,38 @@ const CartDrawer = () => {
 
   // Lock body scroll when drawer is open
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (isOpen) {
+      lockScroll()
+    } else {
+      unlockScroll()
+    }
+    return () => { unlockScroll() }
   }, [isOpen])
+
+  // Close cart automatically on route change if it's open
+  useEffect(() => {
+    if (isOpen) {
+      closeCart()
+    }
+  }, [location.pathname])
 
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* BACKDROP */}
-          <motion.div
-            key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={closeCart}
-            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[9998]"
-          />
+        <motion.div
+          key="backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={closeCart}
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-[9998]"
+        />
+      )}
 
-          {/* DRAWER PANEL */}
-          <motion.div
-            key="drawer"
+      {isOpen && (
+        <motion.div
+          key="drawer"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -201,7 +213,6 @@ const CartDrawer = () => {
               </>
             )}
           </motion.div>
-        </>
       )}
     </AnimatePresence>,
     document.body

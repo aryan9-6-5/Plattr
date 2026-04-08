@@ -76,8 +76,8 @@ const HowItWorks = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    // Complete the animation while the top of the section moves from 85% to 15% of viewport
-    offset: ["start 85%", "start 15%"],
+    // Complete the animation progressively as the user scrolls to the middle of the section
+    offset: ["start 80%", "center center"],
   });
 
   // Snappier spring — completes fully before section exits

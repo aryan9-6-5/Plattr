@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Bell, LogOut, User, Package, RefreshCw, LayoutGrid, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import CartButton from "@/components/cart/CartButton";
+import { lockScroll, unlockScroll } from "@/utils/scrollLock";
 
 const navLinks = [
   { label: "Features",       href: "/#features", scrollTo: "features" },
@@ -40,15 +41,22 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll when mobile menu or notifications drawer is open
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
+    if (mobileOpen || notificationsOpen) {
+      lockScroll();
     } else {
-      document.body.style.overflow = '';
+      unlockScroll();
     }
-    return () => { document.body.style.overflow = ''; };
-  }, [mobileOpen]);
+    return () => { unlockScroll(); };
+  }, [mobileOpen, notificationsOpen]);
+
+  // Clean up on route change
+  useEffect(() => {
+    setMobileOpen(false);
+    setDropdownOpen(false);
+    setNotificationsOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -139,7 +147,7 @@ const Navbar = () => {
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <button 
-                    onClick={() => { setNotificationsOpen(!notificationsOpen); setDropdownOpen(false); }}
+                    onClick={() => { setNotificationsOpen(true); setDropdownOpen(false); }}
                     className={`p-2.5 rounded-full transition-colors ${
                       scrolled 
                         ? (notificationsOpen ? 'bg-white/10 text-[#52B788]' : 'text-white hover:bg-white/5')
@@ -148,7 +156,6 @@ const Navbar = () => {
                   >
                     <Bell className="w-4 h-4" />
                   </button>
-                  {/* Notifications Dropdown stays mostly same but matches style */}
                 </div>
                 
                 <div className="relative">
@@ -221,24 +228,75 @@ const Navbar = () => {
         </motion.nav>
       </div>
 
+      {/* Notifications Drawer */}
+      <AnimatePresence>
+        {notificationsOpen && (
+          <motion.div
+            key="notif-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setNotificationsOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[9998]"
+          />
+        )}
+        
+        {notificationsOpen && (
+          <motion.div
+            key="notif-drawer"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 z-[9999] w-full max-w-md bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-5 border-b border-[#E8F5EC] flex-shrink-0">
+               <div className="flex items-center gap-3">
+                 <h2 className="font-serif text-xl font-bold text-[#1B2D24]">Notifications</h2>
+               </div>
+               <button onClick={() => setNotificationsOpen(false)} className="p-2 rounded-full hover:bg-[#EEF8F1] text-[#4A6357] hover:text-[#1B2D24] transition-colors">
+                 <X size={20} />
+               </button>
+            </div>
+            
+            {/* Empty State */}
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                <div className="w-20 h-20 rounded-full bg-[#EEF8F1] flex items-center justify-center mb-4">
+                  <Bell size={32} className="text-[#52B788]" />
+                </div>
+                <h3 className="font-semibold text-[#1B2D24] text-lg">No notifications yet</h3>
+                <p className="text-sm text-[#7A9A88] mt-2 leading-relaxed">
+                  When you have order updates or new messages, they will appear here.
+                </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile drawer stays consistent but gets premium font and spacing */}
       <AnimatePresence>
         {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => { console.log('[Navbar] Closing mobile menu via backdrop'); setMobileOpen(false); }}
-              className="fixed inset-0 bg-[#0F2318]/40 backdrop-blur-sm z-[60] lg:hidden"
-            />
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 w-[85%] max-w-sm h-full bg-white z-[70] flex flex-col shadow-2xl lg:hidden p-8"
-            >
+          <motion.div
+            key="mobile-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => { console.log('[Navbar] Closing mobile menu via backdrop'); setMobileOpen(false); }}
+            className="fixed inset-0 bg-[#0F2318]/40 backdrop-blur-sm z-[60] lg:hidden"
+          />
+        )}
+        
+        {mobileOpen && (
+          <motion.div
+            key="mobile-drawer"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 w-[85%] max-w-sm h-full bg-white z-[70] flex flex-col shadow-2xl lg:hidden p-8"
+          >
               <div className="flex items-center justify-between mb-12">
                 <img src="/logo.png" alt="Plattr" className="h-8 w-auto" />
                 <button onClick={() => setMobileOpen(false)} className="p-3 rounded-full bg-[#EEF8F1] text-[#2D6A4F]">
@@ -270,7 +328,6 @@ const Navbar = () => {
                 )}
               </div>
             </motion.div>
-          </>
         )}
       </AnimatePresence>
     </>

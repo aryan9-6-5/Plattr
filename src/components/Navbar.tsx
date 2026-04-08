@@ -68,7 +68,7 @@ const Navbar = () => {
             <img 
               src="/logo.png" 
               alt="Plattr" 
-              className={`h-6 sm:h-7 md:h-9 w-auto [transition:all_800ms_cubic-bezier(0.4,0,0.2,1)] ${scrolled ? 'brightness-0 invert' : 'lg:invert-0 invert'}`} 
+              className={`h-6 sm:h-7 md:h-9 w-auto [transition:all_800ms_cubic-bezier(0.4,0,0.2,1)] ${scrolled ? 'brightness-0 invert' : 'invert-0'}`} 
             />
           </Link>
 

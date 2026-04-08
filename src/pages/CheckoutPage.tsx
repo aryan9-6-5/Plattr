@@ -42,13 +42,13 @@ const PAYMENT_OPTIONS = [
   { 
     value: "CARD",   
     label: "Debit / Credit Card",         
-    image: "https://raw.githubusercontent.com/fawazahmed0/currency-api/1/logos/cards/visa_mastercard.png",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHg6L0yf2DhQrkSIGWp0BnADyYi5OkOI2MPA&s",
     description: "All major cards accepted"
   },
   { 
     value: "COD",    
     label: "Cash on Delivery",            
-    image: "https://cdn-icons-png.flaticon.com/512/2331/2331895.png",
+    image: "https://img.icons8.com/color/1200/cash-in-hand.jpg",
     description: "Pay when you receive"
   },
   { 

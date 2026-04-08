@@ -33,10 +33,30 @@ const TIME_SLOTS = [
 ];
 
 const PAYMENT_OPTIONS = [
-  { value: "UPI",    label: "UPI / Google Pay / PhonePe",  icon: "📱" },
-  { value: "CARD",   label: "Debit / Credit Card",          icon: "💳" },
-  { value: "COD",    label: "Cash on Delivery",             icon: "💵" },
-  { value: "CREDIT", label: "Invoice (B2B only)",           icon: "🏢" },
+  { 
+    value: "UPI",    
+    label: "UPI / Google Pay / PhonePe", 
+    image: "https://www.vectorlogo.zone/logos/upi/upi-ar21.svg",
+    description: "Scan & pay via any UPI app"
+  },
+  { 
+    value: "CARD",   
+    label: "Debit / Credit Card",         
+    image: "https://raw.githubusercontent.com/fawazahmed0/currency-api/1/logos/cards/visa_mastercard.png",
+    description: "All major cards accepted"
+  },
+  { 
+    value: "COD",    
+    label: "Cash on Delivery",            
+    image: "https://cdn-icons-png.flaticon.com/512/2331/2331895.png",
+    description: "Pay when you receive"
+  },
+  { 
+    value: "CREDIT", 
+    label: "Invoice (B2B only)",          
+    image: "https://cdn-icons-png.flaticon.com/512/1055/1055208.png",
+    description: "For corporate clients"
+  },
 ] as const;
 
 const tomorrow = () => {
@@ -372,16 +392,34 @@ const CheckoutPage = () => {
                 {PAYMENT_OPTIONS.filter(o => o.value !== "CREDIT" || form.meal_type === "BULK" || form.meal_type === "EVENT").map(opt => (
                   <button key={opt.value}
                     onClick={() => set("payment_method")(opt.value)}
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer
-                                transition-all duration-200 text-left
+                    className={`flex items-start gap-4 p-4 rounded-2xl border-2 cursor-pointer
+                                transition-all duration-300 text-left relative overflow-hidden
                                 ${form.payment_method === opt.value
-                      ? "border-[#2D6A4F] bg-[#EEF8F1]"
-                      : "border-[#D4E8DA] bg-white hover:border-[#52B788]"}`}>
-                    <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 ${
+                      ? "border-[#2D6A4F] bg-[#EEF8F1] shadow-md"
+                      : "border-[#D4E8DA] bg-white hover:border-[#52B788] hover:shadow-sm"}`}>
+                    
+                    <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center ${
                       form.payment_method === opt.value ? "border-[#2D6A4F] bg-[#2D6A4F]" : "border-[#D4E8DA]"
-                    }`} />
-                    <span className="text-lg">{opt.icon}</span>
-                    <span className="text-sm font-medium text-[#1B2D24]">{opt.label}</span>
+                    }`}>
+                      {form.payment_method === opt.value && <div className="w-2 h-2 rounded-full bg-white" />}
+                    </div>
+
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-[#1B2D24] uppercase tracking-tight">{opt.label}</span>
+                        <img src={opt.image} alt={opt.label} className="h-6 object-contain grayscale-[0.5] opacity-80" />
+                      </div>
+                      <p className="text-xs text-[#52B788] leading-tight font-medium opacity-80">
+                        {opt.description}
+                      </p>
+                    </div>
+
+                    {form.payment_method === opt.value && (
+                      <motion.div 
+                        layoutId="active-payment-glow"
+                        className="absolute inset-0 bg-gradient-to-tr from-[#52B788]/5 to-transparent pointer-events-none"
+                      />
+                    )}
                   </button>
                 ))}
               </div>

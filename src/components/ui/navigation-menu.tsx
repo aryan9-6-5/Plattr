@@ -37,7 +37,6 @@ const NavigationMenuItem = NavigationMenuPrimitive.Item;
 import { navigationMenuTriggerStyle } from "./navigation-menu-variants";
 
 export {
-  navigationMenuTriggerStyle,
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,

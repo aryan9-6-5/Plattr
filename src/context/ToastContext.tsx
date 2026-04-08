@@ -4,17 +4,15 @@ import { CheckCircle, AlertCircle, Info, AlertTriangle, X } from 'lucide-react'
 
 // ── TYPES ───────────────────────────────────────────────────────────────────
 
-type ToastType = 'success' | 'error' | 'info' | 'warning'
-
+import { ToastContext } from "@/hooks/use-plattr-toast";
+import type { ToastType, ToastContextValue } from "@/hooks/use-plattr-toast";
+    
 type Toast = {
   id:      string
   message: string
   type:    ToastType
 }
 
-type ToastContextValue = {
-  addToast: (message: string, type: ToastType) => void
-}
 
 type ToastAction =
   | { type: 'ADD';    payload: Toast }
@@ -37,7 +35,7 @@ const toastReducer = (state: Toast[], action: ToastAction): Toast[] => {
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
-export const ToastContext = createContext<ToastContextValue | null>(null)
+
 
 // ── TOAST ITEM ───────────────────────────────────────────────────────────────
 

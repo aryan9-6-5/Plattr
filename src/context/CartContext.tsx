@@ -12,37 +12,9 @@ type CartAction =
   | { type: 'SET_NOTES';       payload: { notes: string } }
   | { type: 'CLEAR_CART' }
 
-export type CartContextValue = {
-  // State
-  items:          CartItem[]
-  promoCode:      string | null
-  promoDiscount:  number
-  promoType:      'flat' | 'percentage' | null
-  notes:          string
-  isOpen:         boolean
+import { CartContext } from "@/hooks/use-cart";
+import type { CartContextValue } from "@/hooks/use-cart";
 
-  // Computed
-  itemCount:      number
-  subtotal:       number
-  discountAmount: number
-  deliveryFee:    number
-  tax:            number
-  total:          number
-  isEmpty:        boolean
-  hasBulkItems:   boolean
-
-  // Actions
-  addItem:        (item: CartItem) => void
-  removeItem:     (dishId: string) => void
-  updateQuantity: (dishId: string, quantity: number) => void
-  applyPromo:     (code: string, discount: number, type: 'flat' | 'percentage') => void
-  removePromo:    () => void
-  setNotes:       (notes: string) => void
-  clearCart:      () => void
-  openCart:       () => void
-  closeCart:      () => void
-  toggleCart:     () => void
-}
 
 // ── INITIAL STATE ───────────────────────────────────────────────────────────
 
@@ -148,7 +120,7 @@ const TAX_RATE = 0.05 // 5% GST
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
-export const CartContext = createContext<CartContextValue | null>(null)
+
 
 // ── PROVIDER ─────────────────────────────────────────────────────────────────
 

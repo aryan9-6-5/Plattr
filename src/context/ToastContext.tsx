@@ -37,7 +37,7 @@ const toastReducer = (state: Toast[], action: ToastAction): Toast[] => {
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
-const ToastContext = createContext<ToastContextValue | null>(null)
+export const ToastContext = createContext<ToastContextValue | null>(null)
 
 // ── TOAST ITEM ───────────────────────────────────────────────────────────────
 
@@ -136,10 +136,4 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-// ── HOOK ──────────────────────────────────────────────────────────────────────
 
-export const useToast = (): ToastContextValue => {
-  const ctx = useContext(ToastContext)
-  if (!ctx) throw new Error('useToast must be used within ToastProvider')
-  return ctx
-}

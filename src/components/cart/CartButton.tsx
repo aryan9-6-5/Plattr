@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingBag } from 'lucide-react'
-import { useCart } from '@/context/CartContext'
+import { useCart } from '@/hooks/use-cart'
 
 const CartButton = ({ scrolled = false }: { scrolled?: boolean }) => {
   const { itemCount, toggleCart } = useCart()

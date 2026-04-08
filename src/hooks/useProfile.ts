@@ -38,7 +38,7 @@ export const useProfile = () => {
       }
     };
     fetch();
-  }, [user?.id]);
+  }, [user]);
 
   return { profile, loading, error };
 };

@@ -42,7 +42,7 @@ export const useSubscriptions = () => {
       }
     };
     fetch();
-  }, [user?.id]);
+  }, [user]);
 
   return { subscriptions, loading, error };
 };

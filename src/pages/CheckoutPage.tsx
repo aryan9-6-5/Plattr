@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Utensils, CreditCard, Info, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import { useToast } from "@/context/ToastContext";
+import { useToast } from "@/hooks/use-plattr-toast";
 import PromoCodeInput from "@/components/cart/PromoCodeInput";
 import SummaryRow from "@/components/cart/SummaryRow";
 
@@ -147,7 +147,7 @@ const CheckoutPage = () => {
         pincode:   prev.pincode   || profile.pincode   || "",
       }));
     }
-  }, [profile?.id]);
+  }, [profile]);
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -156,7 +156,7 @@ const CheckoutPage = () => {
       addToast("Your cart is empty", "info");
       navigate("/catalog");
     }
-  }, [isEmpty, user]);
+  }, [isEmpty, user, addToast, navigate]);
 
   const set = (field: keyof CheckoutForm) => (val: string) =>
     setForm(prev => ({ ...prev, [field]: val }));

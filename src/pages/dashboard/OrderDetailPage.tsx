@@ -89,7 +89,7 @@ const OrderDetailPage = () => {
       setLoading(false);
     };
     fetch();
-  }, [id, user?.id]);
+  }, [id, user]);
 
   if (loading) return (
     <div className="flex items-center justify-center py-24">

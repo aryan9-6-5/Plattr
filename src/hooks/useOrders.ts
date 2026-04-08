@@ -41,7 +41,7 @@ export const useOrders = () => {
       }
     };
     fetch();
-  }, [user?.id]);
+  }, [user]);
 
   return { orders, loading, error };
 };

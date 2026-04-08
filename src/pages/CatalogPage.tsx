@@ -4,8 +4,8 @@ import { Search, X, ChefHat, Building2, UtensilsCrossed, Star, Zap, ShoppingBag,
 import { motion, AnimatePresence } from "framer-motion";
 import { Dish } from "@/types/dish";
 import { useDishes } from "@/hooks/useDishes";
-import { useCart } from "@/context/CartContext";
-import { useToast } from "@/context/ToastContext";
+import { useCart } from "@/hooks/use-cart";
+import { useToast } from "@/hooks/use-plattr-toast";
 import PageHeader from "@/components/ui/PageHeader";
 import EmptyState from "@/components/ui/EmptyState";
 import PageError from "@/components/ui/PageError";
@@ -68,7 +68,7 @@ const CatalogPage = () => {
     if (debouncedSearch)    p.search    = debouncedSearch;
     setSearchParams(p, { replace: true });
     setOffset(0);
-  }, [cuisine, mealType, dietType, source, debouncedSearch]);
+  }, [cuisine, mealType, dietType, source, debouncedSearch, setSearchParams]);
 
   const { addItem } = useCart();
   const { addToast } = useToast();

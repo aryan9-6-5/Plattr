@@ -148,7 +148,7 @@ const TAX_RATE = 0.05 // 5% GST
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
-const CartContext = createContext<CartContextValue | null>(null)
+export const CartContext = createContext<CartContextValue | null>(null)
 
 // ── PROVIDER ─────────────────────────────────────────────────────────────────
 
@@ -243,10 +243,4 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-// ── HOOK ──────────────────────────────────────────────────────────────────────
 
-export const useCart = (): CartContextValue => {
-  const ctx = useContext(CartContext)
-  if (!ctx) throw new Error('useCart must be used within CartProvider')
-  return ctx
-}

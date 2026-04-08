@@ -7,7 +7,8 @@ const B2BSection = () => {
   const [formData, setFormData] = useState({
     company_name: "",
     contact_name: "",
-    phone: "",
+    contact_email: "",
+    contact_phone: "",
     expected_daily_meals: ""
   });
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,8 @@ const B2BSection = () => {
         {
           company_name: formData.company_name,
           contact_name: formData.contact_name,
-          phone: formData.phone,
+          contact_email: formData.contact_email,
+          contact_phone: formData.contact_phone,
           expected_daily_meals: parseInt(formData.expected_daily_meals) || null,
         }
       ]);
@@ -37,7 +39,7 @@ const B2BSection = () => {
       setError("Something went wrong. Please try again.");
     } else {
       setSuccess(true);
-      setFormData({ company_name: "", contact_name: "", phone: "", expected_daily_meals: "" });
+      setFormData({ company_name: "", contact_name: "", contact_email: "", contact_phone: "", expected_daily_meals: "" });
     }
   };
 
@@ -127,26 +129,39 @@ const B2BSection = () => {
                         />
                       </div>
                       <div>
+                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Email</label>
+                        <input 
+                          required
+                          type="email" 
+                          value={formData.contact_email}
+                          onChange={e => setFormData({...formData, contact_email: e.target.value})}
+                          className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
+                          placeholder="jane@company.com"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-5">
+                      <div>
                         <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Phone</label>
                         <input 
                           required
                           type="tel" 
-                          value={formData.phone}
-                          onChange={e => setFormData({...formData, phone: e.target.value})}
+                          value={formData.contact_phone}
+                          onChange={e => setFormData({...formData, contact_phone: e.target.value})}
                           className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
                           placeholder="+91..."
                         />
                       </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Expected Daily Meals</label>
-                      <input 
-                        type="number" 
-                        value={formData.expected_daily_meals}
-                        onChange={e => setFormData({...formData, expected_daily_meals: e.target.value})}
-                        className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
-                        placeholder="e.g. 50"
-                      />
+                      <div>
+                        <label className="block text-xs font-bold tracking-widest uppercase text-[#7A9A88] mb-1.5">Expected Daily Meals</label>
+                        <input 
+                          type="number" 
+                          value={formData.expected_daily_meals}
+                          onChange={e => setFormData({...formData, expected_daily_meals: e.target.value})}
+                          className="w-full px-4 py-3 rounded-xl bg-[#F6FFF8] border border-[#D4E8DA] focus:outline-none focus:ring-2 focus:ring-[#52B788] text-[#1B2D24] transition-shadow"
+                          placeholder="e.g. 50"
+                        />
+                      </div>
                     </div>
                     
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

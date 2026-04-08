@@ -55,17 +55,7 @@ const HeroSection = () => {
           {/* ── LEFT COLUMN ── */}
           <motion.div style={{ y: leftY, opacity: leftOpacity }}>
 
-            {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D8F3DC] border border-[#B7E4C7] text-xs font-bold tracking-widest uppercase text-[#2D6A4F] mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#52B788] inline-block" />
-                India's Food Supply Network
-              </span>
-            </motion.div>
+
 
             {/* H1 */}
             <motion.h1

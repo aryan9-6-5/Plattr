@@ -48,76 +48,75 @@ const DishCard = ({ dish, index, showQuickAdd, onQuickAdd }: DishCardProps) => {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index, 8) * 0.04 }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="group flex flex-col bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-sm ring-1 ring-[#D4E8DA] hover:shadow-lg hover:ring-[#52B788]/30 transition-all duration-300 h-full"
+      className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 h-full transform-gpu"
     >
       <Link to={`/dish/${dish.id}`} className="flex flex-col h-full">
-        {/* Image Section */}
-        <div className="relative w-full aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#EEF8F1] to-[#D8F3DC] flex items-center justify-center">
-          <span className="text-5xl group-hover:scale-110 transition-transform duration-500">{emoji}</span>
+        {/* Image Section - Window Scale Effect */}
+        <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#EEF8F1] flex items-center justify-center">
+          <motion.div 
+            className="w-full h-full flex items-center justify-center transform-gpu"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+          >
+            <span className="text-5xl">{emoji}</span>
+          </motion.div>
           
           {/* Overlays */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2">
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-md backdrop-blur-md ${badgeClass}`}>
+          <div className="absolute top-4 left-4 flex flex-col gap-2">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${badgeClass}`}>
               <SourceIcon className="w-3 h-3" />
               {sourceLabel}
             </span>
-            {isBestSeller && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-yellow-400 text-[#1B2D24] shadow-md border border-white/20">
-                <Zap className="w-3 h-3 fill-current" />
-                Best Seller
-              </span>
-            )}
           </div>
 
           {/* Spice Indicator */}
           {dish.is_spicy && (
-            <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-red-500/90 backdrop-blur-sm border border-white/20 flex items-center justify-center text-sm shadow-lg transform hover:scale-110 transition-transform">
-              <Flame className="w-4 h-4 text-white" />
+            <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm border border-black/5 flex items-center justify-center shadow-md">
+              <Flame className="w-4 h-4 text-[#BC4749]" />
             </div>
           )}
         </div>
 
         {/* Content Section */}
-        <div className="p-5 flex flex-col flex-1 relative">
-          <div className="flex items-center justify-between mb-1.5">
-            <p className="text-[10px] font-black tracking-[0.2em] uppercase text-[#52B788]">
+        <div className="p-6 md:p-7 flex flex-col flex-1 relative bg-white">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#7A9A88] font-sans">
               {dish.cuisine.replace(/_/g, " ")}
             </p>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#EEF8F1] text-[#2D6A4F]">
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F6FFF8] text-[#1B4332] border border-[#D4E8DA]">
               <Star className="w-3 h-3 fill-current" />
               <span className="text-[10px] font-bold">{rating}</span>
             </div>
           </div>
 
-          <h4 className="text-base font-semibold text-[#1B2D24] leading-snug line-clamp-2 mb-2 pr-12">
+          <h4 className="text-xl font-serif font-bold text-[#1B2D24] leading-tight line-clamp-2 mb-3 group-hover:text-[#1B4332] transition-colors">
             {dish.name}
           </h4>
 
           {/* Meal type tag */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#EEF8F1] text-[#2D6A4F] border border-[#D8F3DC]">
+          <div className="flex flex-wrap gap-1.5 mb-6">
+            <span className="inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-[#EEF8F1] text-[#4A6357] border border-[#D4E8DA] font-sans">
               {dish.meal_type}
             </span>
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#E8F5EC]">
-            <span className="text-lg font-bold text-[#1B2D24]">
+          <div className="flex items-center justify-between mt-auto pt-5 border-t border-[#EEF8F1]">
+            <span className="text-xl font-bold text-[#1B2D24] font-sans">
               ₹{dish.price.toLocaleString()}
             </span>
             
             {!showQuickAdd ? (
-              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-[#2D6A4F] hover:bg-[#1e4d38] text-white transition-all duration-200 shadow-sm">
-                <ShoppingBag className="w-3.5 h-3.5" />
-                View
+              <div className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[13px] font-bold bg-[#1B4332] text-white transition-all duration-300 shadow-md group-hover:bg-[#2D6A4F] font-sans">
+                <ShoppingBag className="w-4 h-4" />
+                View Plattr
               </div>
             ) : (
               <button 
                 onClick={(e) => onQuickAdd?.(e, dish)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-[#E8F5EC] text-[#2D6A4F] hover:bg-[#2D6A4F] hover:text-white transition-all duration-200 border border-[#D4E8DA]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold bg-[#EEF8F1] text-[#1B2D24] hover:bg-[#1B4332] hover:text-white transition-all duration-300 border border-[#D4E8DA] font-sans"
               >
-                <Plus size={14} strokeWidth={3} />
+                <Plus size={15} strokeWidth={3} />
                 Add
               </button>
             )}

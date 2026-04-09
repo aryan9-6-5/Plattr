@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 
 interface SliderItem {
   id: string | number;
@@ -15,45 +15,39 @@ interface InfiniteCurvedSliderProps {
 
 const InfiniteCurvedSlider = ({ 
   items, 
-  speed = 0.5, 
+  speed = 3.5, 
   direction = "left" 
 }: InfiniteCurvedSliderProps) => {
-  const [containerWidth, setContainerWidth] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [metrics, setMetrics] = useState({ width: 320, gap: 40 });
   
-  // Create a looped set of items to ensure seamless scrolling
   const duplicatedItems = [...items, ...items, ...items];
-  
   const baseX = useMotionValue(0);
   
   useEffect(() => {
-    if (containerRef.current) {
-      setContainerWidth(containerRef.current.offsetWidth);
-    }
-    
-    const handleResize = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
+    const checkWidth = () => {
+      if (window.innerWidth < 768) {
+        setMetrics({ width: 240, gap: 24 }); // mobile w-[240px] gap-6 (24px)
+      } else {
+        setMetrics({ width: 320, gap: 40 }); // desktop w-[320px] gap-10 (40px)
       }
     };
     
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    checkWidth();
+    window.addEventListener("resize", checkWidth);
+    return () => window.removeEventListener("resize", checkWidth);
   }, []);
 
   useAnimationFrame((t, delta) => {
+    // Increase base speed for snappier mobile feel if requested
     let moveBy = direction === "left" ? -speed : speed;
-    
-    // Adjust speed based on delta for smoothness
     moveBy *= delta / 16;
     
     const currentX = baseX.get();
-    const itemWidth = 320; // 280px width + 40px gap
+    const itemWidth = metrics.width + metrics.gap;
     const totalContentWidth = items.length * itemWidth;
     
     let newX = currentX + moveBy;
     
-    // Loop the value
     if (newX <= -totalContentWidth) {
       newX = 0;
     } else if (newX > 0) {
@@ -64,13 +58,9 @@ const InfiniteCurvedSlider = ({
   });
 
   return (
-    <div className="relative w-full overflow-hidden py-20 bg-[#F6FFF8]">
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#F6FFF8] to-transparent z-10" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#F6FFF8] to-transparent z-10" />
-      
+    <div className="relative w-full overflow-hidden py-6 md:py-10 bg-[#F6FFF8]">
       <motion.div 
-        ref={containerRef}
-        className="flex gap-10 px-10"
+        className="flex gap-6 md:gap-10 px-6 md:px-10"
         style={{ x: baseX }}
       >
         {duplicatedItems.map((item, index) => (
@@ -84,24 +74,22 @@ const InfiniteCurvedSlider = ({
 const SliderCard = ({ item }: { item: SliderItem }) => {
   return (
     <motion.div
-      whileHover={{ y: -10, scale: 1.02 }}
-      className="flex-shrink-0 w-[280px] h-[380px] relative rounded-[40px] overflow-hidden shadow-2xl group cursor-pointer"
-      style={{
-        // The "curved" effect from screenshot 2 is partly achieved by a slight perspective/warp
-        // or just very generous border radii and shadow.
-        borderRadius: "60px 60px 60px 60px",
-      }}
+      whileHover={{ y: -12, scale: 1.02 }}
+      className="flex-shrink-0 w-[240px] h-[340px] md:w-[320px] md:h-[450px] relative rounded-[40px] md:rounded-[60px] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.15)] group cursor-pointer transition-all duration-700"
     >
       <img 
         src={item.image} 
         alt={item.title || "Gallery Image"} 
-        className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
+        className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+      <div className="absolute inset-0 bg-gradient-to-t from-[#1B4332]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-end p-6 md:p-10">
         {item.title && (
-          <p className="text-white font-serif text-lg font-bold">{item.title}</p>
+          <p className="text-white font-serif text-xl md:text-2xl font-bold leading-tight">{item.title}</p>
         )}
       </div>
+      
+      {/* Decorative frame */}
+      <div className="absolute inset-0 border border-white/10 rounded-[40px] md:rounded-[60px] pointer-events-none" />
     </motion.div>
   );
 };

@@ -6,13 +6,18 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Disable native browser history scroll jump completely.
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
     // Force release any stuck body locks immediately upon route change
     forceUnlockScroll();
     
     // Attempt scroll immediately using primitives
     window.scrollTo(0, 0);
     
-    // Multiple attempts during Suspense resolution
+    // Multiple attempts during Suspense resolution and React Query payloads
     let attempts = 0;
     const interval = setInterval(() => {
       try {
@@ -24,7 +29,7 @@ const ScrollToTop = () => {
       }
       
       attempts++;
-      if (attempts > 5) clearInterval(interval);
+      if (attempts > 10) clearInterval(interval);
     }, 50);
 
     return () => clearInterval(interval);

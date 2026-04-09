@@ -1,3 +1,5 @@
+import React from "react";
+
 type PageHeaderProps = {
   eyebrow?: string;
   title: string;
@@ -7,31 +9,28 @@ type PageHeaderProps = {
 };
 
 const PageHeader = ({ eyebrow, title, description, badge, children }: PageHeaderProps) => (
-  <section className="bg-[#EEF8F1] py-12 md:py-16">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {eyebrow && (
-        <p className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-2">
-          {eyebrow}
-        </p>
-      )}
-      <div className="flex items-start justify-between flex-wrap gap-4">
-        <div>
-          <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#1B2D24] mt-1 leading-tight">
+  <section className="bg-[#F6FFF8] pt-12 pb-10 md:pb-16 border-b border-[#D4E8DA]">
+    <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+        <div className="max-w-3xl">
+          <h1 className="font-serif text-5xl md:text-7xl font-bold text-[#1B2D24] leading-[1.05] tracking-tight">
             {title}
           </h1>
           {description && (
-            <p className="text-base text-[#4A6357] mt-3 max-w-xl leading-relaxed">
+            <p className="text-lg text-[#4A6357] mt-8 max-w-xl font-sans leading-relaxed">
               {description}
             </p>
           )}
         </div>
-        {badge && (
-          <span className="px-4 py-1.5 rounded-full bg-[#D8F3DC] text-[#2D6A4F] text-sm font-semibold self-start mt-1">
-            {badge}
-          </span>
-        )}
+        <div className="flex flex-col items-start lg:items-end gap-6 h-full">
+            {badge && (
+                <div className="px-6 py-2 rounded-full bg-[#1B4332] text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl">
+                    {badge}
+                </div>
+            )}
+            {children && <div className="mt-4">{children}</div>}
+        </div>
       </div>
-      {children && <div className="mt-6">{children}</div>}
     </div>
   </section>
 );

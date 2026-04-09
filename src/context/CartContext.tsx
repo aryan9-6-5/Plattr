@@ -1,6 +1,7 @@
-import { createContext, useReducer, useEffect, useState, useMemo } from 'react'
+import { createContext, useReducer, useEffect, useState, useMemo, useRef } from 'react'
 import type { CartItem, CartState } from '@/types/cart'
 import type { CartContextValue } from "./CartContextType";
+import { useAuth } from '@/hooks/useAuth'
 
 // ── TYPES ──────────────────────────────────────────────────────────────────
 
@@ -12,6 +13,7 @@ type CartAction =
   | { type: 'REMOVE_PROMO' }
   | { type: 'SET_NOTES';       payload: { notes: string } }
   | { type: 'CLEAR_CART' }
+  | { type: 'HYDRATE_CART';    payload: CartState }
 
 // ── CONSTANTS & HELPERS ───────────────────────────────────────────────────
 
@@ -24,7 +26,7 @@ const INITIAL_STATE: CartState = {
   notes:         '',
 }
 
-const STORAGE_KEY = 'plattr_cart'
+const BASE_STORAGE_KEY = 'plattr_cart'
 const TAX_RATE = 0.05 // 5% GST
 
 const getEffectivePrice = (item: CartItem): number => {
@@ -106,6 +108,9 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     case 'CLEAR_CART':
       return INITIAL_STATE
 
+    case 'HYDRATE_CART':
+      return { ...action.payload }
+
     default:
       return state
   }
@@ -118,25 +123,45 @@ export const CartContext = createContext<CartContextValue | null>(null);
 // ── PROVIDER ─────────────────────────────────────────────────────────────────
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  const loadInitialState = (): CartState => {
+  const { user } = useAuth()
+  const userId = user?.id || 'guest'
+  const storageKey = `${BASE_STORAGE_KEY}_${userId}`
+
+  const loadInitialState = (uid: string): CartState => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
+      const stored = localStorage.getItem(`${BASE_STORAGE_KEY}_${uid}`)
       if (stored) return { ...INITIAL_STATE, ...JSON.parse(stored) }
     } catch { /* corrupted storage — ignore */ }
     return INITIAL_STATE
   }
 
-  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE, loadInitialState)
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE)
   const [isOpen, setIsOpen] = useState(false)
+  const isFirstRender = useRef(true)
 
-  console.log('[CartContext] Current State:', { itemsCount: state.items.length, isOpen });
+  // Handle User/Profile context switches
+  useEffect(() => {
+    const newState = loadInitialState(userId)
+    dispatch({ type: 'CLEAR_CART' }) // Reset to initial
+    if (newState.items.length > 0) {
+      // We need a way to set the whole state, or just loop and add items.
+      // Easiest is to add a 'HYDRATE_CART' action.
+      dispatch({ type: 'HYDRATE_CART' as any, payload: newState } as any)
+    }
+  }, [userId])
 
   // Persist to localStorage on every state change
   useEffect(() => {
+    // Skip the very first render to avoid overwriting with initial state before hydration
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+      localStorage.setItem(storageKey, JSON.stringify(state))
     } catch { /* storage full — ignore */ }
-  }, [state])
+  }, [state, storageKey])
 
   // ── COMPUTED VALUES ────────────────────────────────────────────────────────
 
@@ -169,7 +194,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const setNotes       = (notes: string) => dispatch({ type: 'SET_NOTES', payload: { notes: notes } })
   const clearCart      = () => {
     dispatch({ type: 'CLEAR_CART' })
-    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(storageKey)
   }
   const openCart   = () => { console.log('[CartContext] Opening Cart'); setIsOpen(true); }
   const closeCart  = () => { console.log('[CartContext] Closing Cart'); setIsOpen(false); }

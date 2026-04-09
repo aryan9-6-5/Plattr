@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { X, ShoppingBag, ArrowRight } from 'lucide-react'
+import { X, ShoppingBag, ArrowRight, Trash2 } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useCart } from '@/hooks/useCart'
 import { lockScroll, unlockScroll } from '@/utils/scrollLock'
@@ -21,18 +21,14 @@ const CartDrawer = () => {
   const { user }  = useAuth()
 
   const handleCheckout = () => {
-    console.log('[CartDrawer] Proceeding to checkout. User status:', !!user);
     closeCart()
     if (!user) {
-      console.log('[CartDrawer] Redirecting to login first');
       navigate('/login?redirect=/checkout')
       return
     }
-    console.log('[CartDrawer] Navigating to /checkout');
     navigate('/checkout')
   }
 
-  // Lock body scroll when drawer is open
   useEffect(() => {
     if (isOpen) {
       lockScroll()
@@ -42,88 +38,86 @@ const CartDrawer = () => {
     return () => { unlockScroll() }
   }, [isOpen])
 
-  // Close cart automatically on route change if it's open
   useEffect(() => {
     if (isOpen) {
       closeCart()
     }
   }, [location.pathname])
 
-  // We still use portal, but without AnimatePresence.
-  // We don't unmount the DOM elements immediately, we rely on CSS transitions.
-  // Actually, we can just render it when isOpen is true, or keep it mounted and 
-  // toggle pointer-events. Let's keep it mounted in the portal but visually hidden.
   return createPortal(
     <>
-      {/* BACKDROP */}
+      {/* Editorial Backdrop */}
       <div
         onClick={closeCart}
-        className={`fixed inset-0 bg-black/60 backdrop-blur-md z-[9998] transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-[#1B2D24]/40 backdrop-blur-xl z-[9998] transition-opacity duration-700 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       />
 
-      {/* DRAWER PANEL */}
+      {/* Structured Drawer Panel */}
       <div
         className={`fixed right-0 top-0 bottom-0 z-[9999]
-                   w-full max-w-md bg-white shadow-[0_0_50px_rgba(0,0,0,0.3)] flex flex-col
-                   transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                   w-full max-w-lg bg-[#F6FFF8] shadow-[0_0_100px_rgba(0,0,0,0.1)] flex flex-col
+                   transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] border-l border-[#D4E8DA]
                    ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
-            {/* HEADER */}
-            <div className="flex items-center justify-between p-5 border-b border-[#E8F5EC] flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <h2 className="font-serif text-xl font-bold text-[#1B2D24]">Your Cart</h2>
-                {itemCount > 0 && (
-                  <span className="inline-flex items-center justify-center w-6 h-6
-                                   rounded-full text-xs font-bold bg-[#2D6A4F] text-white">
-                    {itemCount}
-                  </span>
-                )}
+            {/* Header: Editorial Identity */}
+            <div className="flex items-center justify-between p-10 border-b border-[#D4E8DA] flex-shrink-0 bg-white">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#1B4332]">System Inventory</span>
+                <div className="flex items-center gap-4">
+                  <h2 className="font-serif text-3xl font-bold text-[#1B2D24]">Your Pipeline</h2>
+                  {itemCount > 0 && (
+                    <span className="inline-flex items-center justify-center w-8 h-8
+                                     rounded-xl text-[11px] font-black bg-[#1B4332] text-white shadow-xl">
+                      {itemCount}
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 {!isEmpty && (
                   <button
-                    onClick={() => { if(confirm('Clear all items?')) clearCart(); }}
-                    className="text-[10px] font-bold uppercase tracking-widest text-[#D32F2F] 
-                               p-2 hover:bg-red-50 rounded-lg transition-colors"
+                    onClick={() => { if(confirm('Clear all modules?')) clearCart(); }}
+                    className="text-[10px] font-black uppercase tracking-widest text-[#7A9A88] 
+                               p-3 hover:text-red-600 transition-colors"
                   >
-                    Clear All
+                    Reset
                   </button>
                 )}
                 <button
                   onClick={closeCart}
-                  className="p-2 rounded-full hover:bg-[#EEF8F1] text-[#4A6357]
-                             hover:text-[#1B2D24] transition-colors duration-200"
+                  className="w-12 h-12 rounded-full border border-[#D4E8DA] flex items-center justify-center text-[#1B2D24]
+                             hover:bg-[#1B4332] hover:text-white transition-all duration-500 shadow-sm"
                 >
                   <X size={20} />
                 </button>
               </div>
             </div>
 
-            {/* EMPTY STATE */}
+            {/* Empty Configuration */}
             {isEmpty ? (
-              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-                <div className="w-20 h-20 rounded-full bg-[#EEF8F1] flex items-center justify-center mb-4">
-                  <ShoppingBag size={32} className="text-[#52B788]" />
+              <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
+                <div className="w-24 h-24 rounded-[32px] bg-white border border-[#D4E8DA] flex items-center justify-center mb-8 shadow-sm">
+                  <ShoppingBag size={40} className="text-[#1B4332] opacity-30" />
                 </div>
-                <h3 className="font-semibold text-[#1B2D24] text-lg">Your cart is empty</h3>
-                <p className="text-sm text-[#7A9A88] mt-2 leading-relaxed">
-                  Add dishes from our catalog to get started
+                <h3 className="font-serif text-2xl font-bold text-[#1B2D24]">Pipeline is void.</h3>
+                <p className="text-sm text-[#7A9A88] mt-4 leading-relaxed font-sans max-w-xs">
+                  The curated network is ready for deployment. Add modules from the catalog to initiate.
                 </p>
                 <button
                   onClick={() => { closeCart(); navigate('/catalog') }}
-                  className="mt-6 px-5 py-2.5 rounded-full bg-[#2D6A4F] text-white text-sm
-                             font-semibold hover:bg-[#1e4d38] transition-colors duration-200"
+                  className="mt-10 px-10 py-5 rounded-2xl bg-[#1B4332] text-white text-[11px]
+                             font-black uppercase tracking-[0.25em] shadow-xl hover:bg-[#2D6A4F] transition-all duration-500 active:scale-95"
                 >
-                  Browse Catalog
+                  Acquire Supply
                 </button>
               </div>
             ) : (
               <>
-                {/* ITEMS LIST */}
-                <div className="flex-1 overflow-y-auto overscroll-contain">
-                  <div className="p-4 space-y-3">
+                {/* Deployment List */}
+                <div className="flex-1 overflow-y-auto overscroll-contain no-scrollbar">
+                  <div className="p-8 space-y-6">
                     <AnimatePresence initial={false}>
                       {items.map(item => (
                         <CartItemRow key={item.id} item={item} />
@@ -131,79 +125,81 @@ const CartDrawer = () => {
                     </AnimatePresence>
                   </div>
 
-                  {/* NOTES */}
-                  <div className="px-4 pb-4">
-                    <label className="text-xs font-semibold tracking-wide text-[#4A6357]
-                                      uppercase block mb-2">
-                      Special Instructions
+                  {/* Operational Notes */}
+                  <div className="px-8 pb-8">
+                    <label className="text-[10px] font-black tracking-[0.2em] text-[#7A9A88]
+                                      uppercase block mb-4">
+                      Protocol Instructions
                     </label>
                     <textarea
                       value={notes}
                       onChange={e => setNotes(e.target.value)}
-                      placeholder="Less spicy, no onion, extra raita…"
-                      rows={2}
-                      className="w-full px-4 py-3 text-sm border border-[#D4E8DA] rounded-xl
+                      placeholder="Specify dietary constraints or logistical preferences..."
+                      rows={3}
+                      className="w-full px-6 py-4 text-sm border border-[#D4E8DA] rounded-[24px]
                                  text-[#1B2D24] placeholder:text-[#7A9A88] focus:outline-none
-                                 focus:ring-2 focus:ring-[#2D6A4F] resize-none bg-[#F6FFF8]"
+                                 focus:ring-4 focus:ring-[#1B4332]/5 focus:border-[#1B4332] transition-all duration-300 resize-none bg-white font-sans"
                     />
                   </div>
 
-                  {/* PROMO CODE */}
-                  <div className="px-4 pb-4">
-                    <label className="text-xs font-semibold tracking-wide text-[#4A6357]
-                                      uppercase block mb-2">
-                      Promo Code
+                  {/* Promo Allocation */}
+                  <div className="px-8 pb-10">
+                    <label className="text-[10px] font-black tracking-[0.2em] text-[#7A9A88]
+                                      uppercase block mb-4">
+                      Voucher Sync
                     </label>
                     <PromoCodeInput />
                   </div>
                 </div>
 
-                {/* SUMMARY & ACTIONS */}
-                <div className="border-t border-[#EEF8F1] bg-white p-5 space-y-4 flex-shrink-0 pb-8 sm:pb-10">
-                  <div className="space-y-2">
-                    <SummaryRow label="Subtotal" value={subtotal} />
+                {/* Logistics Summary */}
+                <div className="border-t border-[#D4E8DA] bg-white p-10 space-y-8 flex-shrink-0 pb-12">
+                  <div className="space-y-4">
+                    <SummaryRow label="Gross Value" value={subtotal} />
                     {discountAmount > 0 && (
-                      <SummaryRow label="Promo discount" value={-discountAmount} isDiscount />
+                      <SummaryRow label="System Rebate" value={-discountAmount} isDiscount />
                     )}
                     <SummaryRow
-                      label={deliveryFee === 0 ? 'Delivery (Free!)' : 'Delivery fee'}
+                      label={deliveryFee === 0 ? 'Logistics (Priority)' : 'Logistics Fee'}
                       value={deliveryFee}
                       isFree={deliveryFee === 0}
                     />
-                    <SummaryRow label="GST (5%)" value={tax} />
+                    <SummaryRow label="Pipeline Tax" value={tax} />
 
-                    <div className="pt-2 border-t border-[#E8F5EC] flex items-center justify-between">
-                      <span className="font-bold text-[#1B2D24]">Total</span>
-                      <span className="font-bold text-xl text-[#1B2D24]">
-                        ₹{total.toLocaleString()}
-                      </span>
+                    <div className="pt-8 border-t border-[#D4E8DA] flex items-end justify-between">
+                      <div>
+                        <span className="text-[10px] font-black tracking-[0.3em] text-[#7A9A88] uppercase block mb-1">Final Settlement</span>
+                        <span className="font-serif font-bold text-4xl text-[#1B2D24]">
+                          ₹{total.toLocaleString()}
+                        </span>
+                      </div>
+                      
+                      {deliveryFee > 0 && subtotal < 500 && (
+                        <p className="text-[10px] text-[#7A9A88] font-black uppercase tracking-widest italic opacity-50">
+                          Gap to priority: ₹{(500 - subtotal).toLocaleString()}
+                        </p>
+                      )}
                     </div>
-
-                    {deliveryFee > 0 && subtotal < 500 && (
-                      <p className="text-[10px] text-[#7A9A88] text-center italic">
-                        Add ₹{(500 - subtotal).toLocaleString()} more for free delivery
-                      </p>
-                    )}
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <motion.button
-                      whileTap={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.96 }}
                       onClick={handleCheckout}
-                      className="w-full py-4 rounded-full bg-[#2D6A4F] hover:bg-[#1e4d38]
-                                 text-white font-bold text-sm tracking-wide shadow-lg
-                                 shadow-[#2D6A4F]/20 transition-all duration-300
-                                 flex items-center justify-center gap-2"
+                      className="w-full py-6 rounded-2xl bg-[#1B4332] hover:bg-[#2D6A4F]
+                                 text-white text-[11px] font-black uppercase tracking-[0.25em] shadow-2xl
+                                 shadow-[#1B4332]/20 transition-all duration-700
+                                 flex items-center justify-center gap-4 group"
                     >
-                      Proceed to Checkout
-                      <ArrowRight size={18} />
+                      Clear for Deployment
+                      <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform duration-500" />
                     </motion.button>
                     <button
-                      onClick={() => { console.log('[CartDrawer] Continue Shopping clicked'); closeCart(); }}
-                      className="w-full py-2 text-sm font-bold text-[#4A6357]
-                                 hover:text-[#2D6A4F] transition-colors duration-200"
+                      onClick={() => { closeCart(); }}
+                      className="w-full text-[10px] font-black text-[#7A9A88] uppercase tracking-[0.3em]
+                                 hover:text-[#1B4332] transition-colors duration-500"
                     >
-                      Continue Shopping
+                      Continue Acquisition
                     </button>
                   </div>
                 </div>

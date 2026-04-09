@@ -18,6 +18,9 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 // Lazy Pages
 const Index = lazy(() => import("./pages/Index"));
 const CatalogPage = lazy(() => import("./pages/CatalogPage"));
+const MealBoxBuilderPage = lazy(() => import("./pages/MealBoxBuilderPage"));
+const SnackBoxesPage = lazy(() => import("./pages/SnackBoxesPage"));
+const CombosPage = lazy(() => import("./pages/CombosPage"));
 const DishDetailPage = lazy(() => import("./pages/DishDetailPage"));
 const ChefsPage = lazy(() => import("./pages/ChefsPage"));
 const ChefProfilePage = lazy(() => import("./pages/ChefProfilePage"));
@@ -63,8 +66,10 @@ const App = () => (
                 </div>
               }>
                 <Routes>
-                  {/* Landing page (standalone, no shared layout) */}
+                  {/* Standalone pages (no shared layout) */}
                   <Route path="/" element={<Index />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
 
                   {/* All public pages share Layout (Navbar + Footer) */}
                   <Route element={<Layout />}>
@@ -72,6 +77,12 @@ const App = () => (
                     <Route path="/catalog" element={<CatalogPage />} />
                     <Route path="/menu" element={<Navigate to="/catalog" replace />} />
                     <Route path="/catalog/:cuisineSlug" element={<CatalogPage />} />
+                    
+                    {/* Specialized Pipelines */}
+                    <Route path="/mealbox-builder" element={<MealBoxBuilderPage />} />
+                    <Route path="/snack-boxes" element={<SnackBoxesPage />} />
+                    <Route path="/combos" element={<CombosPage />} />
+                    
                     <Route path="/dish/:id" element={<DishDetailPage />} />
 
                     {/* Chefs */}
@@ -94,9 +105,7 @@ const App = () => (
                     <Route path="/terms" element={<TermsPage />} />
                     <Route path="/blog" element={<BlogComingSoonPage />} />
 
-                    {/* Auth */}
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
+                    {/* (Auth routes moved above Layout wrapper) */}
 
                     {/* Checkout + Order flow */}
                     <Route path="/checkout" element={<CheckoutPage />} />

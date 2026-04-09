@@ -13,7 +13,7 @@ import { TrayValue } from "@/types/infrastructure";
 
 const MealBoxBuilderPage = () => {
   const [step, setStep] = useState(1);
-  const [selectedSize, setSelectedSize] = useState<any>(null);
+  const [selectedSize, setSelectedSize] = useState<TrayValue | null>(null);
   const [dietary, setDietary] = useState("All");
   const [spiceLevel, setSpiceLevel] = useState("MEDIUM");
   const [selectedDishes, setSelectedDishes] = useState<Dish[]>([]);
@@ -72,7 +72,7 @@ const MealBoxBuilderPage = () => {
       bulk_price: null,
       min_bulk_qty: 1,
       quantity: 1,
-      image_url: selectedSize.imgSrc || `https://images.unsplash.com/photo-${['1606787366850-de6330128bfc', '1546069901-ba9599a7e63c', '1543826173-70651703c5a4', '1512621776951-a57141f2eefd'][trayConfigs.findIndex((c: any) => c.value.slots === selectedSize.slots) % 4]}?auto=format&fit=crop&q=80&w=400`,
+      image_url: selectedSize.imgSrc || `https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][trayConfigs.findIndex((c: { value: TrayValue }) => c.value.slots === selectedSize.slots) % 4]}?auto=format&fit=crop&q=80&w=400`,
       diet_type: dietary.toUpperCase(),
       spice_level: spiceLevel,
       is_spicy: spiceLevel !== "MILD",
@@ -308,7 +308,7 @@ const MealBoxBuilderPage = () => {
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-16 bg-[#F3F2EE] rounded-2xl overflow-hidden shadow-inner">
                            <img 
-                             src={`https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][trayConfigs.findIndex((c: any) => (c.value as TrayValue).slots === selectedSize.slots) % 4]}?auto=format&fit=crop&q=80&w=200`} 
+                             src={`https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][trayConfigs.findIndex((c: { value: TrayValue }) => c.value.slots === (selectedSize?.slots || 0)) % 4]}?auto=format&fit=crop&q=80&w=200`} 
                              alt="tray" 
                              className="w-full h-full object-cover" 
                            />

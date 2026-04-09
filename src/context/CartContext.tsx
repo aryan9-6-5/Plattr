@@ -118,6 +118,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext<CartContextValue | null>(null);
 
 // ── PROVIDER ─────────────────────────────────────────────────────────────────
@@ -146,7 +147,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     if (newState.items.length > 0) {
       // We need a way to set the whole state, or just loop and add items.
       // Easiest is to add a 'HYDRATE_CART' action.
-      dispatch({ type: 'HYDRATE_CART' as any, payload: newState } as any)
+      dispatch({ type: 'HYDRATE_CART', payload: newState })
     }
   }, [userId])
 
@@ -229,6 +230,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     openCart,
     closeCart,
     toggleCart,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [state, isOpen, itemCount, subtotal, discountAmount, deliveryFee, tax, total, isEmpty, hasBulkItems])
 
   return (

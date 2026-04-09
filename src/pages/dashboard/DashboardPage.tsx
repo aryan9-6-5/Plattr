@@ -9,7 +9,7 @@ import { formatDate } from "@/utils/formatDate";
 import { formatRupees } from "@/utils/formatCurrency";
 import { motion } from "framer-motion";
 
-const Stat = ({ label, value, icon: Icon, delay = 0 }: { label: string; value: string | number; icon: any; delay?: number }) => (
+const Stat = ({ label, value, icon: Icon, delay = 0 }: { label: string; value: string | number; icon: React.ElementType; delay?: number }) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}

@@ -23,8 +23,8 @@ export const useServicePipelines = () => {
 
         if (error) throw error;
         setPipelines(data || []);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -57,8 +57,8 @@ export const useComboPacks = (dietType?: string) => {
         const { data, error } = await query;
         if (error) throw error;
         setCombos(data || []);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -91,8 +91,8 @@ export const useSnackPacks = (dietType?: string) => {
         const { data, error } = await query;
         if (error) throw error;
         setSnacks(data || []);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -121,8 +121,8 @@ export const useServiceConfigs = (configType: string) => {
 
         if (error) throw error;
         setConfigs(data || []);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }

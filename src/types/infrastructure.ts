@@ -35,5 +35,5 @@ export interface ServiceConfig {
   config_type: string;
   key: string;
   label: string;
-  value: any;
+  value: unknown;
 }

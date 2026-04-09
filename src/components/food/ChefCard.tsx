@@ -3,7 +3,19 @@ import { Link } from "react-router-dom";
 import { CheckCircle, MapPin, Star } from "lucide-react";
 
 interface ChefCardProps {
-  chef: any;
+  chef: {
+    id: string | number;
+    name?: string;
+    is_verified?: boolean;
+    region?: string;
+    city?: string;
+    rating?: number | null;
+    total_reviews?: number;
+    specialty?: string;
+    is_available?: boolean;
+    years_exp?: number;
+    [key: string]: unknown;
+  };
   index: number;
 }
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowLeft, ArrowDownUp, Loader2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useComboPacks } from "@/hooks/useServiceInfrastructure";
+import type { ComboPack } from "@/types/infrastructure";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/usePlattrToast";
@@ -12,7 +13,7 @@ const CombosPage = () => {
   const { addItem } = useCart();
   const { addToast } = useToast();
 
-  const handleAddToCart = (combo: any) => {
+  const handleAddToCart = (combo: ComboPack) => {
     addItem({
       id: combo.id,
       name: combo.name,

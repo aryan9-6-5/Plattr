@@ -13,6 +13,7 @@ export type AuthContextType = {
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,

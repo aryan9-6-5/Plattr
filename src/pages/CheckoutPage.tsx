@@ -141,6 +141,7 @@ const CheckoutPage = () => {
     if (notes && !form.special_notes) {
       setForm(prev => ({ ...prev, special_notes: notes }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
   // Pre-fill from profile

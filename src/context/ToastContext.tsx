@@ -37,6 +37,7 @@ const toastReducer = (state: Toast[], action: ToastAction): Toast[] => {
 
 // ── CONTEXT ─────────────────────────────────────────────────────────────────
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ToastContext = createContext<ToastContextValue | null>(null);
 
 // ── TOAST ITEM ───────────────────────────────────────────────────────────────

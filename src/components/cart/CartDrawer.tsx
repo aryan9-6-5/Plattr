@@ -42,6 +42,7 @@ const CartDrawer = () => {
     if (isOpen) {
       closeCart()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
   return createPortal(

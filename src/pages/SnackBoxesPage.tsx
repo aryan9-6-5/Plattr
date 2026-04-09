@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search, ChevronDown, Package, Loader2, ArrowLeft, ShoppingBag } from "lucide-react";
 import { useSnackPacks } from "@/hooks/useServiceInfrastructure";
+import type { SnackPack } from "@/types/infrastructure";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/hooks/useCart";
@@ -23,7 +24,7 @@ const SnackBoxesPage = () => {
     return matchesPortion && matchesSearch;
   });
 
-  const handleAddToCart = (snack: any) => {
+  const handleAddToCart = (snack: SnackPack) => {
     addItem({
       id: snack.id,
       name: snack.name,
@@ -33,6 +34,8 @@ const SnackBoxesPage = () => {
       source_id: "snack-pack",
       source_name: "Plattr Studio",
       price: Number(snack.price),
+      bulk_price: null,
+      min_bulk_qty: 1,
       quantity: 1,
       image_url: snack.image_url,
       diet_type: snack.diet_type,

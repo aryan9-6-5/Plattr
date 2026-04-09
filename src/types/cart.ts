@@ -14,6 +14,7 @@ export type CartItem = {
   diet_type:    string        // VEG | NON_VEG | etc.
   spice_level:  string        // for display in cart
   is_spicy:     boolean
+  sub_items?: { id: string; name: string }[] // For MealBox/Combos
 }
 
 export type CartState = {

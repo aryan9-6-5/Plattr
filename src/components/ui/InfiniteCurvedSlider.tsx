@@ -15,7 +15,7 @@ interface InfiniteCurvedSliderProps {
 
 const InfiniteCurvedSlider = ({ 
   items, 
-  speed = 3.5, 
+  speed = 8.0, 
   direction = "left" 
 }: InfiniteCurvedSliderProps) => {
   const [metrics, setMetrics] = useState({ width: 320, gap: 40 });

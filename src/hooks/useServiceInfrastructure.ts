@@ -133,3 +133,34 @@ export const useServiceConfigs = (configType: string) => {
 
   return { configs, loading, error };
 };
+
+export const useDietaryOptions = () => {
+  const [options, setOptions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("dishes")
+          .select("diet_type")
+          .eq("is_available", true);
+
+        if (error) throw error;
+        
+        // Extract unique diet_type values
+        const uniqueDietTypes = Array.from(new Set(data?.map(d => d.diet_type) || []));
+        setOptions(uniqueDietTypes);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : String(err));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOptions();
+  }, []);
+
+  return { options, loading, error };
+};

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, ArrowDownUp, Loader2, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ArrowDownUp, Loader2, ShoppingBag, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useComboPacks } from "@/hooks/useServiceInfrastructure";
 import type { ComboPack } from "@/types/infrastructure";
@@ -106,11 +106,21 @@ const CombosPage = () => {
                         `} />
                     </div>
                     
-                    <img 
-                      src={combo.image_url} 
-                      alt={combo.name} 
-                      className="w-full h-full object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.2)] z-10 group-hover:scale-110 transition-transform duration-1000" 
-                    />
+                      <img 
+                        src={combo.image_url || `https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][idx % 4]}?q=80&w=800&auto=format&fit=crop`}
+                        alt={combo.name}
+                        onError={(e) => {
+                          const fallback = `https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][idx % 4]}?q=80&w=800&auto=format&fit=crop`;
+                          (e.currentTarget as HTMLImageElement).src = fallback;
+                        }}
+                        className="w-full h-full object-cover opacity-90 z-10 rounded-xl"
+                      />
+                    
+                    {(combo.price > 1500 || idx % 3 === 0) && (
+                      <div className="absolute top-8 right-8 z-30 px-3 py-1.5 rounded-full bg-yellow-400 border border-yellow-500 text-[10px] font-black uppercase tracking-widest text-yellow-900 flex items-center gap-1.5 shadow-sm">
+                        <Zap size={12} className="fill-yellow-900" /> Best Seller
+                      </div>
+                    )}
                     
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   </div>

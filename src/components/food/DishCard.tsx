@@ -42,6 +42,15 @@ const DishCard = ({ dish, index, showQuickAdd, onQuickAdd }: DishCardProps) => {
     dish.source_type === "CLOUD_KITCHEN" ? "bg-[#1B4332] text-white" :
     "bg-white text-[#1B2D24] border border-[#D4E8DA]";
 
+  const PREMIUM_FOOD_PHOTOS = [
+    '1546069901-ba9599a7e63c',
+    '1512621776951-a57141f2eefd',
+    '1543353071-103f07580dd7',
+    '1606787366850-de6330128bfc'
+  ];
+
+  const fallbackImage = `https://images.unsplash.com/photo-${PREMIUM_FOOD_PHOTOS[index % 4]}?q=80&w=800&auto=format&fit=crop`;
+
   return (
     <motion.div
       layout
@@ -51,14 +60,20 @@ const DishCard = ({ dish, index, showQuickAdd, onQuickAdd }: DishCardProps) => {
       className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 h-full transform-gpu"
     >
       <Link to={`/dish/${dish.id}`} className="flex flex-col h-full">
-        {/* Image Section - Window Scale Effect */}
         <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#EEF8F1] flex items-center justify-center">
           <motion.div 
             className="w-full h-full flex items-center justify-center transform-gpu"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
           >
-            <span className="text-5xl">{emoji}</span>
+              <img 
+                src={dish.image_url || fallbackImage}
+                alt={dish.name}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = fallbackImage;
+                }}
+                className="w-full h-full object-cover opacity-90"
+              />
           </motion.div>
           
           {/* Overlays */}
@@ -67,6 +82,12 @@ const DishCard = ({ dish, index, showQuickAdd, onQuickAdd }: DishCardProps) => {
               <SourceIcon className="w-3 h-3" />
               {sourceLabel}
             </span>
+            {isBestSeller && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm bg-yellow-400 text-yellow-900">
+                <Zap className="w-3 h-3" />
+                Best Seller
+              </span>
+            )}
           </div>
 
           {/* Spice Indicator */}

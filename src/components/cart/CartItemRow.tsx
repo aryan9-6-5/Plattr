@@ -63,6 +63,20 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
           </span>
         )}
 
+        {/* MEALBOX SUB-ITEMS */}
+        {item.sub_items && item.sub_items.length > 0 && (
+          <div className="mt-2 space-y-1">
+            <p className="text-[9px] font-black uppercase tracking-widest text-[#7A9A88]">Inside this box:</p>
+            <div className="flex flex-wrap gap-1.5">
+              {item.sub_items.map((sub, idx) => (
+                <span key={idx} className="text-[10px] bg-[#EEF8F1] text-[#2D6A4F] px-2 py-0.5 rounded-lg border border-[#D4E8DA]">
+                  {sub.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* QUANTITY + PRICE ROW */}
         <div className="flex items-center justify-between mt-2">
 

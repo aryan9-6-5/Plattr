@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, ChevronDown, Package, Loader2, ArrowLeft, ShoppingBag } from "lucide-react";
+import { Search, ChevronDown, Package, Loader2, ArrowLeft, ShoppingBag, Zap } from "lucide-react";
 import { useSnackPacks } from "@/hooks/useServiceInfrastructure";
 import type { SnackPack } from "@/types/infrastructure";
 import { Link } from "react-router-dom";
@@ -142,9 +142,24 @@ const SnackBoxesPage = () => {
                     className="bg-white rounded-[40px] overflow-hidden border border-[#E5E1D8] shadow-sm hover:shadow-[0_40px_100px_-20px_rgba(27,67,50,0.12)] transition-all duration-700 group flex flex-col"
                   >
                     <div className="bg-[#F3F2EE] aspect-square relative flex items-center justify-center p-10 overflow-hidden">
-                      <img src={snack.image_url} alt={snack.name} className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.1)] group-hover:scale-110 transition-transform duration-1000" />
-                      <div className="absolute top-6 right-6 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-[#E5E1D8] text-[10px] font-black uppercase tracking-widest text-[#1B4332]">
-                        {snack.serves} Serves
+                        <img 
+                          src={snack.image_url || `https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][idx % 4]}?q=80&w=800&auto=format&fit=crop`}
+                          alt={snack.name}
+                          onError={(e) => {
+                            const fallback = `https://images.unsplash.com/photo-${['1546069901-ba9599a7e63c', '1512621776951-a57141f2eefd', '1543353071-103f07580dd7', '1606787366850-de6330128bfc'][idx % 4]}?q=80&w=800&auto=format&fit=crop`;
+                            (e.currentTarget as HTMLImageElement).src = fallback;
+                          }}
+                          className="w-full h-full object-cover opacity-90 rounded-xl"
+                        />
+                      <div className="absolute top-6 right-6 flex flex-col gap-2 items-end">
+                        <div className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm border border-[#E5E1D8] text-[10px] font-black uppercase tracking-widest text-[#1B4332]">
+                          {snack.serves} Serves
+                        </div>
+                        {(snack.price > 2000 || idx % 3 === 0) && (
+                          <div className="px-3 py-1 rounded-full bg-yellow-400 border border-yellow-500 text-[10px] font-black uppercase tracking-widest text-yellow-900 flex items-center gap-1 shadow-sm">
+                            <Zap size={10} className="fill-yellow-900" /> Best Seller
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="p-8 flex flex-col flex-1">

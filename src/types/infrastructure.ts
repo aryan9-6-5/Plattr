@@ -37,3 +37,8 @@ export interface ServiceConfig {
   label: string;
   value: unknown;
 }
+
+export interface TrayValue {
+  slots: number;
+  imgSrc?: string;
+}

@@ -41,16 +41,16 @@ const CtaSection = () => {
           </p>
 
           {/* Button group */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 mt-8">
             <Link
               to="/catalog"
-              className="inline-flex items-center gap-2 h-13 px-8 py-3 rounded-full text-sm font-semibold bg-[#2D6A4F] hover:bg-[#1B4332] text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              className="inline-flex justify-center items-center gap-2 px-8 py-3.5 rounded-full text-sm font-bold bg-white hover:bg-gray-100 text-[#1B2D24] shadow-lg hover:shadow-xl transition-all duration-300"
             >
               Start Ordering <ArrowRight size={16} />
             </Link>
             <Link
               to="/for-business"
-              className="inline-flex items-center gap-2 h-13 px-8 py-3 rounded-full text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/25 hover:border-white/50 transition-all duration-200"
+              className="inline-flex justify-center items-center gap-2 px-8 py-3.5 rounded-full text-sm font-bold bg-white/10 hover:bg-white/20 text-white border border-white/25 hover:border-white/50 transition-all duration-300"
             >
               <MessageSquare size={16} />
               Talk to Us
@@ -58,7 +58,7 @@ const CtaSection = () => {
           </div>
 
           {/* Trust signals */}
-          <div className="flex items-center justify-center flex-wrap gap-6 mt-10 text-xs text-white/50">
+          <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-12 text-[11px] uppercase tracking-widest font-bold text-white/50">
             {trustSignals.map((s) => (
               <span key={s}>{s}</span>
             ))}

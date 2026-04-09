@@ -1,126 +1,143 @@
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { X, Check, TrendingDown, Users, Scale, Eye } from "lucide-react";
-import RevealOnScroll from "./RevealOnScroll";
+import { ChefHat, ShieldCheck, Truck, Utensils, Heart, ArrowDown } from "lucide-react";
 
-const problems = [
-  { icon: TrendingDown, title: "Inconsistent quality across vendors", text: "Every order is a gamble — no standards, no checks." },
-  { icon: Users,        title: "No authentic regional options at scale", text: "Generic menus ignore India's rich culinary diversity." },
-  { icon: Scale,        title: "Expensive for bulk orders", text: "Corporate and event orders face steep per-unit pricing." },
-  { icon: Eye,          title: "No transparency in food source", text: "You never know who cooked your food or how." },
+const pipelineSteps = [
+  { 
+    icon: ChefHat, 
+    title: "Artisanal Sourcing", 
+    text: "Direct partnerships with certified home chefs specializing in authentic regional cuisines.",
+    stat: "40+ Cuisines"
+  },
+  { 
+    icon: ShieldCheck, 
+    title: "The Quality Filter", 
+    text: "Rigorous 3-step vetting for every chef. Random batch testing at our central lab.",
+    stat: "Zero Failure Rate"
+  },
+  { 
+    icon: Utensils, 
+    title: "Precision Prep", 
+    text: "Meals are prepared in small batches, preserving the 'Ghar jaisa' taste while meeting FSSAI standards.",
+    stat: "FSSAI Certified"
+  },
+  { 
+    icon: Truck, 
+    title: "Optimized Logistics", 
+    text: "Smart-routed bulk delivery that reduces shipping costs by 30% for corporate clients.",
+    stat: "30% Lower Cost"
+  },
 ];
 
-const solutions = [
-  { icon: Check, title: "Verified home chefs with quality checks", text: "Every chef is vetted. Every batch is inspected before dispatch." },
-  { icon: Check, title: "15+ regional cuisines, authentic recipes", text: "Curated regional menus sourced from specialist home chefs." },
-  { icon: Check, title: "Cloud kitchen model reduces cost by 40%", text: "Distributed prep means better economics for bulk orders." },
-  { icon: Check, title: "Full supply chain visibility: Chef → You", text: "Every meal is traceable from source to your door." },
-];
-
-const ProblemSolution = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+const SupplyPipelineVisualizer = () => {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
-  const lineHeight = useTransform(scrollYProgress, [0.1, 0.6], ["0%", "100%"]);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end end"]
+  });
+
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section className="py-20 md:py-28 bg-[#1B4332] relative" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={containerRef}>
+    <section className="py-16 md:py-24 bg-[#F6FFF8] relative overflow-hidden" ref={containerRef}>
+      {/* Decorative background element */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-[#1B4332]/[0.02] -skew-x-12 transform origin-top-right pointer-events-none" />
 
-        {/* Section header */}
-        <RevealOnScroll direction="up" className="text-center mb-14">
-          <span className="text-xs font-bold tracking-widest uppercase text-white/50 mb-3 block">
-            Why Plattr Exists
-          </span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
-            The problem with food today
-          </h2>
-          <p className="text-white/60 max-w-md mx-auto mt-4 text-base">
-            And how Plattr fixes the system — not just the surface.
-          </p>
-        </RevealOnScroll>
-
-        {/* Two-panel grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          {/* Left panel — Problems */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        
+        {/* Header Section */}
+        <div className="max-w-3xl mb-20 md:mb-32">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="rounded-3xl p-8"
-            style={{ background: "rgba(0,0,0,0.25)" }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <p className="text-xs font-bold tracking-widest uppercase text-red-400 mb-6">
-              The Old Way
-            </p>
-            <div className="space-y-0">
-              {problems.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.1 + i * 0.06, ease: [0.4, 0, 0.2, 1] }}
-                  className="flex items-start gap-4 py-5 border-b border-white/10 last:border-0"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <item.icon className="w-5 h-5 text-red-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">{item.title}</p>
-                    <p className="text-sm text-white/55 leading-relaxed mt-1">{item.text}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
 
-          {/* Right panel — Solutions */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
-            className="rounded-3xl p-8"
-            style={{ background: "rgba(255,255,255,0.06)" }}
-          >
-            <p className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-6">
-              The Plattr Way
+            <h2 className="text-4xl md:text-6xl font-serif font-bold text-[#1B2D24] leading-[1.1] mb-8">
+              A transparent system,<br />not just a delivery app.
+            </h2>
+            <p className="text-lg text-[#4A6357] leading-relaxed max-w-xl font-sans">
+              We've re-engineered the food supply chain to bring artisanal quality to industrial scale. Follow the journey from a chef's kitchen to your table.
             </p>
-            <div className="space-y-0">
-              {solutions.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.2 + i * 0.06, ease: [0.4, 0, 0.2, 1] }}
-                  className="flex items-start gap-4 py-5 border-b border-white/10 last:border-0"
-                >
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(45,106,79,0.4)" }}>
-                    <item.icon className="w-5 h-5 text-[#52B788]" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">{item.title}</p>
-                    <p className="text-sm text-white/65 leading-relaxed mt-1">{item.text}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         </div>
 
-        {/* Transition hint */}
-        <motion.p
+        {/* Pipeline Body */}
+        <div className="relative">
+          {/* Central Connecting Line (SVG) */}
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 md:-ml-0.5">
+            <svg className="w-full h-full" preserveAspectRatio="none">
+              <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#D4E8DA" strokeWidth="2" strokeDasharray="8 8" />
+              <motion.line 
+                x1="50%" y1="0" x2="50%" y2="100%" 
+                stroke="#1B4332" 
+                strokeWidth="2"
+                style={{ pathLength }}
+              />
+            </svg>
+          </div>
+
+          {/* Pipeline Nodes */}
+          <div className="space-y-24 md:space-y-32 relative">
+            {pipelineSteps.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.7, delay: i * 0.1 }}
+                className={`flex flex-col md:flex-row items-start gap-8 md:gap-0 ${i % 2 === 0 ? '' : 'md:flex-row-reverse'}`}
+              >
+                {/* Content Side */}
+                <div className={`w-full md:w-[42%] ${i % 2 === 0 ? 'text-left' : 'md:text-right'}`}>
+                  <div className={`inline-flex items-center justify-center p-4 rounded-2xl bg-white shadow-md border border-[#D4E8DA] mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                    <step.icon className="w-8 h-8 text-[#1B4332]" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-[#1B2D24] mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-[15px] text-[#4A6357] leading-relaxed mb-6 font-sans">
+                    {step.text}
+                  </p>
+                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1B4332]/5 text-[#1B4332] text-xs font-bold uppercase tracking-wider font-sans`}>
+                    {step.stat}
+                  </div>
+                </div>
+
+                {/* Node Side (Center) */}
+                <div className="hidden md:flex w-[16%] justify-center mt-12">
+                   <div className="w-12 h-12 rounded-full bg-white border-4 border-[#1B4332] shadow-xl z-10 flex items-center justify-center">
+                     <span className="text-[14px] font-black text-[#1B4332]">{i + 1}</span>
+                   </div>
+                </div>
+
+                {/* Mobile/Empty Side */}
+                <div className="w-full md:w-[42%]" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Closing Hint */}
+        <motion.div 
+          className="mt-32 md:mt-48 text-center"
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 1.0, duration: 0.6 }}
-          className="text-center mt-14 text-sm text-white/40"
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
         >
-          So how does the system actually work? ↓
-        </motion.p>
+          <div className="inline-block p-6 rounded-3xl bg-[#1B4332] text-white shadow-2xl hover:scale-105 transition-transform cursor-pointer">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] mb-2 font-sans">Curious for more?</p>
+            <h4 className="text-2xl font-serif font-bold flex items-center gap-3">
+              Explore Our Catalog
+              <ArrowDown className="w-6 h-6 animate-bounce" />
+            </h4>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
 };
 
-export default ProblemSolution;
+export default SupplyPipelineVisualizer;

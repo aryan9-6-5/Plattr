@@ -85,19 +85,17 @@ const CatalogSection = () => {
   }, [dishes]);
 
   return (
-    <section id="catalog" className="bg-[#EEF8F1]" ref={ref}>
+    <section id="catalog" className="bg-[#F6FFF8]" ref={ref}>
 
-      {/* Section header — full padding above sticky bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28 pb-8">
+      {/* Section header */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pt-16 md:pt-24 pb-12">
         <RevealOnScroll direction="up" className="text-center mb-0">
-          <span className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-3 block">
-            Freshly Prepared
-          </span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#1B2D24] leading-tight">
-            Today's Menu
+
+          <h2 className="text-5xl md:text-6xl font-serif font-bold text-[#1B2D24] leading-tight mb-8">
+            The Daily Menu
           </h2>
-          <p className="text-[#4A6357] max-w-lg mx-auto mt-4 text-base">
-            Every dish is prepared fresh today by our verified network of home chefs and cloud kitchens. A structured catalog — not a random listing.
+          <p className="text-lg text-[#4A6357] max-w-xl mx-auto mt-4 font-sans leading-relaxed">
+            Every dish is prepared fresh today by our verified artisans. High-end sourcing meets authentic regional heritage.
           </p>
         </RevealOnScroll>
 
@@ -105,99 +103,103 @@ const CatalogSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex justify-center gap-10 mt-8"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center gap-12 md:gap-20 mt-12 border-b border-[#D4E8DA] pb-12"
         >
           {[
-            { n: dishes.length,                                   label: "Dishes" },
+            { n: dishes.length,                                   label: "Items" },
             { n: grouped.length,                                  label: "Cuisines" },
-            { n: new Set(dishes.map(d => d.source_type)).size,    label: "Sources" },
+            { n: new Set(dishes.map(d => d.source_type)).size,    label: "Channels" },
           ].map(s => (
             <div key={s.label} className="text-center">
-              <span className="text-2xl font-bold text-[#2D6A4F] font-serif">{s.n}</span>
-              <span className="block text-xs font-medium text-[#7A9A88] mt-0.5">{s.label}</span>
+              <span className="text-3xl font-bold text-[#1B4332] font-serif">{s.n}</span>
+              <span className="block text-[11px] font-black uppercase tracking-[0.1em] text-[#7A9A88] mt-1">{s.label}</span>
             </div>
           ))}
         </motion.div>
       </div>
 
       {/* Sticky Filter Bar */}
-      <div className="sticky top-0 z-20 bg-[#EEF8F1]/95 backdrop-blur-sm border-b border-[#D4E8DA]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-3">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-8 py-2">
-            {/* Meal type dropdown */}
-            <div className="flex items-center justify-between sm:justify-start gap-3">
-              <span className="text-xs font-bold tracking-widest uppercase text-[#7A9A88]">Type</span>
-              <div className="relative">
-                <select
-                  value={mealType}
-                  onChange={(e) => setMealType(e.target.value)}
-                  className="appearance-none bg-white border border-[#D4E8DA] text-[#1B2D24] text-sm rounded-full pl-5 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-[#52B788] focus:border-transparent cursor-pointer font-semibold shadow-sm hover:border-[#52B788] transition-colors"
-                >
-                  {mealTypes.map(opt => <option key={opt} value={opt}>{opt === "All" ? "All Types" : opt}</option>)}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#2D6A4F]">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
+      <div className="sticky top-0 z-30 bg-[#F6FFF8]/90 backdrop-blur-xl border-b border-[#D4E8DA]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-6">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
+            <div className="flex items-center gap-10">
+              {/* Meal type filter */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-black tracking-widest uppercase text-[#7A9A88]">Meal Type</span>
+                <div className="flex gap-2">
+                  {mealTypes.slice(0, 4).map(opt => (
+                    <button
+                      key={opt}
+                      onClick={() => setMealType(opt)}
+                      className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${mealType === opt ? 'bg-[#1B4332] text-white shadow-lg' : 'bg-transparent text-[#4A6357] hover:text-[#1B4332]'}`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-px h-10 bg-[#D4E8DA] hidden md:block" />
+
+              {/* Source filter */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-black tracking-widest uppercase text-[#7A9A88]">Pipeline</span>
+                <div className="relative">
+                  <select
+                    value={source}
+                    onChange={(e) => setSource(e.target.value)}
+                    className="appearance-none bg-transparent text-[#1B2D24] text-sm font-bold pr-8 py-1 focus:outline-none cursor-pointer hover:text-[#1B4332] transition-colors"
+                  >
+                    {sources.map(opt => <option key={opt} value={opt}>{opt === "All" ? "All Sources" : opt}</option>)}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center text-[#2D6A4F]">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Source dropdown */}
-            <div className="flex items-center justify-between sm:justify-start gap-3">
-              <span className="text-xs font-bold tracking-widest uppercase text-[#7A9A88]">Source</span>
-              <div className="relative">
-                <select
-                  value={source}
-                  onChange={(e) => setSource(e.target.value)}
-                  className="appearance-none bg-white border border-[#D4E8DA] text-[#1B2D24] text-sm rounded-full pl-5 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-[#52B788] focus:border-transparent cursor-pointer font-semibold shadow-sm hover:border-[#52B788] transition-colors"
-                >
-                  {sources.map(opt => <option key={opt} value={opt}>{opt === "All" ? "All Sources" : opt}</option>)}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#2D6A4F]">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </div>
-              </div>
+            <div className="text-[11px] font-black uppercase tracking-widest text-[#7A9A88]">
+              {dishes.length} Results
             </div>
           </div>
         </div>
       </div>
 
       {/* Catalog grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-24">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-16 pb-32">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-24">
-            <Loader2 className="w-8 h-8 animate-spin text-[#2D6A4F] mb-4" />
-            <p className="text-[#7A9A88] font-medium">Loading catalog...</p>
+          <div className="flex flex-col items-center justify-center py-32">
+            <Loader2 className="w-10 h-10 animate-spin text-[#1B4332] mb-6" />
+            <p className="text-[13px] font-black uppercase tracking-widest text-[#7A9A88]">Acquiring Menu Data...</p>
           </div>
         ) : (
           <AnimatePresence mode="wait">
             <motion.div
               key={`${mealType}-${source}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
             >
               {grouped.length === 0 ? (
-                <p className="text-center text-[#7A9A88] py-16">No dishes match the selected filters.</p>
+                <p className="text-center text-[#7A9A88] py-32 font-serif text-xl italic">No matches found in the current curation.</p>
               ) : (
-                <div className="space-y-16">
+                <div className="space-y-24">
                   {grouped.map(([cuisine, cuisineDishes]) => (
                     <div key={cuisine}>
                       {/* Cuisine group header */}
-                      <div className="flex items-center gap-4 mb-8">
-                        <div className="w-1 h-8 rounded-full bg-[#52B788] flex-shrink-0" />
-                        <h3 className="text-xl font-semibold text-[#1B2D24] tracking-tight">{cuisine}</h3>
-                        <span className="text-sm font-medium text-[#7A9A88]">({cuisineDishes.length} dishes)</span>
+                      <div className="flex items-center gap-6 mb-12">
+                        <h3 className="text-3xl md:text-4xl font-serif font-bold text-[#1B2D24] tracking-tight">{cuisine}</h3>
                         <div className="flex-1 h-px bg-[#D4E8DA]" />
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#7A9A88]">{cuisineDishes.length} Items</span>
                       </div>
 
                       {/* Dish card grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
                         {cuisineDishes.map((dish, ci) => (
                           <DishCard 
                             key={dish.id} 
@@ -219,13 +221,13 @@ const CatalogSection = () => {
 
       {/* Explore More Button */}
       {!loading && dishes.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 flex justify-center">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pb-32 flex justify-center">
           <Link
             to="/catalog"
-            className="group flex items-center gap-3 px-10 py-5 bg-[#1B2D24] text-white rounded-full text-lg font-bold shadow-2xl hover:bg-[#2D6A4F] transition-all duration-300 transform hover:-translate-y-1"
+            className="group flex items-center gap-5 px-12 py-6 bg-[#1B4332] text-white rounded-full text-lg font-bold shadow-2xl hover:bg-[#2D6A4F] transition-all duration-500 transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            Explore More Dishes
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+            The Full Collection
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />
           </Link>
         </div>
       )}

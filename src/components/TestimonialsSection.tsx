@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import RevealOnScroll from "./RevealOnScroll";
 
 const testimonials = [
   {
@@ -30,7 +28,7 @@ const TestimonialsSection = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
@@ -38,76 +36,52 @@ const TestimonialsSection = () => {
   const prev = () => setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section className="py-24 md:py-32 bg-[#0F2318] text-white overflow-hidden">
-      <div className="max-w-4xl mx-auto px-6">
-        <RevealOnScroll direction="up" className="text-center mb-16">
-          <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#52B788] mb-4 block">
-            Testimonials
-          </span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">
-            Trusted by thousands
-          </h2>
-          <p className="text-white/40 max-w-xl mx-auto text-lg">
-            From daily office goers to corporate event planners.
-          </p>
-        </RevealOnScroll>
+    <section className="py-28 md:py-40 bg-[#FDFCF8]">
+      <div className="max-w-5xl mx-auto px-6">
 
-        <div className="relative">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5, ease: "circOut" }}
-              className="bg-white/5 rounded-[40px] p-10 md:p-16 border border-white/10 relative backdrop-blur-sm"
-            >
-              <Quote className="w-16 h-16 text-[#52B788]/20 absolute -top-8 -left-2 rotate-180" />
-              
-              <div className="mb-10 text-center">
-                <span className="text-[10px] uppercase tracking-widest font-bold text-[#52B788] px-4 py-1.5 rounded-full bg-[#52B788]/20 ring-1 ring-[#52B788]/40">
-                  {testimonials[index].type}
-                </span>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center"
+          >
+            {/* The quote IS the section. No card. No box. */}
+            <p className="text-3xl md:text-5xl lg:text-6xl text-[#1B2D24] leading-[1.15] font-serif italic tracking-tight max-w-4xl mx-auto mb-16">
+              "{testimonials[index].quote}"
+            </p>
+            
+            <div className="flex items-center justify-center gap-4">
+              <div className="w-8 h-px bg-[#1B4332]/30" />
+              <div>
+                <span className="text-sm font-bold text-[#1B2D24]">{testimonials[index].author}</span>
+                <span className="text-sm text-[#7A9A88] ml-2">— {testimonials[index].role}</span>
               </div>
-              
-              <p className="text-xl md:text-3xl text-white/90 leading-tight mb-12 italic font-serif text-center">
-                "{testimonials[index].quote}"
-              </p>
-              
-              <div className="text-center">
-                <p className="font-bold text-lg text-white">{testimonials[index].author}</p>
-                <p className="text-sm text-white/40 mt-1 uppercase tracking-widest font-medium">
-                  {testimonials[index].role}
-                </p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Controls */}
-          <div className="flex items-center justify-between mt-12 px-4">
-            <button 
-              onClick={prev}
-              className="p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <div className="flex items-center gap-2">
-              {testimonials.map((_, i) => (
-                <button 
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-500 
-                             ${index === i ? "w-8 bg-[#52B788]" : "w-1.5 bg-white/20"}`}
-                />
-              ))}
+              <div className="w-8 h-px bg-[#1B4332]/30" />
             </div>
-            <button 
-              onClick={next}
-              className="p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-            >
-              <ChevronRight size={24} />
-            </button>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Minimal controls */}
+        <div className="flex items-center justify-center gap-8 mt-16">
+          <button onClick={prev} className="text-sm text-[#7A9A88] hover:text-[#1B4332] transition-colors font-medium">
+            ←  Prev
+          </button>
+          <div className="flex items-center gap-2">
+            {testimonials.map((_, i) => (
+              <button 
+                key={i}
+                onClick={() => setIndex(i)}
+                className={`h-1 rounded-full transition-all duration-500 
+                           ${index === i ? "w-8 bg-[#1B4332]" : "w-2 bg-[#D4E8DA]"}`}
+              />
+            ))}
           </div>
+          <button onClick={next} className="text-sm text-[#7A9A88] hover:text-[#1B4332] transition-colors font-medium">
+            Next  →
+          </button>
         </div>
       </div>
     </section>

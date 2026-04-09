@@ -1,92 +1,87 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Leaf, Clock, ThumbsUp, Wallet, ChevronLeft, ChevronRight } from "lucide-react";
-import RevealOnScroll from "./RevealOnScroll";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
-const features = [
+const metrics = [
   {
-    icon: Leaf,
-    title: "Fresh Ingredients",
-    desc: "Every dish is prepared using fresh, locally-sourced ingredients on the day of delivery.",
+    number: "40+",
+    label: "Verified Suppliers",
+    detail: "Same-day sourced from regional micro-markets",
   },
   {
-    icon: Clock,
-    title: "Always on Time",
-    desc: "Our delivery network is optimized for exact slot timings. Daily tiffin or 500-person event.",
+    number: "98.4%",
+    label: "On-Time Rate",
+    detail: "Within a strict 15-minute thermal window",
   },
   {
-    icon: ThumbsUp,
-    title: "FSSAI Verified",
-    desc: "100% of our network partners are audited for hygiene and hold active FSSAI credentials.",
+    number: "100%",
+    label: "FSSAI Audited",
+    detail: "Monthly kitchen inspections, no exceptions",
   },
   {
-    icon: Wallet,
-    title: "Transparent Pricing",
-    desc: "No hidden fees, no surge pricing. Bulk orders qualify for automatic volume discounts.",
+    number: "₹0",
+    label: "Surge Pricing",
+    detail: "Flat institutional rates, always",
   },
 ];
 
-const WhyPlattrSection = () => {
-  const [scrollWidth, setScrollWidth] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (carouselRef.current) {
-      setScrollWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
-    }
-  }, []);
+const MetricBlock = ({ metric, index }: { metric: typeof metrics[0], index: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="bg-white py-24 md:py-32 border-t border-[#D4E8DA] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <RevealOnScroll direction="up" className="text-center mb-16">
-          <span className="text-[10px] font-black tracking-[0.3em] uppercase text-[#52B788] mb-4 block">
-            Why Choose Us
-          </span>
-          <h2 className="text-4xl md:text-6xl font-serif font-bold text-[#1B2D24] leading-[1.1] tracking-tight">
-            Built for reliability
-          </h2>
-          <p className="text-[#4A6357] max-w-xl mx-auto mt-6 text-lg font-medium">
-            We handle the complexity so you can focus on eating. Quality, hygiene, and timely delivery guaranteed.
-          </p>
-        </RevealOnScroll>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      className="group"
+    >
+      <span className="text-6xl sm:text-7xl md:text-8xl lg:text-[100px] font-serif font-bold text-white leading-none tracking-tighter block transition-all duration-500 group-hover:text-[#52B788] group-hover:scale-[1.03] origin-left">
+        {metric.number}
+      </span>
 
-        <motion.div 
-          ref={carouselRef}
-          className="cursor-grab active:cursor-grabbing"
-        >
-          <motion.div 
-            drag="x"
-            dragConstraints={{ right: 0, left: -scrollWidth }}
-            className="flex gap-6 pb-12"
+      <div className="w-12 h-px bg-white/15 mt-5 mb-4 transition-all duration-700 group-hover:w-full group-hover:bg-[#52B788]/40" />
+
+      <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-white/80 mb-2">
+        {metric.label}
+      </h3>
+      <p className="text-sm text-white/30 leading-relaxed max-w-[240px]">
+        {metric.detail}
+      </p>
+    </motion.div>
+  );
+};
+
+const WhyPlattrSection = () => {
+  return (
+    <section className="relative bg-[#0A1A10] py-28 md:py-36 overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="mb-24 md:mb-28">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white leading-[0.9] tracking-tighter max-w-4xl"
           >
-            {features.map((feat, index) => (
-              <motion.div
-                key={feat.title}
-                className="min-w-[300px] md:min-w-[350px] bg-[#F6FFF8] rounded-[32px] p-10 border border-[#D4E8DA] shadow-sm transform transition-all duration-300 hover:shadow-xl relative overflow-hidden group select-none"
-              >
-                <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#D8F3DC] rounded-full scale-0 group-hover:scale-110 transition-transform duration-500 origin-center opacity-40" />
-                
-                <div className="w-16 h-16 bg-[#2D6A4F] text-white rounded-[20px] flex items-center justify-center mb-10 shadow-lg relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
-                  <feat.icon size={32} />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-[#1B2D24] mb-4 relative z-10">{feat.title}</h3>
-                <p className="text-base text-[#4A6357] leading-relaxed relative z-10 font-medium">
-                  {feat.desc}
-                </p>
-
-                <div className="mt-8 flex items-center gap-2 text-[#2D6A4F] font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Read More <ChevronRight size={14} />
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        <div className="flex items-center justify-center gap-2 text-[#7A9A88] text-[10px] font-bold uppercase tracking-widest mt-4">
-          <ChevronLeft size={16} className="animate-pulse" /> Drag to explore <ChevronRight size={16} className="animate-pulse" />
+            We don't claim<br />reliability.{" "}
+            <span className="italic text-[#52B788]/50">We prove it.</span>
+          </motion.h2>
         </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 lg:gap-x-12 gap-y-16">
+          {metrics.map((metric, idx) => (
+            <MetricBlock key={metric.label} metric={metric} index={idx} />
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-24 h-px bg-gradient-to-r from-transparent via-white/8 to-transparent origin-left"
+        />
       </div>
     </section>
   );

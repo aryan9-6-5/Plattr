@@ -57,10 +57,10 @@ const DishCard = ({ dish, index, showQuickAdd, onQuickAdd }: DishCardProps) => {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index, 8) * 0.04 }}
-      className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 h-full transform-gpu"
+      className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-plattr-border shadow-plattr hover:shadow-plattr-elevated transition-all duration-500 h-full transform-gpu"
     >
       <Link to={`/dish/${dish.id}`} className="flex flex-col h-full">
-        <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#EEF8F1] flex items-center justify-center">
+        <div className="relative w-full aspect-[4/3] overflow-hidden bg-plattr-subtle flex items-center justify-center">
           <motion.div 
             className="w-full h-full flex items-center justify-center transform-gpu"
             whileHover={{ scale: 1.05 }}
@@ -77,67 +77,73 @@ const DishCard = ({ dish, index, showQuickAdd, onQuickAdd }: DishCardProps) => {
           </motion.div>
           
           {/* Overlays */}
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${badgeClass}`}>
-              <SourceIcon className="w-3 h-3" />
-              {sourceLabel}
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-2 z-10">
+            <span className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-wider shadow-lg border border-white/10 ${badgeClass}`}>
+              <SourceIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              <span className="hidden xs:inline">{sourceLabel}</span>
             </span>
-            {isBestSeller && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm bg-yellow-400 text-yellow-900">
-                <Zap className="w-3 h-3" />
-                Best Seller
-              </span>
-            )}
           </div>
 
-          {/* Spice Indicator */}
-          {dish.is_spicy && (
-            <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm border border-black/5 flex items-center justify-center shadow-md">
-              <Flame className="w-4 h-4 text-[#BC4749]" />
+          {isBestSeller && (
+            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
+              <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-wider shadow-lg bg-yellow-400 text-yellow-950 border border-yellow-300">
+                <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
+                <span className="hidden xs:inline">Best Seller</span>
+                <span className="xs:hidden">Best Seller</span>
+              </span>
             </div>
           )}
         </div>
 
         {/* Content Section */}
-        <div className="p-6 md:p-7 flex flex-col flex-1 relative bg-white">
+        <div className="p-4 sm:p-6 flex flex-col flex-1 relative bg-white">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#7A9A88] font-sans">
-              {dish.cuisine.replace(/_/g, " ")}
-            </p>
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F6FFF8] text-[#1B4332] border border-[#D4E8DA]">
-              <Star className="w-3 h-3 fill-current" />
-              <span className="text-[10px] font-bold">{rating}</span>
+            <div className="flex items-center gap-2">
+              <p className="text-[8px] sm:text-[10px] font-black tracking-[0.1em] sm:tracking-[0.15em] uppercase text-plattr-text-muted font-sans">
+                {dish.cuisine.replace(/_/g, " ")}
+              </p>
+              {dish.is_spicy && (
+                <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-red-500 fill-current" />
+              )}
+            </div>
+            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-plattr-subtle text-plattr-primary border border-plattr-border">
+              <Star className="w-2 h-2 sm:w-2.5 sm:h-2.5 fill-current" />
+              <span className="text-[8px] sm:text-[10px] font-black">{rating}</span>
             </div>
           </div>
 
-          <h4 className="text-xl font-serif font-bold text-[#1B2D24] leading-tight line-clamp-2 mb-3 group-hover:text-[#1B4332] transition-colors">
+          <h4 className="text-lg sm:text-xl font-serif font-bold text-plattr-text leading-tight line-clamp-2 mb-3 sm:mb-4 group-hover:text-plattr-primary transition-colors h-[2.8rem] sm:h-[3.5rem]">
             {dish.name}
           </h4>
 
           {/* Meal type tag */}
-          <div className="flex flex-wrap gap-1.5 mb-6">
-            <span className="inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-[#EEF8F1] text-[#4A6357] border border-[#D4E8DA] font-sans">
+          <div className="flex flex-wrap gap-1.5 mb-6 sm:mb-8">
+            <span className="inline-flex px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-widest bg-plattr-subtle text-plattr-text-sec border border-plattr-border font-sans">
               {dish.meal_type}
             </span>
           </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-auto pt-5 border-t border-[#EEF8F1]">
-            <span className="text-xl font-bold text-[#1B2D24] font-sans">
-              ₹{dish.price.toLocaleString()}
-            </span>
+          {/* Footer - Standardized Spacing */}
+          <div className="flex items-center justify-between mt-auto pt-4 sm:pt-6 border-t border-plattr-subtle">
+            <div className="flex flex-col">
+              <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-plattr-text-muted leading-none mb-1">Price</span>
+              <span className="text-xl sm:text-2xl font-serif font-bold text-plattr-text">
+                ₹{dish.price.toLocaleString()}
+              </span>
+            </div>
             
             {!showQuickAdd ? (
-              <div className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-[13px] font-bold bg-[#1B4332] text-white transition-all duration-300 shadow-md group-hover:bg-[#2D6A4F] font-sans">
-                <ShoppingBag className="w-4 h-4" />
-                View Plattr
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 h-9 sm:h-11 px-4 sm:px-6 rounded-full text-[9px] sm:text-[11px] font-black uppercase tracking-widest bg-plattr-primary text-white transition-all duration-300 shadow-plattr group-hover:bg-plattr-secondary font-sans cursor-pointer whitespace-nowrap">
+                <ShoppingBag size={14} className="sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">View Detail</span>
+                <span className="sm:hidden">View</span>
               </div>
             ) : (
               <button 
                 onClick={(e) => onQuickAdd?.(e, dish)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold bg-[#EEF8F1] text-[#1B2D24] hover:bg-[#1B4332] hover:text-white transition-all duration-300 border border-[#D4E8DA] font-sans"
+                className="inline-flex items-center gap-1.5 sm:gap-2 h-9 sm:h-11 px-4 sm:px-8 rounded-full text-[9px] sm:text-[11px] font-black uppercase tracking-widest bg-plattr-subtle text-plattr-text hover:bg-plattr-primary hover:text-white transition-all duration-500 border border-plattr-border font-sans whitespace-nowrap active:scale-95"
               >
-                <Plus size={15} strokeWidth={3} />
+                <Plus size={14} className="sm:w-4 sm:h-4" strokeWidth={3} />
                 Add
               </button>
             )}

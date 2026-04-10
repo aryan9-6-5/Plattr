@@ -104,7 +104,7 @@ const CatalogSection = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex justify-center gap-12 md:gap-20 mt-12 border-b border-[#D4E8DA] pb-12"
+          className="flex justify-center gap-12 md:gap-20 mt-12 border-b border-plattr-border pb-12"
         >
           {[
             { n: dishes.length,                                   label: "Items" },
@@ -120,19 +120,19 @@ const CatalogSection = () => {
       </div>
 
       {/* Sticky Filter Bar */}
-      <div className="sticky top-0 z-30 bg-[#F6FFF8]/90 backdrop-blur-xl border-b border-[#D4E8DA]">
+      <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-xl border-b border-plattr-border">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-6">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
             <div className="flex items-center gap-10">
               {/* Meal type filter */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-black tracking-widest uppercase text-[#7A9A88]">Meal Type</span>
+                <span className="text-[10px] font-black tracking-widest uppercase text-plattr-text-muted">Meal Type</span>
                 <div className="flex gap-2">
                   {mealTypes.slice(0, 4).map(opt => (
                     <button
                       key={opt}
                       onClick={() => setMealType(opt)}
-                      className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${mealType === opt ? 'bg-[#1B4332] text-white shadow-lg' : 'bg-transparent text-[#4A6357] hover:text-[#1B4332]'}`}
+                      className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${mealType === opt ? 'bg-plattr-primary text-white shadow-plattr' : 'bg-transparent text-plattr-text-sec hover:text-plattr-primary'}`}
                     >
                       {opt}
                     </button>
@@ -144,16 +144,16 @@ const CatalogSection = () => {
 
               {/* Source filter */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-black tracking-widest uppercase text-[#7A9A88]">Pipeline</span>
+                <span className="text-[10px] font-black tracking-widest uppercase text-plattr-text-muted">Pipeline</span>
                 <div className="relative">
                   <select
                     value={source}
                     onChange={(e) => setSource(e.target.value)}
-                    className="appearance-none bg-transparent text-[#1B2D24] text-sm font-bold pr-8 py-1 focus:outline-none cursor-pointer hover:text-[#1B4332] transition-colors"
+                    className="appearance-none bg-transparent text-plattr-text text-sm font-bold pr-8 py-1 focus:outline-none cursor-pointer hover:text-plattr-primary transition-colors"
                   >
                     {sources.map(opt => <option key={opt} value={opt}>{opt === "All" ? "All Sources" : opt}</option>)}
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center text-[#2D6A4F]">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center text-plattr-secondary">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"></path>
                     </svg>
@@ -193,9 +193,9 @@ const CatalogSection = () => {
                     <div key={cuisine}>
                       {/* Cuisine group header */}
                       <div className="flex items-center gap-6 mb-12">
-                        <h3 className="text-3xl md:text-4xl font-serif font-bold text-[#1B2D24] tracking-tight">{cuisine}</h3>
-                        <div className="flex-1 h-px bg-[#D4E8DA]" />
-                        <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#7A9A88]">{cuisineDishes.length} Items</span>
+                        <h3 className="text-3xl md:text-4xl font-serif font-bold text-plattr-text tracking-tight">{cuisine}</h3>
+                        <div className="flex-1 h-px bg-plattr-border" />
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em] text-plattr-text-muted">{cuisineDishes.length} Items</span>
                       </div>
 
                       {/* Dish card grid */}

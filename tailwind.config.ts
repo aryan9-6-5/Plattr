@@ -10,6 +10,7 @@ export default {
       center: true,
       padding: "2rem",
       screens: {
+        "xs": "475px",
         "2xl": "1400px",
       },
     },
@@ -64,8 +65,8 @@ export default {
           secondary:  "#2D6A4F",
           tint:       "#D8F3DC",
           bg:         "#FDFCF8",
-          "bg-alt":   "#F3F2EE",
-          border:     "#E5E1D8",
+          subtle:     "#F5F7F6",
+          border:     "#DDE4DF",
           text:       "#1B2D24",
           "text-sec": "#4A6357",
           "text-muted": "#7A9A88",
@@ -79,8 +80,11 @@ export default {
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
         "3xl": "calc(var(--radius) + 16px)",
+        plattr: "1rem", // Standard radius
       },
       boxShadow: {
+        plattr: "0 4px 20px rgba(0,0,0,0.04)",
+        "plattr-elevated": "0 12px 40px rgba(0,0,0,0.08)",
         soft:      "var(--shadow-soft)",
         card:      "var(--shadow-card)",
         elevated:  "var(--shadow-elevated)",
@@ -118,6 +122,10 @@ export default {
         "fade-up":        "fade-up 0.6s ease-out forwards",
         float:            "float 3s ease-in-out infinite",
         "pulse-ring":     "pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite",
+      },
+      transitionTimingFunction: {
+        smooth: 'cubic-bezier(0.16,1,0.3,1)',
+        smooth2: 'cubic-bezier(0.33,1,0.68,1)',
       },
     },
   },

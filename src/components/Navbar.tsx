@@ -289,7 +289,7 @@ const Navbar = () => {
         
         {/* Drawer */}
         <div
-          className={`fixed right-0 top-0 bottom-0 z-[9999] w-full max-w-sm bg-[#F6FFF8] shadow-[0_0_80px_rgba(0,0,0,0.4)] flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`fixed right-0 top-0 bottom-0 z-[9999] w-full max-w-sm bg-[#F6FFF8] shadow-[0_0_80px_rgba(0,0,0,0.4)] flex flex-col transition-transform duration-500 ease-smooth ${
             notificationsOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
@@ -326,7 +326,7 @@ const Navbar = () => {
         
         {/* Drawer */}
         <div
-          className={`fixed top-0 right-0 w-[90%] max-w-sm h-full bg-[#F6FFF8] z-[70] flex flex-col shadow-2xl lg:hidden p-10 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`fixed top-0 right-0 w-[90%] max-w-sm h-full bg-[#F6FFF8] z-[70] flex flex-col shadow-2xl lg:hidden p-10 transition-transform duration-500 ease-smooth ${
             mobileOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >

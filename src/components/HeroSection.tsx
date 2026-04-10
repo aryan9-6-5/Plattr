@@ -35,10 +35,10 @@ const HeroSection = () => {
             radial-gradient(
               ellipse 85% 160% at 0% 50%,
               rgba(253,252,249,0.97) 0%,
-              rgba(253,252,249,0.92) 25%,
-              rgba(253,252,249,0.65) 45%,
-              rgba(253,252,249,0.25) 60%,
-              rgba(253,252,249,0.00) 75%
+              rgba(253,252,249,0.92) 2%,
+              rgba(253,252,249,0.55) 45%,
+              rgba(253,252,249,0.15) 60%,
+              rgba(253,252,249,0.00) 70%
             )
           `,
         }}
@@ -52,10 +52,10 @@ const HeroSection = () => {
             radial-gradient(
               ellipse 140% 130% at 5% 5%,
               rgba(253,252,249,0.97) 0%,
-              rgba(253,252,249,0.92) 22%,
-              rgba(253,252,249,0.70) 42%,
-              rgba(253,252,249,0.35) 58%,
-              rgba(253,252,249,0.00) 75%
+              rgba(253,252,249,0.92) 25%,
+              rgba(253,252,249,0.60) 45%,
+              rgba(253,252,249,0.20) 60%,
+              rgba(253,252,249,0.00) 70%
             )
           `,
         }}
@@ -63,13 +63,25 @@ const HeroSection = () => {
 
       {/* ── DESKTOP LAYOUT ── */}
       <div className="hidden md:flex relative z-20 h-full flex-col justify-center pl-16 lg:pl-24 pr-10 pt-8 pb-8">
-        <div style={{ maxWidth: "560px" }} className="flex flex-col gap-6">
+        <div style={{ maxWidth: "600px" }} className="flex flex-col gap-10">
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex items-center gap-3 mb-2"
+          >
+            <div className="w-8 h-px bg-[#2D6A4F]/30" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#2D6A4F]/60">
+              Verified Artisans • Quality Protocol
+            </span>
+          </motion.div>
+
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif font-bold text-[#1B2D24] leading-[1.02] tracking-tight"
-            style={{ fontSize: "clamp(2.4rem, 4.2vw, 4.2rem)" }}
+            style={{ fontSize: "clamp(2.6rem, 4.8vw, 4.8rem)" }}
           >
             Authentic food,<br />
             <span className="text-[#2D6A4F] italic">curated for scale.</span>
@@ -80,7 +92,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-[#3A433E] leading-relaxed font-sans font-medium"
-            style={{ fontSize: "clamp(0.85rem, 1.15vw, 1.05rem)", maxWidth: "460px" }}
+            style={{ fontSize: "clamp(0.95rem, 1.25vw, 1.15rem)", maxWidth: "520px" }}
           >
             Beyond delivery. We bridge the gap between artisanal home chefs and sophisticated palates, bringing India's culinary heritage to your corporate events and daily life.
           </motion.p>
@@ -107,32 +119,6 @@ const HeroSection = () => {
             </Link>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.35 }}
-            className="rounded-3xl p-5 shadow-lg border border-white/90"
-            style={{
-              maxWidth: "400px",
-              background: "rgba(255,255,255,0.82)",
-              backdropFilter: "blur(12px)",
-            }}
-          >
-            <div className="flex items-center gap-1 mb-2.5">
-              {[1, 2, 3, 4, 5].map(s => (
-                <Star key={s} className="w-3.5 h-3.5 fill-[#1B4332] text-[#1B4332]" />
-              ))}
-            </div>
-            <p className="text-[0.95rem] font-serif font-bold text-[#1B2D24] leading-snug mb-3">
-              "The most authentic Hyderabadi Zafran I've ever tasted outside of a home."
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-px bg-[#1B4332]/40" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#1B4332]">
-                Siddharth R., Product Lead
-              </span>
-            </div>
-          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -175,7 +161,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif font-bold text-[#1B2D24] leading-[1.05] tracking-[-0.02em]"
-            style={{ fontSize: "clamp(32px, 9vw, 42px)" }}
+            style={{ fontSize: "clamp(34px, 10vw, 46px)" }}
           >
             Authentic food,<br />
             <span className="text-[#2D6A4F] italic">curated for scale.</span>
@@ -185,14 +171,14 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1 }}
-            className="text-[#3A433E] text-[14px] leading-[1.6] font-medium max-w-[280px]"
+            className="text-[#3A433E] text-[15px] leading-[1.65] font-medium max-w-[300px]"
           >
             Beyond delivery. We bridge the gap between artisanal home chefs and sophisticated palates, bringing India's culinary heritage to your corporate events and daily life.
           </motion.p>
         </div>
 
-        {/* ── MIDDLE — CTAs + Testimonial ── */}
-        <div className="flex flex-col gap-3 mt-5">
+        {/* ── MIDDLE — CTAs ── */}
+        <div className="flex flex-col gap-3 mt-8">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -215,33 +201,6 @@ const HeroSection = () => {
             </Link>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.35 }}
-            className="rounded-[16px] p-4 shadow-[0_12px_40px_rgba(0,0,0,0.10)] border border-white/60 max-w-[260px]"
-            style={{ background: "rgba(255,255,255,0.92)" }}
-          >
-            <div className="flex items-center gap-1 mb-2">
-              {[1, 2, 3, 4, 5].map(s => (
-                <Star key={s} className="w-3 h-3 fill-[#1B4332] text-[#1B4332]" />
-              ))}
-            </div>
-            <p className="text-[14px] font-serif font-bold italic text-[#1B2D24] leading-[1.4] mb-2">
-              "The most authentic Hyderabadi Zafran I've ever tasted outside of a home."
-            </p>
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-px bg-[#1B4332]/40" />
-              <div>
-                <span className="text-[9px] font-black uppercase tracking-[0.15em] text-[#1B4332]">
-                  Siddharth R.,
-                </span>{" "}
-                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#1B4332]/60">
-                  Product Lead
-                </span>
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         {/* ── BOTTOM — Stats Bar (viewport-anchored) ── */}

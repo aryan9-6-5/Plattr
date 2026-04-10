@@ -40,7 +40,7 @@ const ChefsSection = () => {
 
   return (
     <section id="chefs" className="py-16 md:py-24 bg-[#F6FFF8]" ref={ref}>
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10">
 
         {/* Section header */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
@@ -70,13 +70,19 @@ const ChefsSection = () => {
         ) : chefs.length === 0 ? (
           <p className="text-center text-[#7A9A88] py-20 text-sm font-medium">No artisans available at the moment.</p>
         ) : (
-          <div className="flex flex-wrap justify-center gap-8 md:gap-10">
+          <div className="grid grid-cols-2 lg:flex lg:flex-wrap justify-center gap-4 lg:gap-10">
             {chefs.map((chef, i) => (
-              <ChefCard 
+              <div 
                 key={chef.id} 
-                chef={chef} 
-                index={i} 
-              />
+                className="flex last:odd:col-span-2 last:odd:justify-center w-full"
+              >
+                <div className="w-full sm:w-auto max-w-[200px] sm:max-w-none">
+                  <ChefCard 
+                    chef={chef} 
+                    index={i} 
+                  />
+                </div>
+              </div>
             ))}
           </div>
         )}

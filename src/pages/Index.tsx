@@ -49,12 +49,12 @@ const Index = () => {
       {/* 8. Corporate/B2B */}
       <B2BSection />
 
+      {/* 3. Solutions & Audience */}
+      <AudienceSection />
+
       {/* 9. Final CTA */}
       <CtaSection />
 
-      {/* 3. Solutions & Audience */}
-      <AudienceSection />
-      
       {/* Footer */}
       <Footer />
     </div>

@@ -70,13 +70,13 @@ const ChefsSection = () => {
         ) : chefs.length === 0 ? (
           <p className="text-center text-[#7A9A88] py-20 text-sm font-medium">No artisans available at the moment.</p>
         ) : (
-          <div className="grid grid-cols-2 lg:flex lg:flex-wrap justify-center gap-4 lg:gap-10">
+          <div className="flex flex-wrap justify-center gap-4 lg:gap-8">
             {chefs.map((chef, i) => (
               <div 
                 key={chef.id} 
-                className="flex last:odd:col-span-2 last:odd:justify-center w-full"
+                className="w-[calc(50%-8px)] lg:w-[calc(33.33%-22px)] flex justify-center"
               >
-                <div className="w-full sm:w-auto max-w-[200px] sm:max-w-none">
+                <div className="w-full h-full max-w-[400px]">
                   <ChefCard 
                     chef={chef} 
                     index={i} 

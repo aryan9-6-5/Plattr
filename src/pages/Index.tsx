@@ -33,9 +33,6 @@ const Index = () => {
       {/* 2. Pipeline Visualizer — how it works */}
       <HowItWorks />
 
-      {/* 3. Solutions & Audience */}
-      <AudienceSection />
-
       {/* 4. Lifestyle & Catalog */}
       <LifestyleGallery />
       <ChefsSection />
@@ -55,6 +52,9 @@ const Index = () => {
       {/* 9. Final CTA */}
       <CtaSection />
 
+      {/* 3. Solutions & Audience */}
+      <AudienceSection />
+      
       {/* Footer */}
       <Footer />
     </div>

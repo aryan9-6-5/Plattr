@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useCart } from '@/hooks/useCart'
 import type { CartItem } from '@/types/cart'
@@ -92,9 +92,22 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
             >
               −
             </button>
-            <span className="w-5 lg:w-6 text-center text-xs lg:text-sm font-semibold text-[#1B2D24]">
-              {item.quantity}
-            </span>
+            
+            <div className="w-5 lg:w-6 relative flex justify-center">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={item.quantity}
+                  initial={{ y: 10, opacity: 0, scale: 0.8 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  exit={{ y: -10, opacity: 0, scale: 0.8 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                  className="text-xs lg:text-sm font-semibold text-[#1B2D24]"
+                >
+                  {item.quantity}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+
             <button
               onClick={() => updateQuantity(item.id, item.quantity + 1)}
               className="w-6 h-6 lg:w-7 lg:h-7 rounded-full border border-[#D4E8DA]
@@ -108,10 +121,18 @@ const CartItemRow = ({ item }: { item: CartItem }) => {
           </div>
 
           {/* LINE TOTAL */}
-          <div className="text-right">
-            <span className="text-[13px] lg:text-sm font-bold text-[#1B2D24]">
-              ₹{lineTotal.toLocaleString('en-IN')}
-            </span>
+          <div className="text-right overflow-hidden">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={lineTotal}
+                initial={{ x: 10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -10, opacity: 0 }}
+                className="text-[13px] lg:text-sm font-bold text-[#1B2D24]"
+              >
+                ₹{lineTotal.toLocaleString('en-IN')}
+              </motion.div>
+            </AnimatePresence>
             {isBulkPrice && (
               <p className="text-[10px] lg:text-xs text-[#7A9A88] line-through leading-none">
                 ₹{(item.price * item.quantity).toLocaleString('en-IN')}

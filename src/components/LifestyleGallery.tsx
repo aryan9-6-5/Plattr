@@ -6,7 +6,7 @@ const galleryItems = [
   { id: 2, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&q=80", title: "Heritage Curation" },
   { id: 3, image: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&q=80", title: "Supply Integrity" },
   { id: 4, image: "https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?auto=format&fit=crop&q=80", title: "Studio Operations" },
-  { id: 5, image: "public/images/pure-logistics.png", title: "Pure Logistics" },
+  { id: 5, image: "/images/pure-logistics.png", title: "Pure Logistics" },
   { id: 6, image: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&q=80", title: "Vetted Sources" },
 ];
 

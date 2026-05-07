@@ -78,13 +78,15 @@ const CartDrawer = () => {
               </div>
               <div className="flex items-center gap-2 lg:gap-4">
                 {!isEmpty && (
-                  <button
-                    onClick={() => { if(confirm('Clear all modules?')) clearCart(); }}
+                  <motion.button
+                    whileHover={{ scale: 1.05, color: '#D32F2F' }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={clearCart}
                     className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-[#7A9A88] 
-                               px-2 lg:p-3 hover:text-red-600 transition-colors"
+                               px-2 lg:p-3 transition-colors"
                   >
                     Reset
-                  </button>
+                  </motion.button>
                 )}
                 <button
                   onClick={closeCart}
@@ -160,9 +162,14 @@ const CartDrawer = () => {
                     <div className="pt-6 lg:pt-8 border-t border-[#D4E8DA] flex flex-col xs:flex-row xs:items-end justify-between gap-4">
                       <div>
                         <span className="text-[9px] lg:text-[10px] font-black tracking-[0.2em] lg:tracking-[0.3em] text-[#7A9A88] uppercase block mb-1">Final Settlement</span>
-                        <span className="font-serif font-bold text-3xl lg:text-4xl text-[#1B2D24]">
+                        <motion.span 
+                          key={total}
+                          animate={{ scale: [1, 1.1, 1], color: ['#1B2D24', '#2D6A4F', '#1B2D24'] }}
+                          transition={{ duration: 0.4 }}
+                          className="font-serif font-bold text-3xl lg:text-4xl text-[#1B2D24] inline-block"
+                        >
                           ₹{total.toLocaleString()}
-                        </span>
+                        </motion.span>
                       </div>
                       
                       {deliveryFee > 0 && subtotal < 500 && (

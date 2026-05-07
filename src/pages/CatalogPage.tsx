@@ -51,10 +51,13 @@ const CatalogPage = () => {
   const [dietType, setDietType]     = useState(searchParams.get("diet") ?? "All");
   const [source, setSource]         = useState(searchParams.get("source") ?? "All");
   const [offset, setOffset]         = useState(0);
+  const [accumulatedDishes, setAccumulatedDishes] = useState<Dish[]>([]);
 
   // Debounce search
   useEffect(() => {
-    const t = setTimeout(() => setDeb(search), 300);
+    const t = setTimeout(() => {
+      setDeb(search);
+    }, 300);
     return () => clearTimeout(t);
   }, [search]);
 
@@ -68,6 +71,7 @@ const CatalogPage = () => {
     if (debouncedSearch)    p.search    = debouncedSearch;
     setSearchParams(p, { replace: true });
     setOffset(0);
+    setAccumulatedDishes([]); // Reset on filter change
   }, [cuisine, mealType, dietType, source, debouncedSearch, setSearchParams]);
 
   const { addItem } = useCart();
@@ -110,16 +114,28 @@ const CatalogPage = () => {
 
   const { dishes, loading, error, total } = useDishes(filters);
 
+  // Accumulate dishes when new page loads
+  useEffect(() => {
+    if (dishes.length > 0) {
+      setAccumulatedDishes(prev => {
+        // Prevent duplicates if hook re-runs with same data
+        const newDishes = dishes.filter(d => !prev.find(p => p.id === d.id));
+        return [...prev, ...newDishes];
+      });
+    }
+  }, [dishes]);
+
   const clearAll = useCallback(() => {
     setSearch(""); setDeb("");
     setCuisine("All"); setMealType("All");
     setDietType("All"); setSource("All");
     setOffset(0);
+    setAccumulatedDishes([]);
   }, []);
 
-  // Group by cuisine if no filters
+  // Group by cuisine if no filters - Use accumulatedDishes!
   const grouped = !hasFilters
-    ? dishes.reduce<Record<string, typeof dishes>>((acc, d) => {
+    ? accumulatedDishes.reduce<Record<string, typeof accumulatedDishes>>((acc, d) => {
         (acc[d.cuisine] ??= []).push(d);
         return acc;
       }, {})
@@ -291,11 +307,11 @@ const CatalogPage = () => {
           /* Flat grid when filtered */
           <>
             <p className="text-sm font-medium text-[#4A6357] mb-5">
-              Showing {dishes.length} of {total} dishes
+              Showing {accumulatedDishes.length} of {total} dishes
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
               <AnimatePresence>
-                {dishes.map((dish, i) => (
+                {accumulatedDishes.map((dish, i) => (
                   <DishCard 
                     key={dish.id} 
                     dish={dish} 
@@ -306,17 +322,30 @@ const CatalogPage = () => {
                 ))}
               </AnimatePresence>
             </div>
-            {total > offset + PAGE_SIZE && (
-              <div className="text-center mt-10">
-                <button
-                  onClick={() => setOffset((o) => o + PAGE_SIZE)}
-                  className="px-8 py-3 rounded-full bg-white border border-[#D4E8DA] text-sm font-semibold text-[#2D6A4F] hover:bg-[#EEF8F1] transition-colors"
-                >
-                  Load More
-                </button>
-              </div>
-            )}
           </>
+        )}
+
+        {/* Universal Load More for both modes */}
+        {total > accumulatedDishes.length && (
+          <div className="text-center mt-12 pb-10">
+            <button
+              onClick={() => setOffset((o) => o + PAGE_SIZE)}
+              disabled={loading}
+              className="inline-flex items-center gap-2 px-10 py-3.5 rounded-full bg-white border border-[#D4E8DA] text-sm font-bold text-[#2D6A4F] hover:bg-[#EEF8F1] hover:border-[#2D6A4F] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            >
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-[#2D6A4F]/20 border-t-[#2D6A4F] rounded-full animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  Load {Math.min(PAGE_SIZE, total - accumulatedDishes.length)} More Dishes
+                  <ChevronDown className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </div>
         )}
       </div>
     </div>
